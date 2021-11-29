@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthResponceData } from 'src/app/model/auth-responce.model';
 import { UserCredentials } from 'src/app/model/credentials.model';
 import { AuthService } from '../auth.service';
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
     public error: string = "";
     public loading: boolean = false;
 
-    constructor(public formBuilder: FormBuilder, private auth: AuthService) { }
+    constructor(public formBuilder: FormBuilder, private auth: AuthService, private router: Router) { }
 
     ngOnInit(): void {
         this.authForm = this.formBuilder.group({
@@ -51,15 +52,27 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    public logout() {
-        this.auth.logout();
-    }
-
     public googleLogin() {
-        this.auth.googleAuth();
+        this.auth.googleAuth().subscribe({
+            next: () => {
+                this.router.navigate(['/auth/login']);
+            },
+            error: error => {
+                this.error = error.error.error.message;
+                this.loading = false;
+            }
+        });
     }
 
     public facebookLogin() {
-        this.auth.facebookAuth();
+        this.auth.facebookAuth().subscribe({
+            next: () => {
+                this.router.navigate(['/auth/login']);
+            },
+            error: error => {
+                this.error = error.error.error.message;
+                this.loading = false;
+            }
+        });
     }
 }

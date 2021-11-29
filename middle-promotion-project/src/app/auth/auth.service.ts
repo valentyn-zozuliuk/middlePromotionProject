@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, from, tap } from 'rxjs';
 import { AuthResponceData } from '../model/auth-responce.model';
 import { UserCredentials } from '../model/credentials.model';
 import { User } from '../model/user.model';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
-import { getAuth, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider, UserCredential } from "firebase/auth";
+import { getAuth,
+         signInWithPopup,
+         FacebookAuthProvider,
+         GoogleAuthProvider,
+         UserCredential,
+         sendPasswordResetEmail } from "firebase/auth";
 
 
 
@@ -102,27 +107,33 @@ export class AuthService {
 
     facebookAuth() {
         const provider = new FacebookAuthProvider();
-        this.authenticateWithPopup(provider);
+        return this.authenticateWithPopup(provider);
     }
 
     googleAuth() {
         const provider = new GoogleAuthProvider();
-        this.authenticateWithPopup(provider);
+        return this.authenticateWithPopup(provider);
     }
 
     private authenticateWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider) {
+
         const auth = getAuth();
 
-        signInWithPopup(auth, provider)
-            .then((resData: any | UserCredential) => {
+        return from(signInWithPopup(auth, provider)).pipe(
+            tap((resData: any | UserCredential) => {
                 this.handleAuthentication(
                     resData._tokenResponse.email,
                     resData._tokenResponse.localId,
                     resData._tokenResponse.idToken,
                     +resData._tokenResponse.expiresIn
                 );
-            }).catch((error) => {
-                console.error('error');
-            });
+            })
+        );
+    }
+
+    resetPassword(email: string) {
+        const auth = getAuth();
+
+        return from(sendPasswordResetEmail(auth, email));
     }
 }

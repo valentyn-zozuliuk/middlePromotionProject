@@ -42,8 +42,6 @@ export class SignupComponent implements OnInit {
             }
 
             this.signupUser(userCredentials);
-        } else {
-            console.log(this.profileForm);
         }
     }
 
@@ -79,10 +77,26 @@ export class SignupComponent implements OnInit {
     }
 
     public googleSignup() {
-        this.auth.googleAuth();
+        this.auth.googleAuth().subscribe({
+            next: (response: AuthResponceData) => {
+                this.router.navigate(['/auth/login']);
+            },
+            error: error => {
+                this.error = error.error.error.message;
+                this.loading = false;
+            }
+        })
     }
 
     public facebookSignup() {
-        this.auth.facebookAuth();
+        this.auth.facebookAuth().subscribe({
+            next: (response: AuthResponceData) => {
+                this.router.navigate(['/auth/login']);
+            },
+            error: error => {
+                this.error = error.error.error.message;
+                this.loading = false;
+            }
+        })
     }
 }
