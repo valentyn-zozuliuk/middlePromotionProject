@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserCredential } from '@firebase/auth';
 import { takeUntil } from 'rxjs';
 import { AuthResponceData } from 'src/app/model/auth-responce.model';
 import { UserCredentials } from 'src/app/model/credentials.model';
@@ -89,7 +90,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (response: AuthResponceData) => {
+                next: (resData: any | UserCredential) => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
@@ -105,7 +106,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (response: AuthResponceData) => {
+                next: (resData: any | UserCredential) => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
