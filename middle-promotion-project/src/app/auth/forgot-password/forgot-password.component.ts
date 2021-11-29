@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs';
+import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -8,12 +10,14 @@ import { AuthService } from '../auth.service';
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent extends ClearObservable implements OnInit {
     public resetPassForm!: FormGroup;
     public error: string = "";
     public loading: boolean = false;
 
-    constructor(public formBuilder: FormBuilder, private auth: AuthService, private router: Router) { }
+    constructor(public formBuilder: FormBuilder, private auth: AuthService, private router: Router) {
+        super();
+     }
 
     ngOnInit(): void {
         this.resetPassForm = this.formBuilder.group({
@@ -27,6 +31,9 @@ export class ForgotPasswordComponent implements OnInit {
 
         if (this.resetPassForm.valid) {
             this.auth.resetPassword(this.resetPassForm.controls['email'].value)
+                .pipe(
+                    takeUntil(this.destroy$)
+                )
                 .subscribe({
                     next: () => this.router.navigate(['/auth/login']),
                     error: (error) => {

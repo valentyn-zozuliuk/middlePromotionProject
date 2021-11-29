@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs';
 import { AuthResponceData } from 'src/app/model/auth-responce.model';
 import { UserCredentials } from 'src/app/model/credentials.model';
+import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -10,13 +12,15 @@ import { AuthService } from '../auth.service';
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent extends ClearObservable implements OnInit {
 
     public profileForm!: FormGroup;
     public error: string = "";
     public loading: boolean = false;
 
-    constructor(public formBuilder: FormBuilder, private auth: AuthService, public router: Router) { }
+    constructor(public formBuilder: FormBuilder, private auth: AuthService, public router: Router) {
+        super();
+     }
 
     ngOnInit(): void {
         this.profileForm = this.formBuilder.group({
@@ -64,6 +68,9 @@ export class SignupComponent implements OnInit {
     private signupUser(userCredentials: UserCredentials): void {
         this.loading = true;
         this.auth.signup(userCredentials)
+            .pipe(
+                takeUntil(this.destroy$)
+            )
             .subscribe({
                 next: (response: AuthResponceData) => {
                     this.loading = false;
@@ -77,26 +84,34 @@ export class SignupComponent implements OnInit {
     }
 
     public googleSignup() {
-        this.auth.googleAuth().subscribe({
-            next: (response: AuthResponceData) => {
-                this.router.navigate(['/auth/login']);
-            },
-            error: error => {
-                this.error = error.error.error.message;
-                this.loading = false;
-            }
-        })
+        this.auth.googleAuth()
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe({
+                next: (response: AuthResponceData) => {
+                    this.router.navigate(['/auth/login']);
+                },
+                error: error => {
+                    this.error = error.error.error.message;
+                    this.loading = false;
+                }
+            });
     }
 
     public facebookSignup() {
-        this.auth.facebookAuth().subscribe({
-            next: (response: AuthResponceData) => {
-                this.router.navigate(['/auth/login']);
-            },
-            error: error => {
-                this.error = error.error.error.message;
-                this.loading = false;
-            }
-        })
+        this.auth.facebookAuth()
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe({
+                next: (response: AuthResponceData) => {
+                    this.router.navigate(['/auth/login']);
+                },
+                error: error => {
+                    this.error = error.error.error.message;
+                    this.loading = false;
+                }
+            });
     }
 }
