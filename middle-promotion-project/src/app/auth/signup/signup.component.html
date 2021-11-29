@@ -1,1 +1,89 @@
-<p>signup works!</p>
+<div class="signup-page">
+    <div class="side-image">
+        <img src="assets/images/signup_image.png" alt="signup_background">
+    </div>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <h1>Get started today</h1>
+            <p class="subheader">Enter your details to create super account.</p>
+
+            <div class="signup-block">
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmitForm()">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="name">Name</label>
+                            <input name="name" type="text" formControlName="name" placeholder="Enter your name">
+                        </div>
+                        <div class="col-6">
+                            <label for="age">Age</label>
+                            <input name="age" type="text" formControlName="age" placeholder="Enter your age">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="login">Email Address</label>
+                            <input name="login" type="text" formControlName="email"
+                                   placeholder="Enter your email address" class="dnager-border">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="password">Password</label>
+                            <input name="password" type="password" formControlName="password"
+                                placeholder="Enter your password">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="password-confirm">Confirm New Password</label>
+                            <input name="password-confirm" type="password" formControlName="passwordConfirm"
+                                placeholder="Enter your new password again">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="agreement-text" for="agreeToTerms">
+                            <span>I agree to </span>
+                            <a class="link" [routerLink]="['/auth/privacy-policy']">Terms and Policy</a>
+
+                            <input class="hidden-input" id="agreeToTerms" formControlName="acceptTerms"
+                                   type="checkbox" name="agreeToTerms">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+
+                    <button *ngIf="!loading" class="button primary-button block-element"
+                            type="submit">Get started now</button>
+
+                    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+                    <p class="text-danger text-center" *ngIf="error">
+                        {{ error }}
+                    </p>
+                </form>
+
+                <div class="other-accounts-note">
+                    <p><span>Or sign up with</span></p>
+                </div>
+
+                <div class="other-accounts-choose">
+                    <div class="other-selection-wrapper" (click)="googleSignup()">
+                        <img src="assets/images/Google.png" alt="Google">
+                    </div>
+
+                    <div class="other-selection-wrapper" (click)="facebookSignup()">
+                        <img src="assets/images/Facebook.png" alt="Facebook">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <p class="spacer-0">Already have an account? <a class="link" [routerLink]="['/auth/login']">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>

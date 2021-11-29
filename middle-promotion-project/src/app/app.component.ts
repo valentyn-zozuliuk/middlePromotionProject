@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Article } from './model/article.model';
+import { AuthService } from './auth/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -10,10 +9,10 @@ import { Article } from './model/article.model';
 export class AppComponent implements OnInit {
     title = 'middle-promotion-project';
 
-    constructor(private http: HttpClient) {
+    constructor(private auth: AuthService) {
     }
 
     ngOnInit() {
-
+        this.auth.autoLogin();
     }
 }

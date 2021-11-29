@@ -1,1 +1,62 @@
-<p>login works!</p>
+<div class="login-page">
+    <div class="side-image">
+        <img src="assets/images/login_background.png" alt="login_background">
+    </div>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <img class="waving-hand-img" src="assets/images/waving_hand.png" alt="waving_hand">
+            <h1>Welcome back</h1>
+
+            <p class="subheader">Sign in to manage your account.</p>
+
+            <div class="login-block">
+                <form [formGroup]="authForm" (ngSubmit)="onSubmitForm()">
+                    <div class="row">
+                        <div class="col">
+                            <label for="login">Email Address</label>
+                            <input name="login" type="text" formControlName="email"
+                                   placeholder="Enter your email address">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="password">Password</label>
+                            <input name="password" type="password" formControlName="password"
+                                   placeholder="Enter your password">
+                        </div>
+                    </div>
+
+                    <a class="link" [routerLink]="['/auth/forgot-password']">Forgot your password?</a>
+
+                    <button *ngIf="!loading" type="submit" class="button primary-button block-element">Sign in</button>
+
+                    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+                    <p class="text-danger text-center" *ngIf="error">
+                        {{ error }}
+                    </p>
+                </form>
+
+                <div class="other-accounts-note">
+                    <p><span>Or do it via other accounts</span></p>
+                </div>
+
+                <div class="other-accounts-choose">
+                    <div class="other-selection-wrapper" (click)="googleLogin()">
+                        <img src="assets/images/Google.png" alt="Google">
+                    </div>
+
+                    <div class="other-selection-wrapper" (click)="facebookLogin()">
+                        <img src="assets/images/Facebook.png" alt="Facebook">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <p class="spacer-0">Don't have an account? <a class="link" [routerLink]="['/auth/signup']">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
