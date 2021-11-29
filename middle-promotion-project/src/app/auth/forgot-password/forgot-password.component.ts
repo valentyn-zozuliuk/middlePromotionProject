@@ -26,10 +26,11 @@ export class ForgotPasswordComponent extends ClearObservable implements OnInit {
     }
 
     public onSubmitForm(): void {
-        this.loading = true;
         this.error = "";
 
         if (this.resetPassForm.valid) {
+            this.loading = true;
+
             this.auth.resetPassword(this.resetPassForm.controls['email'].value)
                 .pipe(
                     takeUntil(this.destroy$)
