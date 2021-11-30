@@ -26,7 +26,7 @@ html, body {
     height: 100%;
 }
 
-h1 {
+.header-main {
     font-size: 30px;
     margin-bottom: 8px;
 }
@@ -53,6 +53,17 @@ h1 {
 .primary-button {
     background: $primary-color;
     color: white;
+}
+
+.button-outline {
+    background: transparent;
+    color: $default-text-field;
+    border: 1px solid $default-text-field;
+}
+
+.fixed-width-button {
+    display: inline-block;
+    width: 130px;
 }
 
 .agreement-text {

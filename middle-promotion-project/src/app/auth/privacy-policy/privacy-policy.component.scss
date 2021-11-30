@@ -1,0 +1,52 @@
+@import 'variables';
+
+.privacy-policy-page {
+    .container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .header {
+        background-color: $header-color;
+        padding-bottom: 30px;
+
+        .logo-image {
+            position: relative;
+            right: 30px;
+            height: 100px;
+            width: auto;
+            margin-bottom: 10px;
+        }
+
+        &-text {
+            font-size: 28px;
+            color: $color-white;
+            &::before {
+
+            }
+        }
+    }
+
+    .content {
+        padding-top: 50px;
+        padding-bottom: 50px;
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        .rule  {
+            h3 {
+                font-size: 21px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            h3, p {
+                margin-bottom: 25px;
+            }
+        }
+    }
+}
