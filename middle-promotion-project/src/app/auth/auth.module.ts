@@ -8,6 +8,7 @@ import { AuthComponent } from './auth.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
     {
@@ -34,7 +35,8 @@ const routes: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FontAwesomeModule
     ]
 })
 export class AuthModule { }

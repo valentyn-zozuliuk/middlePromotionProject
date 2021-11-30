@@ -6,9 +6,12 @@
         <div class="container">
             <img class="logo-image" src="assets/images/logo.png" alt="Logoipsum">
 
-            <h1 class="header-text">
-                Product legal information
-            </h1>
+            <div>
+                <h1 class="header-text cursor-pointer" [routerLink]="['/auth/signup']">
+                    <fa-icon class="header-icon" [icon]="faAngleLeft"></fa-icon>
+                    Product legal information
+                </h1>
+            </div>
         </div>
     </div>
     <div class="content">
@@ -16,7 +19,6 @@
             <div class="row">
                 <div class="col">
                     <h1 class="header-main"> Privacy Policy</h1>
-
                 </div>
 
             </div>

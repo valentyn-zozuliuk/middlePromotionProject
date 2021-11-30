@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 .privacy-policy-page {
     .container {
@@ -21,9 +21,15 @@
         &-text {
             font-size: 28px;
             color: $color-white;
-            &::before {
+            display: inline-block;
+        }
 
-            }
+        &-icon {
+            font-weight: 200;
+            margin-right: 20px;
+            font-size: 16px;
+            position: relative;
+            bottom: 2px;
         }
     }
 
@@ -35,7 +41,7 @@
             margin-bottom: 40px;
         }
 
-        .rule  {
+        .rule {
             h3 {
                 font-size: 21px;
             }
@@ -44,7 +50,8 @@
                 font-size: 14px;
             }
 
-            h3, p {
+            h3,
+            p {
                 margin-bottom: 25px;
             }
         }
