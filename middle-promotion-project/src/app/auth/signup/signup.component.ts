@@ -3,8 +3,7 @@ import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Valid
 import { Router } from '@angular/router';
 import { UserCredential } from '@firebase/auth';
 import { takeUntil } from 'rxjs';
-import { AuthResponceData } from 'src/app/model/auth-responce.model';
-import { UserCredentials } from 'src/app/model/credentials.model';
+import { UserAuthCredentials } from 'src/app/model/credentials.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { AuthService } from '../auth.service';
 
@@ -40,10 +39,13 @@ export class SignupComponent extends ClearObservable implements OnInit {
         this.error = "";
 
         if (this.profileForm.valid) {
-            const userCredentials: UserCredentials = {
+            const userCredentials: UserAuthCredentials = {
                 email: this.profileForm.controls['email'].value,
                 password: this.profileForm.controls['password'].value,
-                returnSecureToken: true
+                name: this.profileForm.controls['name'].value,
+                age: this.profileForm.controls['age'].value,
+                returnSecureToken: true,
+
             }
 
             this.signupUser(userCredentials);
@@ -66,19 +68,19 @@ export class SignupComponent extends ClearObservable implements OnInit {
         return null;
     }
 
-    private signupUser(userCredentials: UserCredentials): void {
+    private signupUser(userCredentials: UserAuthCredentials): void {
         this.loading = true;
         this.auth.signup(userCredentials)
             .pipe(
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (response: AuthResponceData) => {
+                next: (response: any | UserCredential) => {
                     this.loading = false;
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
-                    this.error = error.error.error.message;
+                    this.error = error.message;
                     this.loading = false;
                 }
             });
@@ -94,7 +96,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
-                    this.error = error.error.error.message;
+                    this.error = error.message;
                     this.loading = false;
                 }
             });
@@ -110,7 +112,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
-                    this.error = error.error.error.message;
+                    this.error = error.message;
                     this.loading = false;
                 }
             });

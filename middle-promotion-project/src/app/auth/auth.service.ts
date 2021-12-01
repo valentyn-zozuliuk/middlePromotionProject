@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, from, tap } from 'rxjs';
-import { AuthResponceData } from '../model/auth-responce.model';
-import { UserCredentials } from '../model/credentials.model';
-import { User } from '../model/user.model';
+import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, from, map, mergeMap, Observable, of, tap, withLatestFrom } from 'rxjs';
+import { UserAuthCredentials, UserCredentials } from '../model/credentials.model';
+import { UserAdditionalInfo, UserMainInfo, UserProfile } from '../model/user.model';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { getAuth,
@@ -12,39 +11,65 @@ import { getAuth,
          FacebookAuthProvider,
          GoogleAuthProvider,
          UserCredential,
-         sendPasswordResetEmail } from "firebase/auth";
-
-
+         sendPasswordResetEmail,
+         signInWithEmailAndPassword,
+         createUserWithEmailAndPassword,
+         signOut
+        } from "firebase/auth";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    public user = new BehaviorSubject<User | null>(null);
+    public user = new BehaviorSubject<UserProfile | null>(null);
+    public tempToken: string = "";
     private tokenExpirationTimer: ReturnType<typeof setTimeout> | null  = null;
 
     constructor(private http: HttpClient, private router: Router) {
         initializeApp(environment.firebaseConfig);
     }
 
-    signup(userCredentials: UserCredentials) {
-        return this.http.post<AuthResponceData>(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDuHtkGcExkY3z5dyzjk0m8QJAqPjH7WZQ',
-            userCredentials).pipe(
-                tap((resData: AuthResponceData) => {
-                    this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
-                })
-            );
+    signup(userCredentials: UserAuthCredentials) {
+        const auth = getAuth();
+        return this.authAlgorithm(
+            from(createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
+            true, userCredentials
+        );
     }
 
     login(userCredentials: UserCredentials) {
-        return this.http.post<AuthResponceData>(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDuHtkGcExkY3z5dyzjk0m8QJAqPjH7WZQ',
-            userCredentials).pipe(
-                tap((resData: AuthResponceData) => {
-                    this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
-                })
-            );
+        const auth = getAuth();
+        return this.authAlgorithm(
+            from(signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password))
+        );
+    }
+
+    facebookAuth() {
+        const provider = new FacebookAuthProvider();
+        return this.authenticateWithPopup(provider);
+    }
+
+    googleAuth() {
+        const provider = new GoogleAuthProvider();
+        return this.authenticateWithPopup(provider);
+    }
+
+    private authenticateWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider) {
+        const auth = getAuth();
+        return this.authAlgorithm(from(signInWithPopup(auth, provider)));
+    }
+
+    private handleAuthentication(additionalInfo: UserAdditionalInfo, mainInfo: UserMainInfo) {
+        const expirationDate = new Date(new Date().getTime() + mainInfo.expiresIn * 1000);
+        const image = additionalInfo.avatar ? additionalInfo.avatar : mainInfo.photoURL;
+        const name = additionalInfo.information.name ? additionalInfo.information.name : mainInfo.displayName;
+
+        const user = new UserProfile(mainInfo.email, mainInfo.localId, mainInfo.idToken, expirationDate,
+            name, image, additionalInfo.information.age);
+
+        this.user.next(user);
+        this.autoLogout(mainInfo.expiresIn * 1000);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 
     autoLogin() {
@@ -59,14 +84,19 @@ export class AuthService {
             id: string;
             _token: string;
             _tokenExpirationDate: string;
-
+            name: string;
+            age: number | null | undefined;
+            image: string | undefined;
         } = JSON.parse(userData);
 
-        const newLoadedUser = new User(
+        const newLoadedUser = new UserProfile(
             parsedUser.email,
             parsedUser.id,
             parsedUser._token,
-            new Date(parsedUser._tokenExpirationDate)
+            new Date(parsedUser._tokenExpirationDate),
+            parsedUser.name,
+            parsedUser.image,
+            parsedUser.age
         );
 
         if (newLoadedUser.token) {
@@ -75,6 +105,9 @@ export class AuthService {
                 new Date(parsedUser._tokenExpirationDate).getTime() -
                 new Date().getTime();
             this.autoLogout(expirationDuration);
+            setTimeout(() => {
+                this.logout();
+            }, 2000);
         }
     }
 
@@ -88,6 +121,9 @@ export class AuthService {
         }
 
         this.tokenExpirationTimer = null;
+
+        const auth = getAuth();
+        signOut(auth);
     }
 
     autoLogout(expirationDuration: number) {
@@ -96,44 +132,66 @@ export class AuthService {
         } , expirationDuration)
     }
 
-    private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
-        const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-        const user = new User(email, userId, token, expirationDate);
-
-        this.user.next(user);
-        this.autoLogout(expiresIn * 1000);
-        localStorage.setItem('userData', JSON.stringify(user));
-    }
-
-    facebookAuth() {
-        const provider = new FacebookAuthProvider();
-        return this.authenticateWithPopup(provider);
-    }
-
-    googleAuth() {
-        const provider = new GoogleAuthProvider();
-        return this.authenticateWithPopup(provider);
-    }
-
-    private authenticateWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider) {
-
+    resetPassword(email: string) {
         const auth = getAuth();
+        return from(sendPasswordResetEmail(auth, email));
+    }
 
-        return from(signInWithPopup(auth, provider)).pipe(
-            tap((resData: any | UserCredential) => {
+    private saveUserDetails(uid: string, userDetails: UserAdditionalInfo) {
+        return this.http.put<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`,
+             userDetails);
+    }
+
+    private fetchUserDetails(uid: string) {
+        return this.http.get<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`);
+    }
+
+    private authAlgorithm(
+        inputObservable$: Observable<any | UserCredential>,
+        isSignupMode: boolean = false,
+        authCredentials?: UserAuthCredentials
+    ) {
+        return inputObservable$.pipe(
+            map((resData: any | UserCredential) => {
+                this.tempToken = resData._tokenResponse.idToken;
+
+                const user: UserMainInfo = {
+                    email: resData._tokenResponse.email,
+                    localId: resData._tokenResponse.localId,
+                    idToken: resData._tokenResponse.idToken,
+                    expiresIn: +resData._tokenResponse.expiresIn,
+                    displayName: resData._tokenResponse.displayName,
+                    photoURL: resData.user.photoURL
+                };
+
+                return {
+                    user: user,
+                    isNewUser: resData._tokenResponse.isNewUser
+                }
+            }),
+            mergeMap((resData: { user: UserMainInfo, isNewUser: boolean | undefined}) => {
+                const userDetails: UserAdditionalInfo = {
+                    information: {
+                        name: authCredentials?.name ? authCredentials.name : resData.user.displayName,
+                        age: authCredentials?.age ? authCredentials.age : null,
+                    },
+                    avatar: resData.user.photoURL ? resData.user.photoURL : ""
+                }
+
+                return forkJoin([resData.isNewUser || isSignupMode ?
+                        this.saveUserDetails(resData.user.localId, userDetails) :
+                        this.fetchUserDetails(resData.user.localId),
+                        of(resData.user)
+                    ]);
+            }),
+            tap(([additionalInfo, mainInfo]: [UserAdditionalInfo, UserMainInfo]) => {
                 this.handleAuthentication(
-                    resData._tokenResponse.email,
-                    resData._tokenResponse.localId,
-                    resData._tokenResponse.idToken,
-                    +resData._tokenResponse.expiresIn
+                    additionalInfo,
+                    mainInfo
                 );
             })
         );
-    }
-
-    resetPassword(email: string) {
-        const auth = getAuth();
-
-        return from(sendPasswordResetEmail(auth, email));
     }
 }

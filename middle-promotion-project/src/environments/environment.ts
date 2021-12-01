@@ -11,7 +11,8 @@ export const environment = {
         projectId: "middle-promotion-project",
         storageBucket: "middle-promotion-project.appspot.com",
         messagingSenderId: "213633454992",
-        appId: "1:213633454992:web:a64f1365edb97f4aa59915"
+        appId: "1:213633454992:web:a64f1365edb97f4aa59915",
+        measurementId: "G-KM8MPXCTF9"
     }
 };
 
