@@ -113,6 +113,7 @@ export class AuthService {
 
     logout() {
         this.user.next(null);
+        this.tempToken = "";
         this.router.navigate(['/auth/login']);
         localStorage.removeItem('userData');
 
@@ -191,7 +192,8 @@ export class AuthService {
                     additionalInfo,
                     mainInfo
                 );
-            })
+            }),
+            finalize(() => this.tempToken = "")
         );
     }
 }
