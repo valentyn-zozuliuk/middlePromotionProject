@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ClearObservable } from './clear-observable/clear-observable';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { MenuHeaderComponent } from './menu-header/menu-header.component';
 import { MenuSideComponent } from './menu-side/menu-side.component';
+
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -14,13 +15,15 @@ import { MenuSideComponent } from './menu-side/menu-side.component';
         MenuSideComponent
     ],
     imports: [
-        CommonModule
+        CommonModule,
+        MatIconModule
     ],
     exports: [
         LoadingSpinnerComponent,
         MenuHeaderComponent,
         MenuSideComponent,
-        CommonModule
+        CommonModule,
+        MatIconModule
     ]
 })
 export class SharedModule { }

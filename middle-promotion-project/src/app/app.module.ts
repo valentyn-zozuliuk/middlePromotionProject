@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        BrowserAnimationsModule
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS,

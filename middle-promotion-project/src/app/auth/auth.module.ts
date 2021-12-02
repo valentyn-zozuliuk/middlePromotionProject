@@ -6,7 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthReverseGuard } from './auth-reverse.guard';
 import { SharedModule } from '../shared/shared.module';
 
@@ -34,7 +33,6 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         ReactiveFormsModule,
-        FontAwesomeModule,
         SharedModule
     ]
 })
