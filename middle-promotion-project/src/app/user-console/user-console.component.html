@@ -1,9 +1,7 @@
 <div class="user-console-page">
-    <div class="nav-side">
-        <button>Logout</button>
-    </div>
+    <app-menu-side (logout)="onLogoutEvent()"></app-menu-side>
     <div class="content-wrapper">
-
+        <app-menu-header></app-menu-header>
+        <router-outlet></router-outlet>
     </div>
 </div>
-<router-outlet></router-outlet>

@@ -1,0 +1,23 @@
+@import 'variables';
+
+:host {
+    display: block;
+    width: 270px;
+    height: 100vh;
+    border-right: 1px solid $disabled-color;
+}
+.image-wrapper {
+    padding-left: 20px;
+    border-bottom: 1px solid $disabled-color;
+    .logo-image {
+        position: relative;
+        right: 20px;
+        height: 100px;
+        width: auto;
+        margin-bottom: 0;
+    }
+}
+
+.menu-content {
+    padding: 20px;
+}

@@ -1,0 +1,12 @@
+@import 'variables';
+
+:host {
+    display: block;
+    height: 101px;
+    background-color: $color-white;
+    border-bottom: 1px solid $disabled-color;
+}
+
+.test {
+    color: red;
+}

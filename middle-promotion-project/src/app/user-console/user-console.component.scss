@@ -1,0 +1,11 @@
+@import 'variables';
+.user-console-page {
+    display: flex;
+
+    .content-wrapper {
+        height: 100vh;
+        overflow: scroll;
+        flex-grow: 1;
+        background-color: $input-background;
+    }
+}
