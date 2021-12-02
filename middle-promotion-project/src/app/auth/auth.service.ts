@@ -105,9 +105,6 @@ export class AuthService {
                 new Date(parsedUser._tokenExpirationDate).getTime() -
                 new Date().getTime();
             this.autoLogout(expirationDuration);
-            setTimeout(() => {
-                this.logout();
-            }, 2000);
         }
     }
 
@@ -193,7 +190,10 @@ export class AuthService {
                     mainInfo
                 );
             }),
-            finalize(() => this.tempToken = "")
+            finalize(() => {
+                this.tempToken = "";
+                this.router.navigate(['/user-console']);
+            })
         );
     }
 }

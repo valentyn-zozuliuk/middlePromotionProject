@@ -9,10 +9,11 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AuthReverseGuard } from './auth-reverse.guard';
 
 const routes: Routes = [
     {
-        path: '', component: AuthComponent,
+        path: '', component: AuthComponent, canActivate: [AuthReverseGuard],
         children: [
             { path: '', redirectTo: 'login', pathMatch: 'full' },
             { path: 'login', component: LoginComponent },
