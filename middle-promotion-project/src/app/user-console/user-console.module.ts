@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserConsoleComponent } from './user-console.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
     {
@@ -21,8 +22,8 @@ const routes: Routes = [
     UserConsoleComponent
   ],
   imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ]
 })
 export class UserConsoleModule { }

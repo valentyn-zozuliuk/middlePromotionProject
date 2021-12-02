@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -7,9 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthReverseGuard } from './auth-reverse.guard';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
     {
@@ -30,14 +29,13 @@ const routes: Routes = [
         SignupComponent,
         ForgotPasswordComponent,
         AuthComponent,
-        PrivacyPolicyComponent,
-        LoadingSpinnerComponent
+        PrivacyPolicyComponent
     ],
     imports: [
-        CommonModule,
         RouterModule.forChild(routes),
         ReactiveFormsModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        SharedModule
     ]
 })
 export class AuthModule { }
