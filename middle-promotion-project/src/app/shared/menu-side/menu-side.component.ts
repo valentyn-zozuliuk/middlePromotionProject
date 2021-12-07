@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu-side',
@@ -7,10 +8,15 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class MenuSideComponent implements OnInit {
     @Output() logout = new EventEmitter<void>();
+    @Input() isDashboard: boolean = false;
 
-    constructor() { }
+    constructor(private router: Router) { }
 
     ngOnInit(): void {
+    }
+
+    navigateToDashboard() {
+        this.router.navigate(['/user-console/articles']);
     }
 
     logoutHandler() {

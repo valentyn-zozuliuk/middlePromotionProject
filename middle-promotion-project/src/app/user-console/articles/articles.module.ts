@@ -6,21 +6,23 @@ import { ArticleListComponent } from './article-list/article-list.component';
 import { ArticleEditComponent } from './article-edit/article-edit.component';
 
 const routes: Routes = [
- { path: '', component: ArticlesComponent, children: [
-     { path: '', component: ArticleListComponent },
-     { path: 'new', component: ArticleEditComponent }
- ]}
+    {
+        path: '', component: ArticlesComponent, children: [
+            { path: '', component: ArticleListComponent },
+            { path: 'new', component: ArticleEditComponent }
+        ]
+    }
 ];
 
 @NgModule({
-  declarations: [
-    ArticlesComponent,
-    ArticleListComponent,
-    ArticleEditComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ]
+    declarations: [
+        ArticlesComponent,
+        ArticleListComponent,
+        ArticleEditComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes)
+    ]
 })
 export class ArticlesModule { }

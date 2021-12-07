@@ -2,12 +2,19 @@
     <img class="logo-image" src="assets/images/logo_black.png" alt="Logoipsum">
 </div>
 <div class="menu-content">
-    <p>Main menu</p>
-    <div class="menu-item">
-        dashboard
-        <mat-icon>check</mat-icon>
+    <div class="menu-list">
+        <p class="menu-header">Main menu</p>
+
+        <p class="menu-item" [ngClass]="{'link': isDashboard }" (click)="navigateToDashboard()">
+            <mat-icon class="menu-item-icon">speedometer</mat-icon>
+            Dashboard
+        </p>
+
+        <hr class="menu-divider">
     </div>
-    <button (click)="logoutHandler()">
+
+    <button class="menu-logout" (click)="logoutHandler()">
+        <mat-icon class="logout-icon">input</mat-icon>
         Logout
     </button>
 </div>

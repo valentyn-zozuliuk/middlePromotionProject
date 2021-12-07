@@ -12,7 +12,8 @@ const routes: Routes = [
             { path: '', redirectTo: 'articles', pathMatch: 'full'},
             { path: 'articles', loadChildren: () => import('./articles/articles.module')
                 .then(m => m.ArticlesModule) },
-            { path: 'edit-profile', loadChildren: () => import('./edit-profile/edit-profile.module') }
+            { path: 'edit-profile', loadChildren: () => import('./edit-profile/edit-profile.module')
+                .then(m => m.EditProfileModule) }
         ]
     },
 ];
