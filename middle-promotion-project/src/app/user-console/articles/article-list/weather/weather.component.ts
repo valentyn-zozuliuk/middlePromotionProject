@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, takeUntil } from 'rxjs';
+import { GlobalEventsService } from 'src/app/global-services/global-events.service';
 import { MessagesService } from 'src/app/global-services/messages.service';
 import { City, Country, Weather } from 'src/app/model/weather-info.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
@@ -28,7 +29,10 @@ export class WeatherComponent extends ClearObservable implements OnInit {
         { name: City.ODESA, code: 'UA', displayCode: 'Ua', selected: false },
     ];
 
-    constructor(private weatherService: WeatherService, private messages: MessagesService) {
+    constructor(
+        private weatherService: WeatherService,
+        private messages: MessagesService,
+        private globalEventsService: GlobalEventsService) {
         super();
     }
 
@@ -36,13 +40,20 @@ export class WeatherComponent extends ClearObservable implements OnInit {
         this.selectItem(this.weatherCities[0]);
         this.weatherInfo$ = this.weatherService.weatherInfo$;
         this.$errors = this.messages.errors$;
+        this.globalEventsService.globalClickHandler$
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe(() => this.showWeatherMenu = false);
     }
 
-    toggleMenu() {
+    toggleMenu(e: Event) {
+        e.stopPropagation();
         this.showWeatherMenu = !this.showWeatherMenu;
     }
 
-    selectItem(city: WeatherCity) {
+    selectItem(city: WeatherCity, e: Event | null = null) {
+        e && e.stopPropagation();
         this.weatherService.getWeatherInfo(city.name, city.code);
         this.showWeatherMenu = false;
     }

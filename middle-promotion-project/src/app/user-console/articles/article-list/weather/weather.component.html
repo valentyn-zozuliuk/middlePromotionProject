@@ -2,10 +2,10 @@
     <ng-container *ngIf="(weatherInfo$ | async) as weatherInfo">
         <div class="widget-header d-flex justify-content-between">
             <p>WEATHER WIDGET</p>
-            <mat-icon class="more-icon" (click)="toggleMenu()">more_horiz</mat-icon>
+            <mat-icon class="more-icon" (click)="toggleMenu($event)">more_horiz</mat-icon>
             <div class="menu" *ngIf="showWeatherMenu">
                 <div class="menu-item" *ngFor="let city of weatherCities"
-                     (click)="selectItem(city)">
+                     (click)="selectItem(city, $event)">
                     {{ city.name + ', ' + city.displayCode}}
                 </div>
             </div>
@@ -16,9 +16,12 @@
             <p class="week-day">{{ weatherInfo.weekDay | weekday }}</p>
         </div>
 
-        <div class="widget-temp-location d-flex">
+        <div class="widget-temp-location d-flex justify-content-between">
             <div class="left-part">
-                <p class="temperature">{{ weatherInfo.temperature | weather }}</p>
+                <p class="temperature">
+                    {{ weatherInfo.temperature | weather }}
+                    <span>°C</span>
+                </p>
                 <p class="location">{{ weatherInfo.city }}, {{ getCountryText(weatherInfo.country) }}</p>
             </div>
             <div class="weather-icon d-flex align-items-center">

@@ -4,6 +4,8 @@
     background-color: $color-white;
     box-shadow: 0px 24px 64px rgba(0, 0, 0, 0.03);
     font-size: 13px;
+    padding-left: 20px;
+    padding-right: 20px;
 
     .widget-header {
         p {
@@ -15,6 +17,11 @@
             position: relative;
             cursor: pointer;
             bottom: 5px;
+        }
+
+        .menu {
+            top: 40px;
+            right: 15px;
         }
     }
 
@@ -32,14 +39,20 @@
 
     .widget-temp-location {
         .left-part {
-            margin-right: 50px;
-
             .temperature {
+                position: relative;
                 color: $weather-widget-degree;
                 font-size: 60px;
                 line-height: 60px;
                 font-weight: 600;
                 margin-bottom: 5px;
+
+                span {
+                    font-size: 18px;
+                    position: absolute;
+                    top: 7px;
+                    line-height: 18px;
+                }
             }
 
             .location {
@@ -50,6 +63,7 @@
         .weather-icon {
             position: relative;
             bottom: 5px;
+            margin-right: 40px;
         }
     }
 }
