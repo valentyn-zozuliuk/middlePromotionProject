@@ -5,6 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { ArticleEditComponent } from './article-edit/article-edit.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { WeatherPipe } from './article-list/weather/weather.pipe';
+import { WeatherComponent } from './article-list/weather/weather.component';
+import { WeekdayPipe } from './article-list/weather/weekday.pipe';
 
 const routes: Routes = [
     {
@@ -19,7 +22,10 @@ const routes: Routes = [
     declarations: [
         ArticlesComponent,
         ArticleListComponent,
-        ArticleEditComponent
+        ArticleEditComponent,
+        WeatherPipe,
+        WeatherComponent,
+        WeekdayPipe
     ],
     imports: [
         CommonModule,
