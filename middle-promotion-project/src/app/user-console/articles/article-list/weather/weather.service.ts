@@ -2,16 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, of, tap, throwError } from 'rxjs';
 import { MessagesService } from 'src/app/global-services/messages.service';
-import { Weather, WeatherResponce } from 'src/app/model/weather-info.model';
+import { City, Weather, WeatherResponce } from 'src/app/model/weather-info.model';
 
 export const weatherRequestConfig = {
-
     baseUrl: 'https://community-open-weather-map.p.rapidapi.com/weather',
     defaultHeaders: new HttpHeaders({
         'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
         'x-rapidapi-key': '8e02fccc1dmsh7df5f5d1ae6b72bp17ce33jsnef5b7619f409'
-    }),
-    defaultParams: new HttpParams().set('q', 'Lviv,ua').set('units', 'metric')
+    })
 }
 
 
@@ -26,10 +24,12 @@ export class WeatherService {
     constructor(private http: HttpClient, private messages: MessagesService) {
     }
 
-    getWeatherInfo() {
+    getWeatherInfo(city: City, code: string) {
+        const weatherParams = new HttpParams().set('q', city + ',' + code).set('units', 'metric');
+
         const weatherInfo$ = this.http.get<WeatherResponce>(weatherRequestConfig.baseUrl, {
             headers: weatherRequestConfig.defaultHeaders,
-            params: weatherRequestConfig.defaultParams
+            params: weatherParams
         }).pipe(
             catchError(error => {
                 this.messages.showErrors('Weather API problem');

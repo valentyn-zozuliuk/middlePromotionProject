@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, takeUntil } from 'rxjs';
 import { MessagesService } from 'src/app/global-services/messages.service';
-import { Weather } from 'src/app/model/weather-info.model';
+import { City, Country, Weather } from 'src/app/model/weather-info.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { WeatherService } from './weather.service';
+
+interface WeatherCity {
+    name: City;
+    code: string;
+    displayCode: string;
+    selected: boolean;
+}
 
 @Component({
     selector: 'app-weather',
@@ -14,15 +21,38 @@ export class WeatherComponent extends ClearObservable implements OnInit {
 
     weatherInfo$: Observable<Weather | null> | null = null;
     $errors: Observable<string[]> | null = null;
+    showWeatherMenu: boolean = false;
+    weatherCities: WeatherCity[] = [
+        { name: City.LVIV, code: 'UA', displayCode: 'Ua', selected: true },
+        { name: City.KYIV, code: 'UA', displayCode: 'Ua', selected: false },
+        { name: City.ODESA, code: 'UA', displayCode: 'Ua', selected: false },
+    ];
 
     constructor(private weatherService: WeatherService, private messages: MessagesService) {
         super();
     }
 
     ngOnInit(): void {
-       this.weatherService.getWeatherInfo();
-       this.weatherInfo$ = this.weatherService.weatherInfo$;
-       this.$errors = this.messages.errors$;
+        this.selectItem(this.weatherCities[0]);
+        this.weatherInfo$ = this.weatherService.weatherInfo$;
+        this.$errors = this.messages.errors$;
     }
 
+    toggleMenu() {
+        this.showWeatherMenu = !this.showWeatherMenu;
+    }
+
+    selectItem(city: WeatherCity) {
+        this.weatherService.getWeatherInfo(city.name, city.code);
+        this.showWeatherMenu = false;
+    }
+
+    getCountryText(country: Country) {
+        switch (country) {
+            case Country.UA:
+                return 'Ua';
+            default:
+                return '-'
+        }
+    }
 }

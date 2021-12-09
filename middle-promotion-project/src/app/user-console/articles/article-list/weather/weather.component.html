@@ -2,7 +2,13 @@
     <ng-container *ngIf="(weatherInfo$ | async) as weatherInfo">
         <div class="widget-header d-flex justify-content-between">
             <p>WEATHER WIDGET</p>
-            <mat-icon class="more-icon">more_horiz</mat-icon>
+            <mat-icon class="more-icon" (click)="toggleMenu()">more_horiz</mat-icon>
+            <div class="menu" *ngIf="showWeatherMenu">
+                <div class="menu-item" *ngFor="let city of weatherCities"
+                     (click)="selectItem(city)">
+                    {{ city.name + ', ' + city.displayCode}}
+                </div>
+            </div>
         </div>
 
         <div class="widget-date">
@@ -13,7 +19,7 @@
         <div class="widget-temp-location d-flex">
             <div class="left-part">
                 <p class="temperature">{{ weatherInfo.temperature | weather }}</p>
-                <p class="location">{{ weatherInfo.city }}, {{ weatherInfo.country }}</p>
+                <p class="location">{{ weatherInfo.city }}, {{ getCountryText(weatherInfo.country) }}</p>
             </div>
             <div class="weather-icon d-flex align-items-center">
                 <img [src]="'http://openweathermap.org/img/wn/' + weatherInfo.icon + '@2x.png'" alt="">

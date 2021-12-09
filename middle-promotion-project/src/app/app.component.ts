@@ -4,7 +4,10 @@ import { AuthService } from './auth/auth.service';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    host: {
+        '(document:click)': 'onClick($event)'
+    }
 })
 export class AppComponent implements OnInit {
     title = 'middle-promotion-project';
@@ -14,5 +17,9 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.auth.autoLogin();
+    }
+
+    onClick() {
+        console.log('click');
     }
 }

@@ -92,6 +92,28 @@ html, body {
     margin-bottom: 0;
 }
 
+.menu {
+    position: absolute;
+    right: 0;
+    width: 160px;
+    background-color: $color-white;
+
+    box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12),
+                0px 6px 16px rgba(0, 0, 0, 0.08),
+                0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+
+    .menu-item {
+        cursor: pointer;
+        padding: 10px 20px;
+
+        &:hover {
+            color: $status-color;
+            background: rgba(46,91,255, 0.04);
+        }
+    }
+}
+
 input.ng-touched.ng-invalid {
     border: 1px solid red;
 }
