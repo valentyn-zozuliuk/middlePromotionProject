@@ -5,6 +5,7 @@ import { MenuHeaderComponent } from './menu-header/menu-header.component';
 import { MenuSideComponent } from './menu-side/menu-side.component';
 
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -23,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
         MenuHeaderComponent,
         MenuSideComponent,
         CommonModule,
-        MatIconModule
+        MatIconModule,
+        MatCardModule
     ]
 })
 export class SharedModule { }

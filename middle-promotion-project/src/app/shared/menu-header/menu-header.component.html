@@ -1,1 +1,20 @@
-<p class="test">menu-header works!</p>
+<input type="text" placeholder="Find articles...">
+<mat-icon class="search-icon">search</mat-icon>
+
+<div class="user-info" (click)="toggleMenu()">
+    <div class="avatar-wrapper">
+        <div class="user-avatar">
+            <img class="avatar-image" [src]="user?.image" alt="image">
+        </div>
+    </div>
+    <div class="user-name">
+        {{ user?.name ? user?.name : 'Name missing'}}
+    </div>
+    <mat-icon class="user-profile-icon">keyboard_arrow_down</mat-icon>
+
+    <div class="menu" *ngIf="showMenu">
+        <div class="menu-item" (click)="navigateToPage('/user-console/edit-profile')">
+            Edit profile
+        </div>
+    </div>
+</div>

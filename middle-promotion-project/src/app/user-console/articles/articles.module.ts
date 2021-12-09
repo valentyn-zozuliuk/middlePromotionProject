@@ -4,6 +4,7 @@ import { ArticlesComponent } from './articles.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { ArticleEditComponent } from './article-edit/article-edit.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
     {
@@ -22,6 +23,7 @@ const routes: Routes = [
     ],
     imports: [
         CommonModule,
+        SharedModule,
         RouterModule.forChild(routes)
     ]
 })

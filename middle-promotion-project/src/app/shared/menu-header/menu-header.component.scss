@@ -1,12 +1,96 @@
 @import 'variables';
 
 :host {
-    display: block;
+    display: flex;
+    position: relative;
     height: 101px;
     background-color: $color-white;
     border-bottom: 1px solid $disabled-color;
+    padding: 25px;
 }
 
-.test {
-    color: red;
+input {
+    height: 51px;
+    border-radius: 200px;
+    padding-left: 65px;
+    width: 365px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    color: $default-text-field;
+}
+
+.user-info {
+    position: relative;
+    margin-left: auto;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .avatar-wrapper {
+        height: 52px;
+        width: 52px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .user-avatar {
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            .avatar-image {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    }
+
+    .user-name {
+        margin-right: 20px;
+        margin-left: 10px;
+        color: $avatar-text;
+    }
+
+    .user-profile-icon {
+        color: $default-text-field;
+    }
+
+    &:hover {
+        .avatar-wrapper{
+            border: 1px solid rgba(46, 91, 255, 0.6);
+        }
+
+        .user-name {
+            color: $status-color;
+        }
+    }
+
+    .menu {
+        position: absolute;
+        right: 0;
+        bottom: -50px;
+        width: 160px;
+        background-color: $color-white;
+
+        box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12),
+                    0px 6px 16px rgba(0, 0, 0, 0.08),
+                    0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+
+        .menu-item {
+            padding: 10px 20px;
+
+            &:hover {
+                color: $status-color;
+                background: rgba(46,91,255, 0.04);
+            }
+        }
+    }
 }
