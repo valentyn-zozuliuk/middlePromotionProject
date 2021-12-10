@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, from, map, mergeMap, Observable, of, tap, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, from, map, mergeMap, Observable, of, tap, throwError, withLatestFrom } from 'rxjs';
 import { UserAuthCredentials, UserCredentials } from '../model/credentials.model';
 import { UserAdditionalInfo, UserMainInfo, UserProfile } from '../model/user.model';
 import { initializeApp } from 'firebase/app';
@@ -23,6 +23,7 @@ import { getAuth,
 export class AuthService {
     public user = new BehaviorSubject<UserProfile | null>(null);
     public tempToken: string = "";
+    public errorOccured: boolean = false;
     private tokenExpirationTimer: ReturnType<typeof setTimeout> | null  = null;
 
     constructor(private http: HttpClient, private router: Router) {
@@ -154,6 +155,7 @@ export class AuthService {
         return inputObservable$.pipe(
             map((resData: any | UserCredential) => {
                 this.tempToken = resData._tokenResponse.idToken;
+                this.errorOccured = false;
 
                 const user: UserMainInfo = {
                     email: resData._tokenResponse.email,
@@ -190,9 +192,13 @@ export class AuthService {
                     mainInfo
                 );
             }),
+            catchError((e) => {
+                this.errorOccured = true;
+                return throwError(() => new Error(e))
+            }),
             finalize(() => {
                 this.tempToken = "";
-                this.router.navigate(['/user-console']);
+                !this.errorOccured && this.router.navigate(['/user-console']);
             })
         );
     }
