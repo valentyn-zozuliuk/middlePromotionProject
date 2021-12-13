@@ -4,6 +4,18 @@
     display: flex;
 }
 
+.artciles-max-width {
+    max-width: 1000px;
+}
+
+.col-xl-6 {
+    margin-bottom: 25px;
+}
+
+.page-header {
+    font-weight: 700;
+}
+
 .article-list {
     width: calc(100% - 335px);
     .page-header {

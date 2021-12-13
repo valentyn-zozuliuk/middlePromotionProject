@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { WeatherPipe } from './article-list/weather/weather.pipe';
 import { WeatherComponent } from './article-list/weather/weather.component';
 import { WeekdayPipe } from './article-list/weather/weekday.pipe';
+import { ArticleComponent } from './article-list/article/article.component';
 
 const routes: Routes = [
     {
@@ -25,7 +26,8 @@ const routes: Routes = [
         ArticleEditComponent,
         WeatherPipe,
         WeatherComponent,
-        WeekdayPipe
+        WeekdayPipe,
+        ArticleComponent
     ],
     imports: [
         CommonModule,
