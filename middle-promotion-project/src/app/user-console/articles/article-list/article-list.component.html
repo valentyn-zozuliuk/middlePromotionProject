@@ -1,12 +1,19 @@
 <div class="article-list">
     <div class="row top-row artciles-max-width">
-        <div class="col-md-6 d-flex justify-content-between align-items-end">
+        <div class="col-md-6 firs-part-top-section">
             <h5 class="page-header spacer-0">Articles Dashboard</h5>
-            <div class="category-filter">
-
-            </div>
+            <button class="show-button button-small" (click)="addNewArticle()">
+                <span class="inactive-state">Show:</span>
+                <span class="active-state">All categories</span>
+                <mat-icon class="button-icon">keyboard_arrow_down</mat-icon>
+            </button>
         </div>
         <div class="col-md-6">
+            <button class="sort-by-button button-small" (click)="addNewArticle()">
+                <span class="inactive-state">Sort by:</span>
+                <span class="active-state">Ascending</span>
+                <mat-icon class="button-icon">keyboard_arrow_down</mat-icon>
+            </button>
         </div>
     </div>
     <div class="row artciles-max-width">
