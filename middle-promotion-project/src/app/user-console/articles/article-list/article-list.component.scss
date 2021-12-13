@@ -37,6 +37,7 @@
     }
 
     .sort-by-button, .show-button {
+        position: relative;
         float: right;
         padding: 0;
 
@@ -62,6 +63,11 @@
             width: 26px;
             font-size: 22px;
             color: $default-text-field;
+        }
+
+        .menu {
+            margin-top: 2px;
+            text-align: left;
         }
     }
 
