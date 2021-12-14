@@ -9,7 +9,6 @@ export class TextTruncatePipe implements PipeTransform {
 
         const maxChars = args[0] ? args[0] : 100;
 
-        console.log(value.length);
         if (value.length > maxChars) {
             return value.substring(0, maxChars) + '...';
         }

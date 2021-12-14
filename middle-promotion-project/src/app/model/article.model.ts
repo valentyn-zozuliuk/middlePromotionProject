@@ -1,7 +1,7 @@
 export interface Article {
     title: string;
     description: string;
-    type: ArticleTypes;
+    type: ArticleTypes | ArticleTypesFilter;
     createdBy: {
         image: string,
         name: string
@@ -11,7 +11,7 @@ export interface Article {
 
 export interface ArticleTypeFilter {
     name: string;
-    code: ArticleTypes | string;
+    code: ArticleTypesFilter;
     selected: boolean;
 }
 
@@ -25,6 +25,13 @@ export enum ArticleTypes {
     PRODUCTIVITY = 'PRODUCTIVITY',
     MEDIA = 'MEDIA',
     BUSINESS = 'BUSINESS'
+}
+
+export enum ArticleTypesFilter {
+    PRODUCTIVITY = 'PRODUCTIVITY',
+    MEDIA = 'MEDIA',
+    BUSINESS = 'BUSINESS',
+    ALL = 'ALL'
 }
 
 export enum ArticleOrders {

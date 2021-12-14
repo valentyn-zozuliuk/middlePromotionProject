@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Observable, takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
-import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes, Article } from 'src/app/model/article.model';
+import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes, Article, ArticleTypesFilter } from 'src/app/model/article.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { ArticlesService } from '../articles.service';
 
@@ -18,10 +18,10 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
     selectedOrderFilter: string | undefined = undefined;
 
     articleTypeFilters: ArticleTypeFilter[] = [
-        { name: 'All Categories', code: 'ALL', selected: true },
-        { name: 'Business', code: ArticleTypes.BUSINESS, selected: false },
-        { name: 'Productivity', code: ArticleTypes.PRODUCTIVITY, selected: false },
-        { name: 'Media', code: ArticleTypes.MEDIA, selected: false },
+        { name: 'All Categories', code: ArticleTypesFilter.ALL, selected: true },
+        { name: 'Business', code: ArticleTypesFilter.BUSINESS, selected: false },
+        { name: 'Productivity', code: ArticleTypesFilter.PRODUCTIVITY, selected: false },
+        { name: 'Media', code: ArticleTypesFilter.MEDIA, selected: false },
     ];
 
     articleOrderFilters: ArticleOrderFilter[] = [
@@ -73,6 +73,7 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         index !== null && this.refreshTypeFilter(index);
         this.getSelectedType();
         this.showTypeFilterMenu = false;
+        this.articlesService.updateTypeFilter(type.code);
     }
 
     sortByOrder(order: ArticleOrderFilter, e: Event | null = null, index: number | null = null) {
@@ -80,6 +81,7 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         index !== null && this.refreshOrderFilter(index);
         this.getSelectedOrder();
         this.showOrderFilterMenu = false;
+        this.articlesService.updateOrderFilter(order.code);
     }
 
     refreshTypeFilter(index: number) {
