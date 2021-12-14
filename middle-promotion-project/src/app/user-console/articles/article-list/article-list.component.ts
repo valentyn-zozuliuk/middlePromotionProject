@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs';
+import { ActivatedRoute, Data, Router } from '@angular/router';
+import { Observable, takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
-import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes } from 'src/app/model/article.model';
+import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes, Article } from 'src/app/model/article.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
+import { ArticlesService } from '../articles.service';
 
 @Component({
     selector: 'app-article-list',
@@ -28,7 +29,12 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         { name: 'Descending', code: ArticleOrders.DESC, selected: false }
     ];
 
-    constructor(private router: Router, private globalEventsService: GlobalEventsService) {
+    articles$: Observable<Article[] | null> | null = null;
+
+    constructor(
+        private router: Router,
+        private globalEventsService: GlobalEventsService,
+        private articlesService: ArticlesService ) {
         super();
     }
 
@@ -44,6 +50,8 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
 
         this.getSelectedType();
         this.getSelectedOrder();
+
+        this.articles$ = this.articlesService.articles$;
     }
 
     addNewArticle() {

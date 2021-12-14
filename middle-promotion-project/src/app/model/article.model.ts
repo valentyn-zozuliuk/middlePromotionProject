@@ -1,8 +1,12 @@
 export interface Article {
     title: string;
     description: string;
-    coverImage: string;
-    createdBy: string;
+    type: ArticleTypes;
+    createdBy: {
+        image: string,
+        name: string
+    };
+    updatedDate: Date;
 }
 
 export interface ArticleTypeFilter {

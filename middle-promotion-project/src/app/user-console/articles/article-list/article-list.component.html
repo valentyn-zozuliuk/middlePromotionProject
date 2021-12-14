@@ -34,18 +34,9 @@
             </button>
         </div>
     </div>
-    <div class="row artciles-max-width">
-        <div class="col-xl-6">
-            <app-article></app-article>
-        </div>
-        <div class="col-xl-6">
-            <app-article></app-article>
-        </div>
-        <div class="col-xl-6">
-            <app-article></app-article>
-        </div>
-        <div class="col-xl-6">
-            <app-article></app-article>
+    <div class="row artciles-max-width" *ngIf="(articles$ | async) as articles">
+        <div class="col-xl-6" *ngFor="let article of articles">
+            <app-article [article]="article"></app-article>
         </div>
     </div>
 </div>
