@@ -52,8 +52,9 @@ export class WeatherComponent extends ClearObservable implements OnInit {
         this.showWeatherMenu = !this.showWeatherMenu;
     }
 
-    selectItem(city: WeatherCity, e: Event | null = null) {
+    selectItem(city: WeatherCity, e: Event | null = null, index: number | null = null) {
         e && e.stopPropagation();
+        index !== null && this.refreshSelectedCity(index);
         this.weatherService.getWeatherInfo(city.name, city.code);
         this.showWeatherMenu = false;
     }
@@ -65,5 +66,13 @@ export class WeatherComponent extends ClearObservable implements OnInit {
             default:
                 return '-'
         }
+    }
+
+    refreshSelectedCity(index: number) {
+        this.weatherCities.forEach((city: WeatherCity) => {
+            city.selected = false;
+        });
+
+        this.weatherCities[index].selected = true;
     }
 }

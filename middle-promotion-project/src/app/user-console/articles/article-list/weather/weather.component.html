@@ -4,9 +4,11 @@
             <p>WEATHER WIDGET</p>
             <mat-icon class="more-icon" (click)="toggleMenu($event)">more_horiz</mat-icon>
             <div class="menu" *ngIf="showWeatherMenu">
-                <div class="menu-item" *ngFor="let city of weatherCities"
-                     (click)="selectItem(city, $event)">
+                <div class="menu-item" [ngClass]="{'selected-item': city.selected}"
+                     *ngFor="let city of weatherCities; let i = index"
+                     (click)="selectItem(city, $event, i)">
                     {{ city.name + ', ' + city.displayCode}}
+                    <mat-icon *ngIf="city.selected" class="check-icon">check</mat-icon>
                 </div>
             </div>
         </div>

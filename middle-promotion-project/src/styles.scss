@@ -113,6 +113,18 @@ html, body {
             background: rgba(46,91,255, 0.04);
         }
     }
+
+    .selected-item,  .selected-item:hover {
+        background-color: $status-color;
+        color: $color-white;
+
+        .check-icon {
+            height: 20px;
+            width: 15px;
+            font-size: 20px;
+            float: right;
+        }
+    }
 }
 
 input.ng-touched.ng-invalid {
