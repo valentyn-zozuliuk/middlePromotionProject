@@ -26,7 +26,7 @@ export class ArticlesService {
                     image: "",
                     name: "Test Name 1"
                 },
-                updatedDate: new Date(2020)
+                updatedDate: new Date(2021, 11, 13).getTime()
             },
             {
                 title: 'Test Title 2',
@@ -39,7 +39,7 @@ export class ArticlesService {
                     image: "",
                     name: "Test Name 2"
                 },
-                updatedDate: new Date(111111111111)
+                updatedDate: new Date(111111111111).getTime()
             },
             {
                 title: 'Test Title 3',
@@ -52,7 +52,7 @@ export class ArticlesService {
                     image: "",
                     name: "Test Name 3"
                 },
-                updatedDate: new Date(2222222222222)
+                updatedDate: new Date(2021, 11, 4).getTime()
             }
         ];
 

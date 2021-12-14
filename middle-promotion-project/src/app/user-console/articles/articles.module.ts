@@ -9,6 +9,7 @@ import { WeatherPipe } from './article-list/weather/weather.pipe';
 import { WeatherComponent } from './article-list/weather/weather.component';
 import { WeekdayPipe } from './article-list/weather/weekday.pipe';
 import { ArticleComponent } from './article-list/article/article.component';
+import { ArticleDaysAgoPipe } from './article-list/article/article-days-ago.pipe';
 
 const routes: Routes = [
     {
@@ -27,7 +28,8 @@ const routes: Routes = [
         WeatherPipe,
         WeatherComponent,
         WeekdayPipe,
-        ArticleComponent
+        ArticleComponent,
+        ArticleDaysAgoPipe
     ],
     imports: [
         CommonModule,

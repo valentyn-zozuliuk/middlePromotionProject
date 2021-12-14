@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Article, ArticleTypes } from 'src/app/model/article.model';
 
 @Component({
@@ -13,6 +13,7 @@ export class ArticleComponent implements OnInit {
         productivity: ArticleTypes.PRODUCTIVITY,
         meida: ArticleTypes.MEDIA,
     }
+
     constructor() {
 
     }
@@ -20,4 +21,12 @@ export class ArticleComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    ifDaysAgoNeeded(time: number) {
+        if (time) {
+            const currentDate = new Date().getTime();
+            return currentDate - time >= 1728000000;
+        }
+
+        return false;
+    }
 }

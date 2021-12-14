@@ -6,7 +6,7 @@ export interface Article {
         image: string,
         name: string
     };
-    updatedDate: Date;
+    updatedDate: number;
 }
 
 export interface ArticleTypeFilter {

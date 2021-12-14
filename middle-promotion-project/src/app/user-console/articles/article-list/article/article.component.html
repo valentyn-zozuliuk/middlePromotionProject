@@ -9,7 +9,8 @@
     <div class="artcle-desc">
         <div class="top-desc d-flex justify-content-between">
             <p>{{ article.type }}</p>
-            <p>{{ article.updatedDate | date}}</p>
+            <p>{{ ifDaysAgoNeeded(article.updatedDate) ?
+                (article.updatedDate | date : 'd MMMM YYYY') : (article.updatedDate | articleDaysAgo)}}</p>
         </div>
 
         <div class="mid-desc">
