@@ -13,6 +13,8 @@ import { ClearObservable } from '../clear-observable/clear-observable';
 })
 export class MenuHeaderComponent extends ClearObservable implements OnInit {
     @Input() user: UserProfile | null = null;
+    @Input() isDashboard: boolean = false;
+
     showMenu: boolean = false;
     allowGlobalEvent: boolean = false;
     articleQuery: string = "";

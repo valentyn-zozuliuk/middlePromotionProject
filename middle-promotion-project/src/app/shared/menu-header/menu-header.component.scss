@@ -16,6 +16,10 @@ input {
     width: 365px;
 }
 
+input:disabled:hover {
+    border: 1px solid transparent;
+}
+
 .search-icon {
     position: absolute;
     top: 40px;

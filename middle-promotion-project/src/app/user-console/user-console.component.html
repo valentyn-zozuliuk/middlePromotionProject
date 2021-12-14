@@ -1,7 +1,7 @@
 <div class="user-console-page">
     <app-menu-side [isDashboard]="routerDashboard" (logout)="onLogoutEvent()"></app-menu-side>
     <div class="content-wrapper">
-        <app-menu-header [user]="userInfo"></app-menu-header>
+        <app-menu-header [isDashboard]="routerDashboard" [user]="userInfo"></app-menu-header>
         <div class="main-content">
             <router-outlet></router-outlet>
         </div>

@@ -1,4 +1,5 @@
-<input type="text" placeholder="Find articles..." [(ngModel)]="articleQuery" (input)="changeArticleQuery()">
+<input type="text" [disabled]="!isDashboard" placeholder="Find articles..."
+                   [(ngModel)]="articleQuery" (input)="changeArticleQuery()">
 <mat-icon class="search-icon">search</mat-icon>
 
 <div class="user-info" (click)="toggleMenu($event)">
