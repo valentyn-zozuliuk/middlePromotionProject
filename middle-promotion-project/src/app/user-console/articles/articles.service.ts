@@ -17,10 +17,7 @@ export class ArticlesService {
         const articles: Article[] = [
             {
                 title: 'Test Title',
-                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad`,
+                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd dsdad sdasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad`,
                 type: ArticleTypes.BUSINESS,
                 createdBy: {
                     image: "",
