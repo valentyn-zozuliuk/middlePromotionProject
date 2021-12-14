@@ -6,6 +6,7 @@ import { MenuSideComponent } from './menu-side/menu-side.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
     ],
     imports: [
         CommonModule,
-        MatIconModule
+        MatIconModule,
+        FormsModule
     ],
     exports: [
         LoadingSpinnerComponent,
@@ -25,7 +27,8 @@ import { MatCardModule } from '@angular/material/card';
         MenuSideComponent,
         CommonModule,
         MatIconModule,
-        MatCardModule
+        MatCardModule,
+        FormsModule
     ]
 })
 export class SharedModule { }

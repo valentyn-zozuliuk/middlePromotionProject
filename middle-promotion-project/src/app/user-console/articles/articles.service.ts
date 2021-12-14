@@ -1,6 +1,6 @@
 import { query } from '@angular/animations';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, debounce, debounceTime, EMPTY, map, Observable, of, tap, timer } from 'rxjs';
 import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/app/model/article.model';
 
 @Injectable({
@@ -8,9 +8,12 @@ import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/ap
 })
 export class ArticlesService {
     private recipesSubject = new BehaviorSubject<Article[] | null>(null);
+    private applyDebounce: boolean = false;
+
     articles$: Observable<Article[] | null> = this.recipesSubject.asObservable()
         .pipe(
-            map((articles: Article[] | null) => articles ? this.applyFiltersForArticles(articles) : articles)
+            map((articles: Article[] | null) => articles ? this.applyFiltersForArticles(articles) : articles),
+            debounce(() => this.applyDebounce ? timer(300) : timer(0))
         );
 
     private currentFilters: { type: ArticleTypesFilter, order: ArticleOrders, query: string } = {
@@ -112,16 +115,19 @@ export class ArticlesService {
     }
 
     updateOrderFilter(order: ArticleOrders) {
+        this.applyDebounce = false;
         this.currentFilters.order = order;
         this.recipesSubject.next(this.fetchedArticles);
     }
 
     updateTypeFilter(type: ArticleTypesFilter) {
+        this.applyDebounce = false;
         this.currentFilters.type = type;
         this.recipesSubject.next(this.fetchedArticles);
     }
 
     updateQueryFilter(query: string) {
+        this.applyDebounce = true;
         this.currentFilters.query = query;
         this.recipesSubject.next(this.fetchedArticles);
     }
