@@ -17,6 +17,18 @@
             position: relative;
             cursor: pointer;
             bottom: 5px;
+            z-index: 2;
+        }
+
+        .icon-background {
+            position: absolute;
+            right: 20px;
+            top: 11px;
+            height: 24px;
+            width: 24px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            z-index: 1;
         }
 
         .menu {

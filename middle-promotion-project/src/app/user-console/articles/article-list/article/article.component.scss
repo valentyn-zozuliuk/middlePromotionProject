@@ -5,6 +5,31 @@
     font-size: 13px;
     box-shadow: 0px 24px 64px rgb(0 0 0 / 3%);
 
+    .more-icon {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        color: $color-white;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .icon-background {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        height: 24px;
+        width: 24px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .menu {
+        top: 35px;
+        right: 15px;
+    }
+
     .article-image {
         height: 160px;
         display: flex;

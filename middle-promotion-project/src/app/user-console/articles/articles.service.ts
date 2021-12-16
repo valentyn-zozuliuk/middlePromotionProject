@@ -41,10 +41,12 @@ export class ArticlesService {
             .subscribe();
     }
 
-    deleteArticle(uid: string) {
-        this.http.delete(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`).subscribe();
-        this.fetchedArticles = this.fetchedArticles.filter(artcile => artcile.uid !== uid);
-        this.articlesSubject.next(this.fetchedArticles);
+    deleteArticle(uid: string | undefined) {
+        if (uid) {
+            this.http.delete(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`).subscribe();
+            this.fetchedArticles = this.fetchedArticles.filter(artcile => artcile.uid !== uid);
+            this.articlesSubject.next(this.fetchedArticles);
+        }
     }
 
     updateArticle(articleUpd: Article) {

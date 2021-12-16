@@ -1,4 +1,16 @@
 <mat-card class="article" *ngIf="article">
+    <mat-icon class="more-icon" (click)="toggleMenu($event)">more_horiz</mat-icon>
+    <div class="icon-background" *ngIf="showEditMenu"></div>
+    <div class="menu" *ngIf="showEditMenu">
+        <div class="menu-item" (click)="editArticle($event)">
+            Edit
+        </div>
+
+        <div class="menu-item" (click)="deleteArticle($event)">
+            Delete
+        </div>
+    </div>
+
     <div class="article-image" [ngClass]="{
         'business-background': article.type === articleTypes.business,
         'media-background': article.type === articleTypes.meida,
