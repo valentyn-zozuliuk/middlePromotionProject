@@ -16,6 +16,7 @@ const routes: Routes = [
     {
         path: '', component: ArticlesComponent, children: [
             { path: '', component: ArticleListComponent },
+            { path: ':id', component: ArticleEditComponent },
             { path: 'new', component: ArticleEditComponent }
         ]
     }

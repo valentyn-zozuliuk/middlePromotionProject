@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
 import { Article, ArticleTypes } from 'src/app/model/article.model';
@@ -22,7 +23,8 @@ export class ArticleComponent extends ClearObservable implements OnInit {
 
     constructor(
         private globalEventsService: GlobalEventsService,
-        private articlesService: ArticlesService) {
+        private articlesService: ArticlesService,
+        private router: Router) {
         super();
     }
 
@@ -51,6 +53,7 @@ export class ArticleComponent extends ClearObservable implements OnInit {
     editArticle(e: Event) {
         e.stopPropagation();
         this.showEditMenu = false;
+        this.router.navigate(['/user-console/articles/' + this.article?.uid]);
     }
 
     deleteArticle(e: Event) {
