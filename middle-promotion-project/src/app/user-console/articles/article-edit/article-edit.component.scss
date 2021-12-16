@@ -1,0 +1,66 @@
+@import 'variables';
+
+:host {
+    .article-fields {
+        padding: 35px;
+        margin: 20px auto 0 auto;
+        width: 70%;
+        max-width: 1140px;
+        font-size: 13px;
+        box-shadow: 0px 24px 64px rgb(0 0 0 / 3%);
+
+        h5 {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        h6 {
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+        hr {
+            color: $disabled-color;
+            opacity: 1;
+            margin: 30px 0 30px 0;
+        }
+
+        label {
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 27px;
+            font-size: 14px;
+            padding: $default-field-padding-console;
+        }
+
+        textarea {
+            padding: $default-field-padding-console;
+            margin-bottom: 27px;
+            height: 240px;
+            resize: none;
+        }
+
+        .image-uploader {
+            height: 170px;
+            border: 1px dashed $default-text-field;
+            margin-bottom: 20px;
+        }
+
+        .operate-buttons {
+            button:last-child {
+                border: 1px solid $primary-color;
+            }
+
+            button {
+                width: 110px;
+                margin-right: 17px;
+            }
+        }
+    }
+}

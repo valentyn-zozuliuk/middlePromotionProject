@@ -11,13 +11,14 @@ import { WeekdayPipe } from './article-list/weather/weekday.pipe';
 import { ArticleComponent } from './article-list/article/article.component';
 import { ArticleDaysAgoPipe } from './article-list/article/article-days-ago.pipe';
 import { TextTruncatePipe } from './article-list/article/text-truncate.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {
         path: '', component: ArticlesComponent, children: [
             { path: '', component: ArticleListComponent },
-            { path: ':id', component: ArticleEditComponent },
-            { path: 'new', component: ArticleEditComponent }
+            { path: 'new', component: ArticleEditComponent },
+            { path: ':id', component: ArticleEditComponent }
         ]
     }
 ];
@@ -37,6 +38,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         SharedModule,
+        ReactiveFormsModule,
         RouterModule.forChild(routes)
     ]
 })

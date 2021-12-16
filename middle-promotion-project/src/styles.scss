@@ -127,11 +127,13 @@ html, body {
     }
 }
 
-input.ng-touched.ng-invalid {
+input.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
     border: 1px solid red;
 }
 
 form.ng-submitted input.ng-invalid,
+form.ng-submitted textarea.ng-invalid,
 form.ng-submitted input.ng-invalid ~ .checkmark {
     border: 1px solid red;
 }
@@ -145,7 +147,7 @@ label {
     color: $default-text-field;
 }
 
-input {
+input, textarea {
     background-color: $input-background;
     padding: $default-field-padding;
     font-size: 16px;
@@ -154,7 +156,12 @@ input {
     border-radius: 3px;
 }
 
-input:hover {
+textarea {
+    width: 100%;
+}
+
+input:hover,
+textarea:hover {
     border: 1px solid $primary-color;
 }
 
