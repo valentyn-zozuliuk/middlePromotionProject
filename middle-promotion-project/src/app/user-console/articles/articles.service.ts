@@ -1,4 +1,5 @@
 import { query } from '@angular/animations';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, debounce, debounceTime, EMPTY, map, Observable, of, tap, timer } from 'rxjs';
 import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/app/model/article.model';
@@ -7,10 +8,10 @@ import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/ap
     providedIn: 'root'
 })
 export class ArticlesService {
-    private recipesSubject = new BehaviorSubject<Article[] | null>(null);
+    private articlesSubject = new BehaviorSubject<Article[] | null>(null);
     private applyDebounce: boolean = false;
 
-    articles$: Observable<Article[] | null> = this.recipesSubject.asObservable()
+    articles$: Observable<Article[] | null> = this.articlesSubject.asObservable()
         .pipe(
             map((articles: Article[] | null) => articles ? this.applyFiltersForArticles(articles) : articles),
             debounce(() => this.applyDebounce ? timer(300) : timer(0))
@@ -24,72 +25,52 @@ export class ArticlesService {
 
     private fetchedArticles: Article[] = [];
 
-    constructor() {
-        this.getRecipes();
-     }
+    constructor(private http: HttpClient) {
+        this.getArticles();
+    }
 
-    getRecipes() {
-        const articles: Article[] = [
-            {
-                title: 'Test Title',
-                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd dsdad sdasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad`,
-                type: ArticleTypes.BUSINESS,
-                createdBy: {
-                    image: "",
-                    name: "Test Name 1"
-                },
-                updatedDate: new Date(2021, 11, 13).getTime()
-            },
-            {
-                title: 'Test Title 2',
-                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad asdasddsd`,
-                type: ArticleTypes.PRODUCTIVITY,
-                createdBy: {
-                    image: "",
-                    name: "Test Name 2"
-                },
-                updatedDate: new Date(111111111111).getTime()
-            },
-            {
-                title: 'Test Title 3',
-                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad asdasddsd oooooo`,
-                type: ArticleTypes.MEDIA,
-                createdBy: {
-                    image: "",
-                    name: "Test Name 3"
-                },
-                updatedDate: new Date(2021, 11, 4).getTime()
-            },
-            {
-                title: 'Test Title 4',
-                description: `dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad
-                dasdsasadd dsddd ddd ddd dd d d d d ddddd ddd d ddd sdsdad asdasddsd oooooo`,
-                type: ArticleTypes.MEDIA,
-                createdBy: {
-                    image: "",
-                    name: "Test Name 4"
-                },
-                updatedDate: new Date(2021, 11, 5).getTime()
-            }
-        ];
-
-        of(articles)
+    getArticles() {
+        this.http.get<{[key: string]: Article}>(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`)
             .pipe(
+                map(response => this.mapArticlesToArray(response)),
                 tap((articles: Article[]) => {
                     this.fetchedArticles = articles.slice();
-                    this.recipesSubject.next(articles);
+                    this.articlesSubject.next(articles);
                 })
             )
             .subscribe();
+    }
 
+    deleteArticle(uid: string) {
+        this.http.delete(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`).subscribe();
+        this.fetchedArticles = this.fetchedArticles.filter(artcile => artcile.uid !== uid);
+        this.articlesSubject.next(this.fetchedArticles);
+    }
+
+    updateArticle(articleUpd: Article) {
+        const uid = articleUpd.uid;
+        const artcileCopy = {
+            ...articleUpd,
+            uid: undefined
+        }
+        this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, artcileCopy).subscribe();
+        this.fetchedArticles.forEach(article => article.uid === articleUpd.uid && (article = articleUpd));
+        this.articlesSubject.next(this.fetchedArticles);
+    }
+
+    addArticle(articleAdd: Article) {
+        this.http.post(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`, articleAdd).subscribe();
+        this.getArticles();
+    }
+
+    mapArticlesToArray(response: {[key: string]: Article}) {
+        const articles: Article[] = [];
+        for (let uid in response) {
+            response[uid].uid = uid;
+            articles.push(response[uid]);
+        }
+
+        return articles;
     }
 
     private applyFiltersForArticles(articles: Article[]) {
@@ -117,18 +98,18 @@ export class ArticlesService {
     updateOrderFilter(order: ArticleOrders) {
         this.applyDebounce = false;
         this.currentFilters.order = order;
-        this.recipesSubject.next(this.fetchedArticles);
+        this.articlesSubject.next(this.fetchedArticles);
     }
 
     updateTypeFilter(type: ArticleTypesFilter) {
         this.applyDebounce = false;
         this.currentFilters.type = type;
-        this.recipesSubject.next(this.fetchedArticles);
+        this.articlesSubject.next(this.fetchedArticles);
     }
 
     updateQueryFilter(query: string) {
         this.applyDebounce = true;
         this.currentFilters.query = query;
-        this.recipesSubject.next(this.fetchedArticles);
+        this.articlesSubject.next(this.fetchedArticles);
     }
 }

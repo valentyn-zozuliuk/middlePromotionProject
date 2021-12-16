@@ -7,6 +7,7 @@ export interface Article {
         name: string
     };
     updatedDate: number;
+    uid?: string;
 }
 
 export interface ArticleTypeFilter {
