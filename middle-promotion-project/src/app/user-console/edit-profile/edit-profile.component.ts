@@ -20,7 +20,7 @@ export class EditProfileComponent implements OnInit {
     }
 
     changeTab(e: MatTabChangeEvent) {
-        console.log(e);
+        this.tabIndex = e.index;
     }
 
 }

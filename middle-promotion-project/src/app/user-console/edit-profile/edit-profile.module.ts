@@ -4,6 +4,8 @@ import { EditProfileComponent } from './edit-profile.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EditInformationComponent } from './edit-information/edit-information.component';
+import { EditAvatarComponent } from './edit-avatar/edit-avatar.component';
+import { EditPasswordComponent } from './edit-password/edit-password.component';
 
 const routes: Routes = [
     { path: '', component: EditProfileComponent }
@@ -12,7 +14,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     EditProfileComponent,
-    EditInformationComponent
+    EditInformationComponent,
+    EditAvatarComponent,
+    EditPasswordComponent
   ],
   imports: [
     CommonModule,

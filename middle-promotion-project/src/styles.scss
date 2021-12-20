@@ -179,6 +179,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-tab-labels .mat-tab-label {
     opacity: 1;
+    min-width: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
 }
 
 .mat-tab-label-active {
