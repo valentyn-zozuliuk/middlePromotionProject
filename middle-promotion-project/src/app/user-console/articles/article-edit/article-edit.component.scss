@@ -50,6 +50,30 @@
             height: 170px;
             border: 1px dashed $default-text-field;
             margin-bottom: 20px;
+            padding: 25px;
+            font-size: 14px;
+            text-align: center;
+
+            img {
+                height: 35px;
+                width: auto;
+                margin-bottom: 5px;
+            }
+
+            .image-type {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .upload-desc {
+                font-size: 14px;
+                color: $inactive-state;
+                margin-bottom: 5px;
+            }
+
+            .link {
+                text-decoration: underline;
+            }
         }
 
         .operate-buttons {
