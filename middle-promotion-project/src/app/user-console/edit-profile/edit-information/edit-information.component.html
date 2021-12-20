@@ -1,1 +1,26 @@
-<p>edit-information works!</p>
+<h6>Change your information</h6>
+
+<form [formGroup]="editInformationForm" (ngSubmit)="onSubmitForm()">
+    <div class="row">
+        <div class="col">
+            <label for="firstName">First Name</label>
+            <input name="firstName" type="text" formControlName="firstName"
+                   placeholder="Enter your first name">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="lastName">Last Name</label>
+            <input name="lastName" type="text" formControlName="lastName"
+                   placeholder="Enter your last name">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="age">Age</label>
+            <input name="age" type="number" formControlName="age"
+                   placeholder="Enter your age">
+        </div>
+    </div>
+</form>

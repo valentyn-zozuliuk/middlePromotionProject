@@ -1,1 +1,9 @@
-<p>edit-avatar works!</p>
+<h6>Change your avatar</h6>
+<p>Drag and drop file below</p>
+<div class="image-uploader">
+    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)">
+    <img src="assets/images/upload.png" alt="upload" class="src">
+    <p class="image-type">.JPG .PNG</p>
+    <p class="upload-desc">You can also upload files by</p>
+    <a class="link">clicking here</a>
+</div>
