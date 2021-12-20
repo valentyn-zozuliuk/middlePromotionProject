@@ -6,6 +6,7 @@ import { MenuSideComponent } from './menu-side/menu-side.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 
 
@@ -28,7 +29,8 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         MatIconModule,
         MatCardModule,
-        FormsModule
+        FormsModule,
+        MatTabsModule
     ]
 })
 export class SharedModule { }

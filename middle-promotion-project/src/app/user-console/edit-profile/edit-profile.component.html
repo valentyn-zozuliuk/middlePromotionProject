@@ -1,1 +1,17 @@
-<h5>Edit profile</h5>
+<mat-card class="edit-profile-fields">
+    <h5>Manage your account</h5>
+
+    <div class="edit-profile-tabs">
+        <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
+            <mat-tab label="First"> <app-edit-information *ngIf="tabIndex === 0"></app-edit-information> </mat-tab>
+            <mat-tab label="Second"> <app-edit-information *ngIf="tabIndex === 1"></app-edit-information> </mat-tab>
+            <mat-tab label="Third"> <app-edit-information *ngIf="tabIndex === 2"></app-edit-information> </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div class="operate-buttons">
+        <button type="button" class="button button-outline button-small"
+                (click)="backToDashboard()">Cancel</button>
+        <button type="submit" class="button primary-button button-small">Save</button>
+    </div>
+</mat-card>

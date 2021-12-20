@@ -167,3 +167,27 @@ textarea:hover {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: $primary-color;
+}
+
+.mat-tab-label-content {
+    color: $inactive-state;
+}
+
+.mat-tab-labels .mat-tab-label {
+    opacity: 1;
+}
+
+.mat-tab-label-active {
+    .mat-tab-label-content {
+        color: $primary-color;
+    }
+}
+
+.mat-tab-body-wrapper {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
