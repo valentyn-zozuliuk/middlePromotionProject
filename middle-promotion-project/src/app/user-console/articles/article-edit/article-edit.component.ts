@@ -44,4 +44,8 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.router.navigate(['/user-console/articles']);
     }
 
+    fileBrowseHandler(e: Event) {
+
+    }
+
 }
