@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
-import { catchError, Observable, switchMap, takeUntil, throwError } from 'rxjs';
+import { catchError, finalize, Observable, switchMap, takeUntil, throwError } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MessagesService } from 'src/app/global-services/messages.service';
 import { UserCredentials } from 'src/app/model/credentials.model';
@@ -20,8 +20,13 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
     tabIndex: number = 0;
     userInfo: UserProfile | null = null;
     errors$: Observable<string[]> | null = null;
+    showLoading: boolean = false;
 
-    constructor(private router: Router, private auth: AuthService, private messages: MessagesService,) {
+    constructor(
+        private router: Router,
+        private auth: AuthService,
+        private messages: MessagesService,
+    ) {
         super();
      }
 
@@ -55,6 +60,9 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
 
     onUpdatePassword(e: UpdatePasswordData) {
         if (this.userInfo) {
+            this.showLoading = true;
+            this.messages.clearMessages();
+
             this.auth.reauthenticateUser(e, this.userInfo?.email)
                 .pipe(
                     takeUntil(this.destroy$),
@@ -88,6 +96,9 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
 
                         return throwError(() => new Error(error));
                     }),
+                    finalize(() => {
+                        this.showLoading = false;
+                    })
                 )
                 .subscribe();
         }

@@ -11,7 +11,7 @@ export class MessagesService {
 
     errors$: Observable<string[]> = this.subject.asObservable()
         .pipe(
-            filter(messages => messages && messages.length > 0)
+            filter(messages => !!messages)
         );
 
     showErrors(...errors: string[]) {
