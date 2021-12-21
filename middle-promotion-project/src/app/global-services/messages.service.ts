@@ -17,4 +17,8 @@ export class MessagesService {
     showErrors(...errors: string[]) {
         this.subject.next(errors);
     }
+
+    clearMessages() {
+        this.subject.next([]);
+    }
 }

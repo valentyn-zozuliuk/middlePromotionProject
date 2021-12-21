@@ -4,20 +4,30 @@
     <div class="edit-profile-tabs">
         <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
             <mat-tab label="Edit Information">
-                <app-edit-information *ngIf="tabIndex === 0"></app-edit-information>
+                <app-edit-information *ngIf="tabIndex === 0"
+                    [formSubmitEmitter]="userEditSubmitEmitter"
+                    (submitInfo)="onUpdateInformation($event)"></app-edit-information>
             </mat-tab>
             <mat-tab label="User Avatar">
                 <app-edit-avatar *ngIf="tabIndex === 1"></app-edit-avatar>
             </mat-tab>
             <mat-tab label="Change Password">
-                <app-edit-password *ngIf="tabIndex === 2"></app-edit-password>
+                <app-edit-password *ngIf="tabIndex === 2"
+                    [formSubmitEmitter]="userEditSubmitEmitter"
+                    (submitInfo)="onUpdatePassword($event)"></app-edit-password>
             </mat-tab>
         </mat-tab-group>
     </div>
 
+    <ng-container *ngIf="(errors$ | async) as errors">
+        <p *ngFor="let error of errors" class="text-danger text-center">
+            {{error}}
+        </p>
+    </ng-container>
+
     <div class="operate-buttons">
         <button type="button" class="button button-outline button-small"
                 (click)="backToDashboard()">Cancel</button>
-        <button type="submit" class="button primary-button button-small">Save</button>
+        <button type="submit" (click)="submitForm()" class="button primary-button button-small">Save</button>
     </div>
 </mat-card>

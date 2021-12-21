@@ -16,6 +16,7 @@ import { getAuth,
          createUserWithEmailAndPassword,
          signOut
         } from "firebase/auth";
+import { ChangePasswordReturnData, UpdatePasswordData } from '../model/user-edit.model';
 
 @Injectable({
     providedIn: 'root'
@@ -198,8 +199,19 @@ export class AuthService {
             }),
             finalize(() => {
                 this.tempToken = "";
-                !this.errorOccured && this.router.navigate(['/user-console']);
+                !this.errorOccured && this.router.navigate(['/user-console/articles']);
             })
         );
+    }
+
+    reauthenticateUser(data: UpdatePasswordData, email: string) {
+        return this.http.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+            environment.firebaseConfig.apiKey, {email, password: data.oldPassword, returnSecureToken: false});
+    }
+
+    changePassword(idToken: string, password: string) {
+        return this.http.post<ChangePasswordReturnData>
+            ('https://identitytoolkit.googleapis.com/v1/accounts:update?key=' +
+            environment.firebaseConfig.apiKey, {idToken, password});
     }
 }

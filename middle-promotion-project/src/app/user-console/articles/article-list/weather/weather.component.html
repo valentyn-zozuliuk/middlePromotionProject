@@ -32,8 +32,8 @@
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="($errors | async) as errors">
-        <p *ngFor="let error of errors">
+    <ng-container *ngIf="(errors$ | async) as errors">
+        <p *ngFor="let error of errors" class="text-danger text-center">
             {{error}}
         </p>
     </ng-container>

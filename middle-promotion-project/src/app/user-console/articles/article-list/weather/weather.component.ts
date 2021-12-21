@@ -21,7 +21,7 @@ interface WeatherCity {
 export class WeatherComponent extends ClearObservable implements OnInit {
 
     weatherInfo$: Observable<Weather | null> | null = null;
-    $errors: Observable<string[]> | null = null;
+    errors$: Observable<string[]> | null = null;
     showWeatherMenu: boolean = false;
     weatherCities: WeatherCity[] = [
         { name: City.LVIV, code: 'UA', displayCode: 'Ua', selected: true },
@@ -37,9 +37,10 @@ export class WeatherComponent extends ClearObservable implements OnInit {
     }
 
     ngOnInit(): void {
+        this.messages.clearMessages();
         this.selectItem(this.weatherCities[0]);
         this.weatherInfo$ = this.weatherService.weatherInfo$;
-        this.$errors = this.messages.errors$;
+        this.errors$ = this.messages.errors$;
         this.globalEventsService.globalClickHandler$
             .pipe(
                 takeUntil(this.destroy$)
