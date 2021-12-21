@@ -16,7 +16,7 @@ import { getAuth,
          createUserWithEmailAndPassword,
          signOut
         } from "firebase/auth";
-import { ChangePasswordReturnData, UpdatePasswordData } from '../model/user-edit.model';
+import { ChangePasswordReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
 
 @Injectable({
     providedIn: 'root'
@@ -213,5 +213,42 @@ export class AuthService {
         return this.http.post<ChangePasswordReturnData>
             ('https://identitytoolkit.googleapis.com/v1/accounts:update?key=' +
             environment.firebaseConfig.apiKey, {idToken, password});
+    }
+
+    updateUserInfo(data: UpdateInformationData, uid: string) {
+        return this.http.put<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/information.json`,
+             { age: data.age, name: data.firstName + ' ' + data.lastName});
+    }
+
+    updateUserProfile(name: string = '', age: number = 0, image = '') {
+        const userData = localStorage.getItem('userData');
+
+        if (!userData) {
+            return;
+        }
+
+        const parsedUser: {
+            email: string;
+            id: string;
+            _token: string;
+            _tokenExpirationDate: string;
+            name: string;
+            age: number | null | undefined;
+            image: string | undefined;
+        } = JSON.parse(userData);
+
+        const user = new UserProfile(
+            parsedUser.email,
+            parsedUser.id,
+            parsedUser._token,
+            new Date(parsedUser._tokenExpirationDate),
+            name ? name : parsedUser.name,
+            image ? image : parsedUser.image,
+            age ? age : parsedUser.age
+        );
+
+        this.user.next(user);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 }

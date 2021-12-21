@@ -55,7 +55,28 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
     }
 
     onUpdateInformation(e: UpdateInformationData) {
-        console.log(e);
+        if (this.userInfo) {
+            this.showLoading = true;
+            this.messages.clearMessages();
+
+            this.auth.updateUserInfo(e, this.userInfo.id)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    catchError((error) => {
+
+                        this.messages.showErrors('Error updating user.');
+
+                        return throwError(() => new Error(error));
+                    }),
+                    finalize(() => {
+                        this.showLoading = false;
+                    })
+                )
+                .subscribe(() => {
+                    this.auth.updateUserProfile(e.firstName + ' ' + e.lastName, e.age);
+                    this.router.navigate(['user-console/articles']);
+                });
+        }
     }
 
     onUpdatePassword(e: UpdatePasswordData) {
@@ -63,7 +84,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
             this.showLoading = true;
             this.messages.clearMessages();
 
-            this.auth.reauthenticateUser(e, this.userInfo?.email)
+            this.auth.reauthenticateUser(e, this.userInfo.email)
                 .pipe(
                     takeUntil(this.destroy$),
                     switchMap(() => {
