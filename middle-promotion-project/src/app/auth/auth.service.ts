@@ -63,7 +63,7 @@ export class AuthService {
 
     private handleAuthentication(additionalInfo: UserAdditionalInfo, mainInfo: UserMainInfo) {
         const expirationDate = new Date(new Date().getTime() + mainInfo.expiresIn * 1000);
-        const image = additionalInfo.avatar ? additionalInfo.avatar : mainInfo.photoURL;
+        const image = additionalInfo.avatar?.src ? additionalInfo.avatar.src : mainInfo.photoURL;
         const name = additionalInfo.information.name ? additionalInfo.information.name : mainInfo.displayName;
 
         const user = new UserProfile(mainInfo.email, mainInfo.localId, mainInfo.idToken, expirationDate,
@@ -178,7 +178,9 @@ export class AuthService {
                         name: authCredentials?.name ? authCredentials.name : resData.user.displayName,
                         age: authCredentials?.age ? authCredentials.age : null,
                     },
-                    avatar: resData.user.photoURL ? resData.user.photoURL : ""
+                    avatar: {
+                        src: resData.user.photoURL ? resData.user.photoURL : ""
+                    }
                 }
 
                 return forkJoin([resData.isNewUser || isSignupMode ?
@@ -219,6 +221,13 @@ export class AuthService {
         return this.http.put<UserAdditionalInfo>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/information.json`,
              { age: data.age, name: data.firstName + ' ' + data.lastName});
+    }
+
+    updateAvatar(avatar: string, uid: string) {
+
+        return this.http.put<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/avatar.json`,
+            { src: avatar });
     }
 
     updateUserProfile(name: string = '', age: number = 0, image = '') {

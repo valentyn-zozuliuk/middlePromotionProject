@@ -79,6 +79,32 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
         }
     }
 
+
+    onUpdateAvatar(e: string) {
+        if (this.userInfo) {
+            this.showLoading = true;
+            this.messages.clearMessages();
+
+            this.auth.updateAvatar(e, this.userInfo.id)
+                .pipe(
+                    takeUntil(this.destroy$),
+                    catchError((error) => {
+
+                        this.messages.showErrors('Error updating avatar.');
+
+                        return throwError(() => new Error(error));
+                    }),
+                    finalize(() => {
+                        this.showLoading = false;
+                    })
+                )
+                .subscribe(() => {
+                    this.auth.updateUserProfile("", 0, e);
+                    this.router.navigate(['user-console/articles']);
+                });
+        }
+    }
+
     onUpdatePassword(e: UpdatePasswordData) {
         if (this.userInfo) {
             this.showLoading = true;
@@ -123,6 +149,5 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
                 )
                 .subscribe();
         }
-
     }
 }

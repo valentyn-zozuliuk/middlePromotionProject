@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
+import { DragAndDropDirective } from './drag-and-drop.directive';
 
 
 
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
     declarations: [
         LoadingSpinnerComponent,
         MenuHeaderComponent,
-        MenuSideComponent
+        MenuSideComponent,
+        DragAndDropDirective
     ],
     imports: [
         CommonModule,
@@ -30,7 +32,8 @@ import { FormsModule } from '@angular/forms';
         MatIconModule,
         MatCardModule,
         FormsModule,
-        MatTabsModule
+        MatTabsModule,
+        DragAndDropDirective
     ]
 })
 export class SharedModule { }

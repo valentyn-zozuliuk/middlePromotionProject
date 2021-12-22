@@ -9,7 +9,9 @@
                     (submitInfo)="onUpdateInformation($event)"></app-edit-information>
             </mat-tab>
             <mat-tab label="User Avatar">
-                <app-edit-avatar *ngIf="tabIndex === 1"></app-edit-avatar>
+                <app-edit-avatar *ngIf="tabIndex === 1"
+                [avatarUpdateEmitter]="userEditSubmitEmitter"
+                (avatarUpdate)="onUpdateAvatar($event)"></app-edit-avatar>
             </mat-tab>
             <mat-tab label="Change Password">
                 <app-edit-password *ngIf="tabIndex === 2"

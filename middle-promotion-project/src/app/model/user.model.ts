@@ -21,7 +21,7 @@ export class UserProfile {
 
 export interface UserAdditionalInfo {
     information: { name: string; age?: number | null };
-    avatar?: string;
+    avatar?: { src: string };
 }
 
 
