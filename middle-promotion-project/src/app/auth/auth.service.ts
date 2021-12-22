@@ -18,6 +18,12 @@ import { getAuth,
         } from "firebase/auth";
 import { ChangePasswordReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
 
+interface AuthConfig {
+    isSignupMode: boolean;
+    authCredentials: UserAuthCredentials | null,
+    defaultSignin: boolean;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -33,16 +39,29 @@ export class AuthService {
 
     signup(userCredentials: UserAuthCredentials) {
         const auth = getAuth();
+        const authConfig = {
+            isSignupMode: true,
+            authCredentials: userCredentials,
+            defaultSignin: true
+        }
+
         return this.authAlgorithm(
             from(createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
-            true, userCredentials
+            authConfig
         );
     }
 
     login(userCredentials: UserCredentials) {
         const auth = getAuth();
+        const authConfig = {
+            isSignupMode: false,
+            authCredentials: null,
+            defaultSignin: true
+        }
+
         return this.authAlgorithm(
-            from(signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password))
+            from(signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
+            authConfig
         );
     }
 
@@ -58,7 +77,15 @@ export class AuthService {
 
     private authenticateWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider) {
         const auth = getAuth();
-        return this.authAlgorithm(from(signInWithPopup(auth, provider)));
+        const authConfig = {
+            isSignupMode: false,
+            authCredentials: null,
+            defaultSignin: false
+        }
+
+        return this.authAlgorithm(
+            from(signInWithPopup(auth, provider)),
+            authConfig);
     }
 
     private handleAuthentication(additionalInfo: UserAdditionalInfo, mainInfo: UserMainInfo) {
@@ -67,7 +94,7 @@ export class AuthService {
         const name = additionalInfo.information.name ? additionalInfo.information.name : mainInfo.displayName;
 
         const user = new UserProfile(mainInfo.email, mainInfo.localId, mainInfo.idToken, expirationDate,
-            name, image, additionalInfo.information.age);
+            name, image, additionalInfo.information.age, additionalInfo.isDefaultUser);
 
         this.user.next(user);
         this.autoLogout(mainInfo.expiresIn * 1000);
@@ -89,6 +116,7 @@ export class AuthService {
             name: string;
             age: number | null | undefined;
             image: string | undefined;
+            isDefaultUser: boolean;
         } = JSON.parse(userData);
 
         const newLoadedUser = new UserProfile(
@@ -98,7 +126,8 @@ export class AuthService {
             new Date(parsedUser._tokenExpirationDate),
             parsedUser.name,
             parsedUser.image,
-            parsedUser.age
+            parsedUser.age,
+            parsedUser.isDefaultUser
         );
 
         if (newLoadedUser.token) {
@@ -150,8 +179,7 @@ export class AuthService {
 
     private authAlgorithm(
         inputObservable$: Observable<any | UserCredential>,
-        isSignupMode: boolean = false,
-        authCredentials?: UserAuthCredentials
+        authConfig: AuthConfig
     ) {
         return inputObservable$.pipe(
             map((resData: any | UserCredential) => {
@@ -175,15 +203,17 @@ export class AuthService {
             mergeMap((resData: { user: UserMainInfo, isNewUser: boolean | undefined}) => {
                 const userDetails: UserAdditionalInfo = {
                     information: {
-                        name: authCredentials?.name ? authCredentials.name : resData.user.displayName,
-                        age: authCredentials?.age ? authCredentials.age : null,
+                        name: authConfig.authCredentials?.name ?
+                            authConfig.authCredentials.name : resData.user.displayName,
+                        age: authConfig.authCredentials?.age ? authConfig.authCredentials.age : null,
                     },
                     avatar: {
                         src: resData.user.photoURL ? resData.user.photoURL : ""
-                    }
+                    },
+                    isDefaultUser: authConfig.defaultSignin
                 }
 
-                return forkJoin([resData.isNewUser || isSignupMode ?
+                return forkJoin([resData.isNewUser || authConfig.isSignupMode ?
                         this.saveUserDetails(resData.user.localId, userDetails) :
                         this.fetchUserDetails(resData.user.localId),
                         of(resData.user)
@@ -230,6 +260,12 @@ export class AuthService {
             { src: avatar });
     }
 
+    updateUserType(isDefaultUser: boolean, uid: string | null) {
+        return this.http.put<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/isDefaultUser.json`,
+            isDefaultUser);
+    }
+
     updateUserProfile(name: string = '', age: number = 0, image = '') {
         const userData = localStorage.getItem('userData');
 
@@ -245,6 +281,7 @@ export class AuthService {
             name: string;
             age: number | null | undefined;
             image: string | undefined;
+            isDefaultUser: boolean;
         } = JSON.parse(userData);
 
         const user = new UserProfile(
@@ -254,7 +291,8 @@ export class AuthService {
             new Date(parsedUser._tokenExpirationDate),
             name ? name : parsedUser.name,
             image ? image : parsedUser.image,
-            age ? age : parsedUser.age
+            age ? age : parsedUser.age,
+            parsedUser.isDefaultUser
         );
 
         this.user.next(user);

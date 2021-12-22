@@ -7,7 +7,8 @@ export class UserProfile {
         private _tokenExpirationDate: Date,
         public name: string,
         public image: string | undefined,
-        public age: number | undefined | null) {
+        public age: number | undefined | null,
+        public isDefaultUser: boolean) {
     }
 
     get token() {
@@ -22,6 +23,7 @@ export class UserProfile {
 export interface UserAdditionalInfo {
     information: { name: string; age?: number | null };
     avatar?: { src: string };
+    isDefaultUser: boolean;
 }
 
 

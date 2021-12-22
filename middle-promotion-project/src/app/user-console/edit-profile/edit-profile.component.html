@@ -13,7 +13,7 @@
                 [avatarUpdateEmitter]="userEditSubmitEmitter"
                 (avatarUpdate)="onUpdateAvatar($event)"></app-edit-avatar>
             </mat-tab>
-            <mat-tab label="Change Password">
+            <mat-tab label="Change Password" *ngIf="userInfo?.isDefaultUser">
                 <app-edit-password *ngIf="tabIndex === 2"
                     [formSubmitEmitter]="userEditSubmitEmitter"
                     (submitInfo)="onUpdatePassword($event)"></app-edit-password>
