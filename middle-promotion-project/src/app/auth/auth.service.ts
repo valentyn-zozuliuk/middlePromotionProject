@@ -172,9 +172,18 @@ export class AuthService {
              userDetails);
     }
 
-    private fetchUserDetails(uid: string) {
-        return this.http.get<UserAdditionalInfo>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`);
+    private fetchUserDetails(uid: string, isSignupMode: boolean) {
+        return combineLatest([this.http.get<UserAdditionalInfo>(
+            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`),
+            this.updateUserType(isSignupMode, uid)])
+                .pipe(
+                    map(([additionalInfo, updatedSignupMode]: [UserAdditionalInfo ,boolean]) => {
+                        return {
+                            ...additionalInfo,
+                            isSignupMode: updatedSignupMode
+                        };
+                    })
+                );
     }
 
     private authAlgorithm(
@@ -215,7 +224,7 @@ export class AuthService {
 
                 return forkJoin([resData.isNewUser || authConfig.isSignupMode ?
                         this.saveUserDetails(resData.user.localId, userDetails) :
-                        this.fetchUserDetails(resData.user.localId),
+                        this.fetchUserDetails(resData.user.localId, authConfig.defaultSignin),
                         of(resData.user)
                     ]);
             }),
@@ -261,7 +270,7 @@ export class AuthService {
     }
 
     updateUserType(isDefaultUser: boolean, uid: string | null) {
-        return this.http.put<UserAdditionalInfo>(
+        return this.http.put<boolean>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/isDefaultUser.json`,
             isDefaultUser);
     }
