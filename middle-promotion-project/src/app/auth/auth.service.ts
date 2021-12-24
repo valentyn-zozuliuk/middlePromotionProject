@@ -177,10 +177,10 @@ export class AuthService {
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`),
             this.updateUserType(isSignupMode, uid)])
                 .pipe(
-                    map(([additionalInfo, updatedSignupMode]: [UserAdditionalInfo ,boolean]) => {
+                    map(([additionalInfo, updatedUserType]: [UserAdditionalInfo ,boolean]) => {
                         return {
                             ...additionalInfo,
-                            isSignupMode: updatedSignupMode
+                            isDefaultUser: updatedUserType
                         };
                     })
                 );
