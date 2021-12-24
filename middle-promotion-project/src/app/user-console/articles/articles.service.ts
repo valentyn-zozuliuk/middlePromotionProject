@@ -9,6 +9,7 @@ import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/ap
 })
 export class ArticlesService {
     private articlesSubject = new BehaviorSubject<Article[] | null>(null);
+    private singleArticleSubject = new BehaviorSubject<Article | undefined>(undefined);
     private applyDebounce: boolean = false;
 
     articles$: Observable<Article[] | null> = this.articlesSubject.asObservable()
@@ -16,6 +17,8 @@ export class ArticlesService {
             map((articles: Article[] | null) => articles ? this.applyFiltersForArticles(articles) : articles),
             debounce(() => this.applyDebounce ? timer(300) : timer(0))
         );
+
+    singleArticle$: Observable<Article | undefined> = this.singleArticleSubject.asObservable();
 
     private currentFilters: { type: ArticleTypesFilter, order: ArticleOrders, query: string } = {
         type: ArticleTypesFilter.ALL,
@@ -113,5 +116,10 @@ export class ArticlesService {
         this.applyDebounce = true;
         this.currentFilters.query = query;
         this.articlesSubject.next(this.fetchedArticles);
+    }
+
+    getArtcleById(uid: string) {
+        this.applyDebounce = false;
+        this.singleArticleSubject.next(this.fetchedArticles.find((article: Article) => article.uid === uid));
     }
 }

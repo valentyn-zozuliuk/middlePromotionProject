@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Route, Router } from '@angular/router';
+import { ActivatedRoute, Data, Params, Route, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
-import { ArticleTypeFilter, ArticleTypesFilter } from 'src/app/model/article.model';
+import { Article, ArticleTypeFilter, ArticleTypesFilter } from 'src/app/model/article.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 
 @Component({
@@ -39,6 +39,16 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
             )
             .subscribe((params: Params) => {
                 this.editMode = params['id'];
+            });
+
+        this.route.data
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe((response) => {
+                if (!response['article']) {
+                    this.router.navigate(['/user-console/articles/new']);
+                }
             });
 
         this.globalEventsService.globalClickHandler$
