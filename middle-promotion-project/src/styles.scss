@@ -92,6 +92,59 @@ html, body {
     margin-bottom: 0;
 }
 
+.dropdown-wrapper {
+    position: relative;
+}
+
+
+.dropdown {
+    padding: 14px 32px 12px 25px;
+    background-color: $input-background;
+    font-size: 14px;
+    border: 1px solid $input-background;
+    border-radius: 3px;
+    outline: none;
+    text-align: left;
+
+    &:hover {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+
+        & > span {
+            color: $primary-color;
+        }
+
+        .placeholder-like {
+            color: $primary-color;
+        }
+
+        .button-icon {
+            color: $primary-color;
+        }
+    }
+
+    &.active-dropdown {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+
+        .button-icon {
+            color: #007EFF;
+        }
+    }
+
+    .button-icon {
+        position: absolute;
+        right: 10px;
+        top:51%;
+        transform: translateY(-50%);
+        color: $default-text-field;
+    }
+
+    .placeholder-like {
+        color: $default-text-field;
+    }
+}
+
 .menu {
     position: absolute;
     right: 0;
@@ -154,6 +207,10 @@ input, textarea {
     border: 1px solid $input-background;
     outline: none;
     border-radius: 3px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: $default-text-field;
 }
 
 textarea {

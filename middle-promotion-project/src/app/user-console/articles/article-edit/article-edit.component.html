@@ -23,6 +23,30 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <label>Type</label>
+                <div class="dropdown-wrapper">
+                    <button type="button" class="article-type-dropdown dropdown"
+                    [ngClass]="{'active-dropdown': showTypeFilterMenu}" (click)="toggleType($event)">
+                        <span class="placeholder-like" *ngIf="!selectedTypeFilter">Please select type</span>
+                        <span *ngIf="selectedTypeFilter">{{ selectedTypeFilter }}</span>
+                        <mat-icon *ngIf="!showTypeFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="showTypeFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
+                    </button>
+
+                    <div class="menu" *ngIf="showTypeFilterMenu">
+                        <div class="menu-item" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
+                            [ngClass]="{'selected-item': typeFilter.selected}"
+                            (click)="selectType(typeFilter, $event, i)">
+                            {{ typeFilter.name }}
+                            <mat-icon *ngIf="typeFilter.selected" class="check-icon">check</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <h6>Add cover photo</h6>
         <p>Drag and drop file below</p>
 
