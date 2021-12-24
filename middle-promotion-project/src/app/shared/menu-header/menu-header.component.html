@@ -12,7 +12,9 @@
     <div class="user-name">
         {{ user?.name ? user?.name : 'Name missing'}}
     </div>
-    <mat-icon class="user-profile-icon">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="!showMenu" class="user-profile-icon">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="showMenu" class="user-profile-icon">keyboard_arrow_up</mat-icon>
+
 </div>
 <div class="menu" *ngIf="showMenu">
     <div class="menu-item" (click)="navigateToPage('/user-console/edit-profile', $event)">

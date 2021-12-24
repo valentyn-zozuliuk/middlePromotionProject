@@ -5,7 +5,8 @@
             <button class="show-button button-small" (click)="toggleTypeFilter($event)">
                 <span class="inactive-state">Show:</span>
                 <span class="active-state">{{ selectedTypeFilter }}</span>
-                <mat-icon class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="!showTypeFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="showTypeFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
 
                 <div class="menu" *ngIf="showTypeFilterMenu">
                     <div class="menu-item" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
@@ -21,7 +22,8 @@
             <button class="sort-by-button button-small" (click)="toggleOrderFilter($event)">
                 <span class="inactive-state">Sort by:</span>
                 <span class="active-state">{{ selectedOrderFilter }}</span>
-                <mat-icon class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="!showOrderFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="showOrderFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
 
                 <div class="menu" *ngIf="showOrderFilterMenu">
                     <div class="menu-item" *ngFor="let orderFilter of articleOrderFilters; let i = index;"
