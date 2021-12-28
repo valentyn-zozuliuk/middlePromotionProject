@@ -53,12 +53,16 @@ export class ArticleComponent extends ClearObservable implements OnInit {
     editArticle(e: Event) {
         e.stopPropagation();
         this.showEditMenu = false;
-        this.router.navigate(['/user-console/articles/' + this.article?.uid]);
+        this.router.navigate(['/user-console/articles/' + this.article?.uid + '/edit']);
     }
 
     deleteArticle(e: Event) {
         e.stopPropagation();
         this.showEditMenu = false;
         this.articlesService.deleteArticle(this.article?.uid);
+    }
+
+    showArticle() {
+        this.router.navigate(['/user-console/articles/' + this.article?.uid]);
     }
 }

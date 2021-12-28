@@ -13,13 +13,15 @@ import { ArticleDaysAgoPipe } from './article-list/article/article-days-ago.pipe
 import { TextTruncatePipe } from './article-list/article/text-truncate.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ArticlesResolver } from './articles-resolver.resolver';
+import { ArticleDescComponent } from './article-desc/article-desc.component';
 
 const routes: Routes = [
     {
         path: '', component: ArticlesComponent, children: [
             { path: '', component: ArticleListComponent },
             { path: 'new', component: ArticleEditComponent },
-            { path: ':id', component: ArticleEditComponent, resolve: { article: ArticlesResolver }}
+            { path: ':id', component: ArticleDescComponent, resolve: { article: ArticlesResolver }},
+            { path: ':id/edit', component: ArticleEditComponent, resolve: { article: ArticlesResolver }}
         ]
     }
 ];
@@ -34,7 +36,8 @@ const routes: Routes = [
         WeekdayPipe,
         ArticleComponent,
         ArticleDaysAgoPipe,
-        TextTruncatePipe
+        TextTruncatePipe,
+        ArticleDescComponent
     ],
     imports: [
         CommonModule,
