@@ -46,8 +46,8 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe((response) => {
-                if (!response['article']) {
-                    this.router.navigate(['/user-console/articles/new']);
+                if (!response['article'] && this.editMode) {
+                    this.router.navigate(['/user-console/articles']);
                 }
             });
 
