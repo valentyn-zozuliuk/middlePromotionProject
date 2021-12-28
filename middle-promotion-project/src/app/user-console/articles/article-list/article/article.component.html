@@ -1,5 +1,5 @@
 <mat-card class="article" *ngIf="article">
-    <mat-icon class="more-icon" (click)="toggleMenu($event)">more_horiz</mat-icon>
+    <mat-icon class="more-icon" *ngIf="userInfo?.id === article.createdBy.uid" (click)="toggleMenu($event)">more_horiz</mat-icon>
     <div class="icon-background" *ngIf="showEditMenu"></div>
     <div class="menu" *ngIf="showEditMenu">
         <div class="menu-item" (click)="editArticle($event)">

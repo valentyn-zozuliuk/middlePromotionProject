@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
 import { Article, ArticleTypes } from 'src/app/model/article.model';
+import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { ArticlesService } from '../../articles.service';
 
@@ -13,6 +14,7 @@ import { ArticlesService } from '../../articles.service';
 })
 export class ArticleComponent extends ClearObservable implements OnInit {
     @Input() article: Article | null = null;
+    @Input() userInfo: UserProfile | null = null;
 
     showEditMenu: boolean = false;
     articleTypes: {business: ArticleTypes, productivity: ArticleTypes, meida: ArticleTypes} = {

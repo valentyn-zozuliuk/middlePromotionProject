@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
 import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes, Article, ArticleTypesFilter } from 'src/app/model/article.model';
+import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { ArticlesService } from '../articles.service';
 
@@ -31,10 +33,13 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
 
     articles$: Observable<Article[] | null> | null = null;
 
+    userInfo: UserProfile | null = null;
+
     constructor(
         private router: Router,
         private globalEventsService: GlobalEventsService,
-        private articlesService: ArticlesService ) {
+        private articlesService: ArticlesService,
+        private auth: AuthService) {
         super();
     }
 
@@ -52,6 +57,14 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         this.getSelectedOrder();
 
         this.articles$ = this.articlesService.articles$;
+
+        this.auth.user
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe((res: UserProfile | null) => {
+                this.userInfo = res;
+            });
     }
 
     addNewArticle() {

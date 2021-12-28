@@ -38,7 +38,7 @@
     </div>
     <div class="row artciles-max-width" *ngIf="(articles$ | async) as articles">
         <div class="col-xl-6" *ngFor="let article of articles">
-            <app-article [article]="article"></app-article>
+            <app-article [article]="article" [userInfo]="userInfo"></app-article>
         </div>
     </div>
 </div>

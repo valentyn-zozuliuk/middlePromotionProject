@@ -4,7 +4,8 @@ export interface Article {
     type: ArticleTypes | ArticleTypesFilter;
     createdBy: {
         image: string,
-        name: string
+        name: string,
+        uid: string
     };
     updatedDate: number;
     uid?: string;
