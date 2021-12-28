@@ -6,11 +6,13 @@
             <mat-tab label="Edit Information">
                 <app-edit-information *ngIf="tabIndex === 0"
                     [formSubmitEmitter]="userEditSubmitEmitter"
+                    [userInfo]="userInfo"
                     (submitInfo)="onUpdateInformation($event)"></app-edit-information>
             </mat-tab>
             <mat-tab label="User Avatar">
                 <app-edit-avatar *ngIf="tabIndex === 1"
                 [avatarUpdateEmitter]="userEditSubmitEmitter"
+                [userInfo]="userInfo"
                 (avatarUpdate)="onUpdateAvatar($event)"></app-edit-avatar>
             </mat-tab>
             <mat-tab label="Change Password" *ngIf="userInfo?.isDefaultUser">

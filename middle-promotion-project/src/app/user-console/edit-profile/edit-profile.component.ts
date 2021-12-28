@@ -55,7 +55,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
     }
 
     onUpdateInformation(e: UpdateInformationData) {
-        if (this.userInfo) {
+        if (this.userInfo && this.checkIfNeedToUpdateInfoOnBe(e)) {
             this.showLoading = true;
             this.messages.clearMessages();
 
@@ -76,9 +76,17 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
                     this.auth.updateUserProfile(e.firstName + ' ' + e.lastName, e.age);
                     this.router.navigate(['user-console/articles']);
                 });
+
+            return;
         }
+
+        this.router.navigate(['user-console/articles']);
     }
 
+    checkIfNeedToUpdateInfoOnBe(updatedInfo: UpdateInformationData) {
+        return !(this.userInfo?.name === updatedInfo.firstName + ' ' +updatedInfo.lastName &&
+            this.userInfo.age === updatedInfo.age);
+    }
 
     onUpdateAvatar(e: string) {
         if (this.userInfo) {

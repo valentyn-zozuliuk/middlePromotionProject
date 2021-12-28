@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs';
+import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 
 @Component({
@@ -8,8 +9,9 @@ import { ClearObservable } from 'src/app/shared/clear-observable/clear-observabl
     styleUrls: ['./edit-avatar.component.scss']
 })
 
-export class EditAvatarComponent extends ClearObservable implements OnInit {
+export class EditAvatarComponent extends ClearObservable implements OnInit, OnChanges {
     @Input() avatarUpdateEmitter!: EventEmitter<void>;
+    @Input() userInfo!: UserProfile | null;
     @Output() avatarUpdate = new EventEmitter<string>();
 
     uploadedImage: string = "";
@@ -19,7 +21,13 @@ export class EditAvatarComponent extends ClearObservable implements OnInit {
 
     constructor() {
         super();
-     }
+    }
+
+    ngOnChanges(): void {
+        if (this.userInfo?.image) {
+            this.uploadedImage = this.userInfo.image;
+        }
+    }
 
     ngOnInit(): void {
         this.avatarUpdateEmitter
@@ -27,9 +35,9 @@ export class EditAvatarComponent extends ClearObservable implements OnInit {
             takeUntil(this.destroy$)
         )
         .subscribe(() => {
-            this.uploadedImage ?
+            this.uploadedImage && this.iamgeName ?
                 this.avatarUpdate.emit(this.uploadedImage)
-            : this.errorImageUpload = 'Select image for upload';
+            : this.errorImageUpload = 'Select new image for upload';
         })
     }
 
