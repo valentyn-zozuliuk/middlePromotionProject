@@ -118,6 +118,11 @@ export class ArticlesService {
         this.articlesSubject.next(this.fetchedArticles);
     }
 
+    resetFilters() {
+        this.currentFilters.order = ArticleOrders.ASC;
+        this.currentFilters.type = ArticleTypesFilter.ALL;
+    }
+
     getArtcleById(uid: string) {
         this.applyDebounce = false;
         this.singleArticleSubject.next(this.fetchedArticles.find((article: Article) => article.uid === uid));
