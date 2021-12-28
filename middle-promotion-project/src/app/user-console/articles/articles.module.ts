@@ -14,6 +14,7 @@ import { TextTruncatePipe } from './article-list/article/text-truncate.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ArticlesResolver } from './articles-resolver.resolver';
 import { ArticleDescComponent } from './article-desc/article-desc.component';
+import { ArticleEditGuard } from './article-edit.guard';
 
 const routes: Routes = [
     {
@@ -21,7 +22,7 @@ const routes: Routes = [
             { path: '', component: ArticleListComponent },
             { path: 'new', component: ArticleEditComponent },
             { path: ':id', component: ArticleDescComponent, resolve: { article: ArticlesResolver }},
-            { path: ':id/edit', component: ArticleEditComponent, resolve: { article: ArticlesResolver }}
+            { path: ':id/edit', component: ArticleEditComponent, resolve: { article: ArticlesResolver }, canActivate: [ArticleEditGuard]}
         ]
     }
 ];

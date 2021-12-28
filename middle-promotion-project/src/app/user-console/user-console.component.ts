@@ -25,11 +25,9 @@ export class UserConsoleComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe((res: Event) => {
-
                 if (res instanceof NavigationEnd) {
-                    this.routerDashboard = res.url === '/user-console/articles';
+                    this.routerDashboard = res.url === '/user-console/articles' || res.urlAfterRedirects === '/user-console/articles';
                 }
-
             });
 
         this.auth.user

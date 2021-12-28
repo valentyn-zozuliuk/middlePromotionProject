@@ -44,6 +44,8 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
     }
 
     ngOnInit(): void {
+        this.articlesService.resetFilters();
+
         this.globalEventsService.globalClickHandler$
             .pipe(
                 takeUntil(this.destroy$)
