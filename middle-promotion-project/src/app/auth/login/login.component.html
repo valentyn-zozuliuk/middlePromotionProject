@@ -13,10 +13,13 @@
             <div class="login-block">
                 <form [formGroup]="authForm" (ngSubmit)="onSubmitForm()">
                     <div class="row">
-                        <div class="col">
+                        <div class="col pos-relative">
                             <label for="login">Email Address</label>
                             <input name="login" type="text" formControlName="email"
                                    placeholder="Enter your email address">
+                            <p *ngIf="authForm.controls['email'].touched &&
+                                authForm.controls['email'].errors?.['email']"
+                                class="under-input-error text-danger">Please enter correct email address</p>
                         </div>
                     </div>
 

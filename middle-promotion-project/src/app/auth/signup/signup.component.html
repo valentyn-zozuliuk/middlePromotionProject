@@ -22,26 +22,35 @@
                     </div>
 
                     <div class="row">
-                        <div class="col">
+                        <div class="col pos-relative">
                             <label for="login">Email Address</label>
                             <input name="login" type="text" formControlName="email"
                                    placeholder="Enter your email address" class="dnager-border">
+                            <p *ngIf="profileForm.controls['email'].touched &&
+                                      profileForm.controls['email'].errors?.['email']"
+                                class="under-input-error text-danger">Please enter correct email address</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col">
+                        <div class="col pos-relative">
                             <label for="password">Password</label>
                             <input name="password" type="password" formControlName="password"
                                 placeholder="Enter your password">
+                            <p *ngIf="profileForm.controls['password'].touched &&
+                                      profileForm.controls['password'].errors?.['minlength']"
+                                class="under-input-error text-danger">Password has to be 8 digits or longer</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col">
+                        <div class="col pos-relative">
                             <label for="password-confirm">Confirm New Password</label>
                             <input name="password-confirm" type="password" formControlName="passwordConfirm"
                                 placeholder="Enter your new password again">
+                            <p *ngIf="profileForm.controls['passwordConfirm'].touched &&
+                                      profileForm.controls['passwordConfirm'].errors?.['NoPassswordMatch']"
+                                class="under-input-error text-danger">Passwords do not match</p>
                         </div>
                     </div>
 

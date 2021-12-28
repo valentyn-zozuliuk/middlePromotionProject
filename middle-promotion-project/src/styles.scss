@@ -200,6 +200,12 @@ label {
     color: $default-text-field;
 }
 
+.under-input-error {
+    position: absolute;
+    bottom: -7px;
+    font-size: 10px;
+}
+
 input, textarea {
     background-color: $input-background;
     padding: $default-field-padding;
@@ -250,4 +256,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-tab-body-wrapper {
     margin-top: 30px;
+}
+
+.pos-relative {
+    position: relative;
 }
