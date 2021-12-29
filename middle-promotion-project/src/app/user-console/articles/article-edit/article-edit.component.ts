@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Data, Params, Route, Router } from '@angular/router';
-import { takeUntil } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
+import { MessagesService } from 'src/app/global-services/messages.service';
 import { Article, ArticleTypeFilter, ArticleTypesFilter } from 'src/app/model/article.model';
+import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
+import { ArticlesService } from '../articles.service';
 
 @Component({
     selector: 'app-article-edit',
@@ -16,6 +20,10 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
     selectedTypeFilter!: string | undefined;
     articleForm!: FormGroup;
     showTypeFilterMenu: boolean = false;
+    userProfile: UserProfile | null = null;
+    article: Article | null = null;
+    errors$: Observable<string[]> | null = null;
+
     imageHandler: { imageName: string, uploadedImage: string, errorImageUpload: string } = {
         imageName: "",
         uploadedImage: "",
@@ -32,12 +40,24 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         private router: Router,
-        private globalEventsService: GlobalEventsService
+        private globalEventsService: GlobalEventsService,
+        private articlesService: ArticlesService,
+        private auth: AuthService,
+        private messages: MessagesService
         ) {
         super();
     }
 
     ngOnInit(): void {
+        this.messages.clearMessages();
+        this.errors$ = this.messages.errors$;
+
+        this.auth.user
+            .pipe(
+                takeUntil(this.destroy$)
+            )
+            .subscribe(user => this.userProfile = user);
+
         this.route.params
             .pipe(
                 takeUntil(this.destroy$)
@@ -54,6 +74,8 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 if (!response['article'] && this.editMode) {
                     this.router.navigate(['/user-console/articles']);
                 }
+
+                this.article = response['article'];
             });
 
         this.globalEventsService.globalClickHandler$
@@ -64,12 +86,10 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
 
         this.articleForm = this.formBuilder.group({
             title: ['', Validators.required],
-            text: ['', Validators.required]
+            description: ['', Validators.required],
+            type: ['', Validators.required],
+            image: ['', Validators.required]
         });
-    }
-
-    onSubmitForm() {
-        console.log('submit');
     }
 
     backToDashboard() {
@@ -86,6 +106,9 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         index !== null && this.refreshTypeFilter(index);
         this.getSelectedType();
         this.showTypeFilterMenu = false;
+        this.articleForm.patchValue({
+            type: this.getSelectedTypeEnum()
+        });
     }
 
     refreshTypeFilter(index: number) {
@@ -100,6 +123,12 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.selectedTypeFilter = this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
             return typeFilter.selected;
         })?.name;
+    }
+
+    getSelectedTypeEnum() {
+        return this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
+            return typeFilter.selected;
+        })?.code;
     }
 
     fileBrowseHandler(e: Event) {
@@ -136,8 +165,38 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 if (reader.result && typeof reader.result === 'string') {
                     this.imageHandler.uploadedImage = reader.result;
                     this.imageHandler.imageName = files[0].name;
+
+                    this.articleForm.patchValue({
+                        image: this.imageHandler.uploadedImage
+                    });
                 }
             }
+        }
+    }
+
+    onSubmitForm() {
+        if (this.articleForm.valid) {
+            const article: Article = {
+                title: this.articleForm.controls['title'].value,
+                description: this.articleForm.controls['description'].value,
+                type: this.articleForm.controls['type'].value,
+                updatedDate: new Date().getTime(),
+                createdBy: {
+                    image: this.userProfile?.image ? this.userProfile.image : '',
+                    name: this.userProfile?.name ? this.userProfile.name : '',
+                    uid: this.userProfile?.id ? this.userProfile.id : ''
+                }
+            };
+
+            this.editMode ?
+                this.articlesService.updateArticle(article, this.article?.uid)
+                    .subscribe(
+                        () => this.router.navigate(['/user-console/articles'])
+                    ) :
+                this.articlesService.addArticle(article)
+                    .subscribe(
+                        () => this.router.navigate(['/user-console/articles'])
+                    );
         }
     }
 }

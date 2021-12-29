@@ -16,8 +16,8 @@
 
         <div class="row">
             <div class="col">
-                <label for="text">Text</label>
-                <textarea name="text" formControlName="text"
+                <label for="description">Text</label>
+                <textarea name="description" formControlName="description"
                        placeholder="Enter your text copy">
                 </textarea>
             </div>
@@ -28,7 +28,8 @@
                 <label>Type</label>
                 <div class="dropdown-wrapper">
                     <button type="button" class="article-type-dropdown dropdown"
-                    [ngClass]="{'active-dropdown': showTypeFilterMenu}" (click)="toggleType($event)">
+                    [ngClass]="{'active-dropdown': showTypeFilterMenu,
+                                'danger-border': !selectedTypeFilter}" (click)="toggleType($event)">
                         <span class="placeholder-like" *ngIf="!selectedTypeFilter">Please select type</span>
                         <span *ngIf="selectedTypeFilter">{{ selectedTypeFilter }}</span>
                         <mat-icon *ngIf="!showTypeFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
@@ -50,7 +51,8 @@
         <h6>Add cover photo</h6>
         <p>Drag and drop file below</p>
 
-        <div class="image-uploader" dragAndDrop (fileDropped)="onFileDropped($event)">
+        <div class="image-uploader" dragAndDrop (fileDropped)="onFileDropped($event)"
+            [ngClass]="{'danger-border': imageHandler.errorImageUpload || !imageHandler.imageName}">
             <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)">
             <img src="assets/images/upload.png" alt="upload" class="src">
             <p class="image-type">.JPG .PNG</p>
@@ -66,6 +68,11 @@
             </div>
         </div>
 
+        <ng-container *ngIf="(errors$ | async) as errors">
+            <p *ngFor="let error of errors" class="text-danger text-center">
+                {{error}}
+            </p>
+        </ng-container>
 
         <div class="operate-buttons">
             <button type="button" class="button button-outline button-small"

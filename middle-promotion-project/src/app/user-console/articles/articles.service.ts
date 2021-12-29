@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, debounce, debounceTime, EMPTY, map, Observable, of, tap, timer } from 'rxjs';
+import { BehaviorSubject, catchError, debounce, map, Observable, switchMap, tap, throwError, timer } from 'rxjs';
+import { MessagesService } from 'src/app/global-services/messages.service';
 import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/app/model/article.model';
 import { UserProfile } from 'src/app/model/user.model';
 
@@ -28,20 +29,25 @@ export class ArticlesService {
 
     private fetchedArticles: Article[] = [];
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private messages: MessagesService) {
         this.getArticles();
     }
 
     getArticles() {
-        this.http.get<{[key: string]: Article}>(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`)
-            .pipe(
-                map(response => this.mapArticlesToArray(response)),
-                tap((articles: Article[]) => {
-                    this.fetchedArticles = articles.slice();
-                    this.articlesSubject.next(articles);
-                })
-            )
+        this.fetchArtciles()
             .subscribe();
+    }
+
+    fetchArtciles() {
+        return this.http.get<{[key: string]: Article}>
+            (`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`)
+                .pipe(
+                    map(response => this.mapArticlesToArray(response)),
+                    tap((articles: Article[]) => {
+                        this.fetchedArticles = articles.slice();
+                        this.articlesSubject.next(articles);
+                    })
+                );
     }
 
     deleteArticle(uid: string | undefined) {
@@ -52,20 +58,36 @@ export class ArticlesService {
         }
     }
 
-    updateArticle(articleUpd: Article) {
-        const uid = articleUpd.uid;
-        const artcileCopy = {
-            ...articleUpd,
-            uid: undefined
+    updateArticle(articleUpd: Article, uid: string | undefined) {
+
+        if (uid) {
+            return this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, articleUpd)
+                .pipe(
+                    tap(() => {
+                        this.fetchedArticles.forEach(article => article.uid === uid && (article = articleUpd));
+                        this.articlesSubject.next(this.fetchedArticles);
+                    }),
+                    catchError(error => {
+                        this.messages.showErrors('Error occured while editing the Article. Please try again later.');
+                        return throwError(() => new Error(error));
+                    })
+                );
         }
-        this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, artcileCopy).subscribe();
-        this.fetchedArticles.forEach(article => article.uid === articleUpd.uid && (article = articleUpd));
-        this.articlesSubject.next(this.fetchedArticles);
+
+        return this.addArticle(articleUpd);
     }
 
     addArticle(articleAdd: Article) {
-        this.http.post(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`, articleAdd).subscribe();
-        this.getArticles();
+        return this.http.post(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`, articleAdd)
+            .pipe(
+                switchMap(() =>
+                    this.fetchArtciles()
+                ),
+                catchError(error => {
+                    this.messages.showErrors('Error occured while adding a new Article. Please try again later.');
+                    return throwError(() => new Error(error));
+                })
+            );
     }
 
     mapArticlesToArray(response: {[key: string]: Article}) {
