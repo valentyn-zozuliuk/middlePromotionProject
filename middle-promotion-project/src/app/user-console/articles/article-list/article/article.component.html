@@ -11,13 +11,17 @@
         </div>
     </div>
 
-    <div class="article-image" [ngClass]="{
+    <div [ngClass]="{
         'business-background': article.type === articleTypes.business,
         'media-background': article.type === articleTypes.meida,
-        'productivity-background': article.type === articleTypes.productivity
+        'productivity-background': article.type === articleTypes.productivity,
+        'article-image': !article.coverImage,
+        'article-image-full': article.coverImage
     }">
-        <img src="assets/images/laptop.png" alt="Laptop" class="src">
+        <img *ngIf="!article.coverImage" src="assets/images/laptop.png" alt="Laptop" class="src">
+        <img *ngIf="article.coverImage" [src]="article.coverImage" alt="Cover imaage" class="src">
     </div>
+
     <div class="artcle-desc">
         <div class="top-desc d-flex justify-content-between">
             <p>{{ article.type }}</p>

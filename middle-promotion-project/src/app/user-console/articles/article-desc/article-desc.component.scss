@@ -20,6 +20,16 @@
         }
     }
 
+    .article-image-full {
+        height: 250px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
     .media-background {
         background: linear-gradient(135deg, #F395BA 0%, #FED182 100%);
     }
@@ -44,8 +54,6 @@
         }
 
         .mid-desc {
-            height: 150px;
-
             h5 {
                 font-size: 21px;
             }

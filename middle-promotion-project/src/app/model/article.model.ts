@@ -9,6 +9,7 @@ export interface Article {
     };
     updatedDate: number;
     uid?: string;
+    coverImage: string;
 }
 
 export interface ArticleTypeFilter {

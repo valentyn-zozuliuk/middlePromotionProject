@@ -88,7 +88,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                     title: this.article?.title,
                     description: this.article?.description,
                     type: this.article?.type,
-                    image: this.article?.createdBy.image
+                    image: this.article?.coverImage
                 });
 
                 this.editMode && this.preselectImage();
@@ -103,8 +103,8 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
     }
 
     preselectImage() {
-        this.imageHandler.uploadedImage = this.article?.createdBy.image ?
-                    this.article.createdBy.image : ''
+        this.imageHandler.uploadedImage = this.article?.coverImage ?
+                    this.article.coverImage : ''
     }
 
     preselectType() {
@@ -206,6 +206,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 title: this.articleForm.controls['title'].value,
                 description: this.articleForm.controls['description'].value,
                 type: this.articleForm.controls['type'].value,
+                coverImage: this.articleForm.controls['image'].value,
                 updatedDate: new Date().getTime(),
                 createdBy: {
                     image: this.userProfile?.image ? this.userProfile.image : '',
