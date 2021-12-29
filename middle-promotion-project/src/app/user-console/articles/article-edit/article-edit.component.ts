@@ -52,6 +52,13 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.messages.clearMessages();
         this.errors$ = this.messages.errors$;
 
+        this.articleForm = this.formBuilder.group({
+            title: ['', Validators.required],
+            description: ['', Validators.required],
+            type: ['', Validators.required],
+            image: ['', Validators.required]
+        });
+
         this.auth.user
             .pipe(
                 takeUntil(this.destroy$)
@@ -76,6 +83,16 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 }
 
                 this.article = response['article'];
+
+                this.editMode && this.articleForm.patchValue({
+                    title: this.article?.title,
+                    description: this.article?.description,
+                    type: this.article?.type,
+                    image: this.article?.createdBy.image
+                });
+
+                this.editMode && this.preselectImage();
+                this.editMode && this.preselectType();
             });
 
         this.globalEventsService.globalClickHandler$
@@ -83,13 +100,16 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe(() => this.showTypeFilterMenu = false);
+    }
 
-        this.articleForm = this.formBuilder.group({
-            title: ['', Validators.required],
-            description: ['', Validators.required],
-            type: ['', Validators.required],
-            image: ['', Validators.required]
-        });
+    preselectImage() {
+        this.imageHandler.uploadedImage = this.article?.createdBy.image ?
+                    this.article.createdBy.image : ''
+    }
+
+    preselectType() {
+        this.articleTypeFilters.forEach(filter => filter.code === this.article?.type && (filter.selected = true));
+        this.getSelectedType();
     }
 
     backToDashboard() {
@@ -175,6 +195,12 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
     }
 
     onSubmitForm() {
+        this.imageHandler.errorImageUpload = "";
+
+        if (!this.imageHandler.uploadedImage) {
+            this.imageHandler.errorImageUpload = 'Select new image for upload';
+        }
+
         if (this.articleForm.valid) {
             const article: Article = {
                 title: this.articleForm.controls['title'].value,

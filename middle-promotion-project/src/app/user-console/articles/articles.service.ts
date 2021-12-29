@@ -64,7 +64,7 @@ export class ArticlesService {
             return this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, articleUpd)
                 .pipe(
                     tap(() => {
-                        this.fetchedArticles.forEach(article => article.uid === uid && (article = articleUpd));
+                        this.fetchedArticles = this.fetchedArticles.map(article => article.uid === uid ? {...articleUpd, uid: uid} : article);
                         this.articlesSubject.next(this.fetchedArticles);
                     }),
                     catchError(error => {
