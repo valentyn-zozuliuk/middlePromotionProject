@@ -8,6 +8,7 @@ import { UserCredentials } from 'src/app/model/credentials.model';
 import { UpdateInformationData, UpdatePasswordData } from 'src/app/model/user-edit.model';
 import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
+import { ArticlesService } from '../articles/articles.service';
 
 @Component({
     selector: 'app-edit-profile',
@@ -26,6 +27,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
         private router: Router,
         private auth: AuthService,
         private messages: MessagesService,
+        private articlesService: ArticlesService
     ) {
         super();
      }
@@ -74,6 +76,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
                 )
                 .subscribe(() => {
                     this.auth.updateUserProfile(e.firstName + ' ' + e.lastName, e.age);
+                    this.userInfo && this.articlesService.updateAuthorsArticles(this.userInfo);
                     this.router.navigate(['user-console/articles']);
                 });
 
@@ -108,6 +111,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
                 )
                 .subscribe(() => {
                     this.auth.updateUserProfile("", 0, e);
+                    this.userInfo && this.articlesService.updateAuthorsArticles(this.userInfo);
                     this.router.navigate(['user-console/articles']);
                 });
         }

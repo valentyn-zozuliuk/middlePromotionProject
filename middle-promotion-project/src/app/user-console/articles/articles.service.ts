@@ -1,8 +1,8 @@
-import { query } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, debounce, debounceTime, EMPTY, map, Observable, of, tap, timer } from 'rxjs';
 import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/app/model/article.model';
+import { UserProfile } from 'src/app/model/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -126,5 +126,34 @@ export class ArticlesService {
     getArtcleById(uid: string) {
         this.applyDebounce = false;
         this.singleArticleSubject.next(this.fetchedArticles.find((article: Article) => article.uid === uid));
+    }
+
+    updateAuthorsArticles(userProfile: UserProfile) {
+        this.fetchedArticles.forEach((article) =>
+            article.createdBy.uid === userProfile.id && this.updateAuthorsData(article, userProfile));
+
+        this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`,
+            this.prepareArticlesForUpdate())
+                .subscribe();
+    }
+
+    updateAuthorsData(article: Article, userProfile: UserProfile) {
+        article.createdBy.image = userProfile.image ? userProfile.image : '';
+        article.createdBy.name = userProfile.name;
+    }
+
+    prepareArticlesForUpdate() {
+        const articles: {[key: string]: Article } =
+            this.fetchedArticles.reduce((prev: {[key: string]: Article } , curr: Article, index) => {
+                return {
+                    ...prev,
+                    [curr.uid ? curr.uid: '']: {
+                        ...curr,
+                        uid: undefined
+                    }
+                };
+            }, {});
+
+        return articles;
     }
 }
