@@ -6,12 +6,12 @@
     <p class="image-type">.JPG .PNG</p>
     <p class="upload-desc">You can also upload files by</p>
     <a class="link">clicking here</a>
-    <p class="uploaded-name" *ngIf="iamgeName"> {{ iamgeName }} </p>
+    <p class="uploaded-name" *ngIf="imageName"> {{ imageName }} </p>
     <p class="text-danger" *ngIf="errorImageUpload"> {{ errorImageUpload }}</p>
 </div>
 
 <div class="image-preview" *ngIf="uploadedImage">
     <div class="image-wrapper">
-        <img [src]="this.uploadedImage" alt="UploadedImage">
+        <img [src]="uploadedImage" alt="UploadedImage">
     </div>
 </div>

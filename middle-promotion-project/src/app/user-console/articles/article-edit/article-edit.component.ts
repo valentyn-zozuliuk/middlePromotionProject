@@ -16,6 +16,11 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
     selectedTypeFilter!: string | undefined;
     articleForm!: FormGroup;
     showTypeFilterMenu: boolean = false;
+    imageHandler: { imageName: string, uploadedImage: string, errorImageUpload: string } = {
+        imageName: "",
+        uploadedImage: "",
+        errorImageUpload: ""
+    };
 
     articleTypeFilters: ArticleTypeFilter[] = [
         { name: 'Business', code: ArticleTypesFilter.BUSINESS, selected: false },
@@ -71,10 +76,6 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.router.navigate(['/user-console/articles']);
     }
 
-    fileBrowseHandler(e: Event) {
-
-    }
-
     toggleType(e: Event) {
         e.stopPropagation();
         this.showTypeFilterMenu = !this.showTypeFilterMenu;
@@ -99,5 +100,44 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.selectedTypeFilter = this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
             return typeFilter.selected;
         })?.name;
+    }
+
+    fileBrowseHandler(e: Event) {
+        this.imageHandler.uploadedImage = "";
+        this.imageHandler.imageName = "";
+        this.imageHandler.errorImageUpload = "";
+
+        if (e.target instanceof HTMLInputElement) {
+            const files = e.target?.files;
+            this.showPreview(files);
+        }
+    }
+
+    onFileDropped(files: FileList) {
+        this.imageHandler.uploadedImage = "";
+        this.imageHandler.imageName = "";
+        this.imageHandler.errorImageUpload = "";
+
+        this.showPreview(files);
+    }
+
+    showPreview(files: FileList | null) {
+        if (files) {
+            const mimeType = files[0].type;
+
+            if (!(mimeType === 'image/png' || mimeType === 'image/jpeg')) {
+                this.imageHandler.errorImageUpload = 'Error. Wrong file format.';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = () => {
+                if (reader.result && typeof reader.result === 'string') {
+                    this.imageHandler.uploadedImage = reader.result;
+                    this.imageHandler.imageName = files[0].name;
+                }
+            }
+        }
     }
 }

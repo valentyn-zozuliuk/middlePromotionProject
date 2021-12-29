@@ -60,7 +60,7 @@
 
         .image-uploader {
             position: relative;
-            height: 170px;
+            min-height: 200px;
             border: 1px dashed $default-text-field;
             margin-bottom: 20px;
             padding: 25px;
@@ -69,6 +69,7 @@
 
             input {
                 position: absolute;
+                cursor: pointer;
                 opacity: 0;
                 left: 0;
                 top: 0;
@@ -80,6 +81,7 @@
                 height: 35px;
                 width: auto;
                 margin-bottom: 5px;
+                margin-top: 15px;
             }
 
             .image-type {
@@ -96,6 +98,32 @@
             .link {
                 text-decoration: underline;
             }
+
+            .uploaded-name, .text-danger {
+                margin-top: 10px;
+            }
+        }
+
+        .image-preview {
+            text-align: center;
+
+            .image-wrapper {
+                height: 200px;
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+
+                img {
+                    position: absolute;
+                    top:50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: auto;
+                    height: 200px;
+                }
+            }
+
+            margin-bottom: 20px;
         }
 
         .operate-buttons {

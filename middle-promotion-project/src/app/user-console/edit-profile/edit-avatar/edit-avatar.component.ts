@@ -15,7 +15,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
     @Output() avatarUpdate = new EventEmitter<string>();
 
     uploadedImage: string = "";
-    iamgeName: string = "";
+    imageName: string = "";
     errorImageUpload: string = "";
 
 
@@ -35,7 +35,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
             takeUntil(this.destroy$)
         )
         .subscribe(() => {
-            this.uploadedImage && this.iamgeName ?
+            this.uploadedImage && this.imageName ?
                 this.avatarUpdate.emit(this.uploadedImage)
             : this.errorImageUpload = 'Select new image for upload';
         })
@@ -43,7 +43,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
 
     fileBrowseHandler(e: Event) {
         this.uploadedImage = "";
-        this.iamgeName = "";
+        this.imageName = "";
         this.errorImageUpload = "";
 
         if (e.target instanceof HTMLInputElement) {
@@ -54,7 +54,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
 
     onFileDropped(files: FileList) {
         this.uploadedImage = "";
-        this.iamgeName = "";
+        this.imageName = "";
         this.errorImageUpload = "";
 
         this.showPreview(files);
@@ -74,7 +74,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
             reader.onload = () => {
                 if (reader.result && typeof reader.result === 'string') {
                     this.uploadedImage = reader.result;
-                    this.iamgeName = files[0].name;
+                    this.imageName = files[0].name;
                 }
             }
         }

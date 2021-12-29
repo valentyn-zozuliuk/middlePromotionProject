@@ -50,13 +50,22 @@
         <h6>Add cover photo</h6>
         <p>Drag and drop file below</p>
 
-        <div class="image-uploader">
+        <div class="image-uploader" dragAndDrop (fileDropped)="onFileDropped($event)">
             <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)">
             <img src="assets/images/upload.png" alt="upload" class="src">
             <p class="image-type">.JPG .PNG</p>
             <p class="upload-desc">You can also upload files by</p>
             <a class="link">clicking here</a>
+            <p class="uploaded-name" *ngIf="imageHandler.imageName"> {{ imageHandler.imageName }} </p>
+            <p class="text-danger" *ngIf="imageHandler.errorImageUpload"> {{ imageHandler.errorImageUpload }}</p>
         </div>
+
+        <div class="image-preview" *ngIf="imageHandler.uploadedImage">
+            <div class="image-wrapper">
+                <img [src]="imageHandler.uploadedImage" alt="UploadedImage">
+            </div>
+        </div>
+
 
         <div class="operate-buttons">
             <button type="button" class="button button-outline button-small"
