@@ -74,10 +74,12 @@
             </p>
         </ng-container>
 
-        <div class="operate-buttons">
+        <div class="operate-buttons" *ngIf="!showLoading">
             <button type="button" class="button button-outline button-small"
                     (click)="backToDashboard()">Cancel</button>
             <button type="submit" class="button primary-button button-small">Publish</button>
         </div>
+
+        <app-loading-spinner *ngIf="showLoading"></app-loading-spinner>
     </form>
 </mat-card>

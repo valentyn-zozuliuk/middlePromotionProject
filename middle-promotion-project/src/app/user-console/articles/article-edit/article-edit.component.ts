@@ -23,6 +23,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
     userProfile: UserProfile | null = null;
     article: Article | null = null;
     errors$: Observable<string[]> | null = null;
+    showLoading: boolean = false;
 
     imageHandler: { imageName: string, uploadedImage: string, errorImageUpload: string } = {
         imageName: "",
@@ -215,15 +216,22 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
                 }
             };
 
+            this.showLoading = true;
+
+
             this.editMode ?
                 this.articlesService.updateArticle(article, this.article?.uid)
-                    .subscribe(
-                        () => this.router.navigate(['/user-console/articles'])
-                    ) :
+                    .subscribe({
+                        next: () => this.router.navigate(['/user-console/articles']),
+                        error: () => this.showLoading = false,
+                        complete: () => this.showLoading = false
+                    }):
                 this.articlesService.addArticle(article)
-                    .subscribe(
-                        () => this.router.navigate(['/user-console/articles'])
-                    );
+                    .subscribe({
+                        next: () => this.router.navigate(['/user-console/articles']),
+                        error: () => this.showLoading = false,
+                        complete: () => this.showLoading = false
+                    });
         }
     }
 }
