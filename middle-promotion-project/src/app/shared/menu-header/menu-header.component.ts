@@ -15,16 +15,15 @@ export class MenuHeaderComponent extends ClearObservable implements OnInit {
     @Input() user: UserProfile | null = null;
     @Input() isDashboard: boolean = false;
 
-    showMenu: boolean = false;
-    allowGlobalEvent: boolean = false;
-    articleQuery: string = "";
+    public showMenu: boolean = false;
+    public articleQuery: string = "";
 
     constructor(
         private router: Router,
         private globalEventsService: GlobalEventsService,
         private articlesService: ArticlesService) {
         super();
-     }
+    }
 
     ngOnInit(): void {
         this.globalEventsService.globalClickHandler$
@@ -34,18 +33,18 @@ export class MenuHeaderComponent extends ClearObservable implements OnInit {
             .subscribe(() => this.showMenu = false);
     }
 
-    toggleMenu(e: Event) {
+    public toggleMenu(e: Event): void {
         e.stopPropagation();
         this.showMenu = !this.showMenu;
     }
 
-    navigateToPage(route: string, e: Event) {
+    public navigateToPage(route: string, e: Event): void {
         e.stopPropagation();
         this.router.navigate([route]);
         this.showMenu = false;
     }
 
-    changeArticleQuery() {
+    public changeArticleQuery(): void {
         this.articlesService.updateQueryFilter(this.articleQuery);
     }
 }

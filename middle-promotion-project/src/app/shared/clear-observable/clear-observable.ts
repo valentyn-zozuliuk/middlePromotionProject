@@ -5,9 +5,9 @@ import { Subject } from "rxjs";
     'template': ''
 })
 export class ClearObservable implements OnDestroy {
-    destroy$: Subject<boolean> = new Subject();
+    public destroy$: Subject<boolean> = new Subject();
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.unsubscribe();
     }

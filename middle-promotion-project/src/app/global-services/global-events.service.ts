@@ -6,11 +6,9 @@ import { Observable, Subject } from 'rxjs';
 })
 export class GlobalEventsService {
     private clickSubject$ = new Subject<boolean>();
-    globalClickHandler$: Observable<boolean> = this.clickSubject$.asObservable();
+    public globalClickHandler$: Observable<boolean> = this.clickSubject$.asObservable();
 
-    constructor() { }
-
-    catchClick() {
+    public catchClick(): void {
         this.clickSubject$.next(false);
     }
 }

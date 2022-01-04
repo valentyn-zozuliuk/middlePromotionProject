@@ -15,11 +15,11 @@ export class MenuSideComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    navigateToDashboard() {
+    public navigateToDashboard(): void {
         this.router.navigate(['/user-console/articles']);
     }
 
-    logoutHandler() {
+    public logoutHandler(): void {
         this.logout.emit();
     }
 }
