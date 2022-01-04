@@ -14,7 +14,8 @@ export class EditPasswordComponent extends ClearObservable implements OnInit {
     @Output() submitInfo = new EventEmitter<UpdatePasswordData>();
     @ViewChild('submitBtn', {static: true}) submitBtn!: ElementRef;
 
-    editPasswordForm!: FormGroup;
+    public editPasswordForm!: FormGroup;
+
     constructor(private formBuilder: FormBuilder) {
         super();
     }
@@ -33,7 +34,7 @@ export class EditPasswordComponent extends ClearObservable implements OnInit {
         }
     }
 
-    checkPasswords(group: FormGroup): ValidationErrors | null {
+    private checkPasswords(group: FormGroup): ValidationErrors | null {
         let pass = group.controls['newPassword'].value;
         let confirmPass = group.controls['confirmNewPassword'].value;
 
@@ -45,7 +46,7 @@ export class EditPasswordComponent extends ClearObservable implements OnInit {
         return null;
     }
 
-    onSubmitForm() {
+    public onSubmitForm(): void {
         if (this.editPasswordForm.valid) {
             this.submitInfo.emit({
                 oldPassword: this.editPasswordForm.controls['oldPassword'].value,

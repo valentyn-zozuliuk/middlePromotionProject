@@ -16,12 +16,12 @@ import { ArticlesService } from '../articles/articles.service';
     styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent extends ClearObservable implements OnInit {
-    userEditSubmitEmitter: EventEmitter<void> = new EventEmitter<void>();
+    public userEditSubmitEmitter: EventEmitter<void> = new EventEmitter<void>();
 
-    tabIndex: number = 0;
-    userInfo: UserProfile | null = null;
-    errors$: Observable<string[]> | null = null;
-    showLoading: boolean = false;
+    public tabIndex: number = 0;
+    public userInfo: UserProfile | null = null;
+    public errors$: Observable<string[]> | null = null;
+    public showLoading: boolean = false;
 
     constructor(
         private router: Router,
@@ -44,19 +44,19 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
             });
     }
 
-    backToDashboard() {
+    public backToDashboard(): void {
         this.router.navigate(['/user-console/articles']);
     }
 
-    changeTab(e: MatTabChangeEvent) {
+    public changeTab(e: MatTabChangeEvent): void {
         this.tabIndex = e.index;
     }
 
-    submitForm() {
+    public submitForm(): void {
         this.userEditSubmitEmitter.emit();
     }
 
-    onUpdateInformation(e: UpdateInformationData) {
+    public onUpdateInformation(e: UpdateInformationData): void {
         if (this.userInfo && this.checkIfNeedToUpdateInfoOnBe(e)) {
             this.showLoading = true;
             this.messages.clearMessages();
@@ -86,12 +86,12 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
         this.router.navigate(['user-console/articles']);
     }
 
-    checkIfNeedToUpdateInfoOnBe(updatedInfo: UpdateInformationData) {
+    private checkIfNeedToUpdateInfoOnBe(updatedInfo: UpdateInformationData): boolean {
         return !(this.userInfo?.name === updatedInfo.firstName + ' ' +updatedInfo.lastName &&
             this.userInfo.age === updatedInfo.age);
     }
 
-    onUpdateAvatar(e: string) {
+    public onUpdateAvatar(e: string): void {
         if (this.userInfo) {
             this.showLoading = true;
             this.messages.clearMessages();
@@ -117,7 +117,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
         }
     }
 
-    onUpdatePassword(e: UpdatePasswordData) {
+    public onUpdatePassword(e: UpdatePasswordData): void {
         if (this.userInfo) {
             this.showLoading = true;
             this.messages.clearMessages();

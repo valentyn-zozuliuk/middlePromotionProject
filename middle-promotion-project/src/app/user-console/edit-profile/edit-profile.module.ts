@@ -13,17 +13,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    EditProfileComponent,
-    EditInformationComponent,
-    EditAvatarComponent,
-    EditPasswordComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(routes)
-  ]
+    declarations: [
+        EditProfileComponent,
+        EditInformationComponent,
+        EditAvatarComponent,
+        EditPasswordComponent
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(routes)
+    ]
 })
 export class EditProfileModule { }

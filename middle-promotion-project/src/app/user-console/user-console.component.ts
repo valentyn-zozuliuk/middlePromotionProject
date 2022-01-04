@@ -11,8 +11,8 @@ import { ClearObservable } from '../shared/clear-observable/clear-observable';
     styleUrls: ['./user-console.component.scss']
 })
 export class UserConsoleComponent extends ClearObservable implements OnInit {
-    routerDashboard: boolean = false;
-    userInfo: UserProfile | null = null;
+    public routerDashboard: boolean = false;
+    public userInfo: UserProfile | null = null;
 
     constructor(private auth: AuthService, private router: Router) {
         super();
@@ -26,7 +26,8 @@ export class UserConsoleComponent extends ClearObservable implements OnInit {
             )
             .subscribe((res: Event) => {
                 if (res instanceof NavigationEnd) {
-                    this.routerDashboard = res.url === '/user-console/articles' || res.urlAfterRedirects === '/user-console/articles';
+                    this.routerDashboard = res.url === '/user-console/articles' ||
+                        res.urlAfterRedirects === '/user-console/articles';
                 }
             });
 
@@ -39,7 +40,7 @@ export class UserConsoleComponent extends ClearObservable implements OnInit {
             });
     }
 
-    onLogoutEvent() {
+    public onLogoutEvent(): void {
         this.auth.logout();
     }
 

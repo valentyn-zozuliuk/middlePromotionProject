@@ -14,9 +14,9 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
     @Input() userInfo!: UserProfile | null;
     @Output() avatarUpdate = new EventEmitter<string>();
 
-    uploadedImage: string = "";
-    imageName: string = "";
-    errorImageUpload: string = "";
+    public uploadedImage: string = "";
+    public imageName: string = "";
+    public errorImageUpload: string = "";
 
 
     constructor() {
@@ -41,7 +41,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
         })
     }
 
-    fileBrowseHandler(e: Event) {
+    public fileBrowseHandler(e: Event): void {
         this.uploadedImage = "";
         this.imageName = "";
         this.errorImageUpload = "";
@@ -52,7 +52,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
         }
     }
 
-    onFileDropped(files: FileList) {
+    public onFileDropped(files: FileList): void {
         this.uploadedImage = "";
         this.imageName = "";
         this.errorImageUpload = "";
@@ -60,7 +60,7 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
         this.showPreview(files);
     }
 
-    showPreview(files: FileList | null) {
+    private showPreview(files: FileList | null): void {
         if (files) {
             const mimeType = files[0].type;
 

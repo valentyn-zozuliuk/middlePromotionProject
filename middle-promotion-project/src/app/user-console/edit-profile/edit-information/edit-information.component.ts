@@ -19,7 +19,7 @@ export class EditInformationComponent extends ClearObservable implements OnInit,
     @Output() submitInfo = new EventEmitter<UpdateInformationData>();
     @ViewChild('submitBtn', {static: true}) submitBtn!: ElementRef;
 
-    editInformationForm!: FormGroup;
+    public editInformationForm!: FormGroup;
 
     constructor(private formBuilder: FormBuilder) {
         super();
@@ -40,7 +40,15 @@ export class EditInformationComponent extends ClearObservable implements OnInit,
         }
     }
 
-    getNameSecondPart() {
+    ngOnInit(): void {
+        if (!!this.formSubmitEmitter) {
+            this.formSubmitEmitter
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => this.submitBtn.nativeElement.click());
+        }
+    }
+
+    private getNameSecondPart(): string {
         const arrName = this.userInfo?.name.split(' ');
 
         if (arrName && arrName?.length > 2) {
@@ -59,15 +67,7 @@ export class EditInformationComponent extends ClearObservable implements OnInit,
         return arrName ? arrName[1] : '';
     }
 
-    ngOnInit(): void {
-        if (!!this.formSubmitEmitter) {
-            this.formSubmitEmitter
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => this.submitBtn.nativeElement.click());
-        }
-    }
-
-    onSubmitForm() {
+    public onSubmitForm(): void {
         if (this.editInformationForm.valid) {
             this.submitInfo.emit({
                 firstName: this.editInformationForm.controls['firstName'].value,
@@ -76,5 +76,4 @@ export class EditInformationComponent extends ClearObservable implements OnInit,
             });
         }
     }
-
 }
