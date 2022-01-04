@@ -13,18 +13,20 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="name">Name</label>
-                            <input name="name" type="text" formControlName="name" placeholder="Enter your name">
+                            <input id="name" name="name" type="text"
+                                   formControlName="name" placeholder="Enter your name">
                         </div>
                         <div class="col-6">
                             <label for="age">Age</label>
-                            <input name="age" type="number" formControlName="age" placeholder="Enter your age">
+                            <input id="age" name="age" type="number"
+                                   formControlName="age" placeholder="Enter your age">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col pos-relative">
-                            <label for="login">Email Address</label>
-                            <input name="login" type="text" formControlName="email"
+                            <label for="email">Email Address</label>
+                            <input id="email" name="email" type="text" formControlName="email"
                                    placeholder="Enter your email address" class="dnager-border">
                             <p *ngIf="profileForm.controls['email'].touched &&
                                       profileForm.controls['email'].errors?.['email']"
@@ -35,7 +37,7 @@
                     <div class="row">
                         <div class="col pos-relative">
                             <label for="password">Password</label>
-                            <input name="password" type="password" formControlName="password"
+                            <input id="password" name="password" type="password" formControlName="password"
                                 placeholder="Enter your password">
                             <p *ngIf="profileForm.controls['password'].touched &&
                                       profileForm.controls['password'].errors?.['minlength']"
@@ -46,7 +48,8 @@
                     <div class="row">
                         <div class="col pos-relative">
                             <label for="password-confirm">Confirm New Password</label>
-                            <input name="password-confirm" type="password" formControlName="passwordConfirm"
+                            <input id="password-confirm"  name="password-confirm"
+                                type="password" formControlName="passwordConfirm"
                                 placeholder="Enter your new password again">
                             <p *ngIf="profileForm.controls['passwordConfirm'].touched &&
                                       profileForm.controls['passwordConfirm'].errors?.['NoPassswordMatch']"
@@ -91,7 +94,9 @@
             </div>
 
             <div class="bottom-section">
-                <p class="spacer-0">Already have an account? <a class="link" [routerLink]="['/auth/login']">Login</a></p>
+                <p class="spacer-0">
+                    Already have an account? <a class="link" [routerLink]="['/auth/login']">Login</a>
+                </p>
             </div>
         </div>
     </div>

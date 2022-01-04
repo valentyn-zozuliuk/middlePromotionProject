@@ -1,6 +1,6 @@
-import { HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { exhaustMap, take } from "rxjs";
+import { exhaustMap, Observable, take } from "rxjs";
 import { weatherRequestConfig } from "../user-console/articles/article-list/weather/weather.service";
 import { AuthService } from "./auth.service";
 
@@ -8,7 +8,7 @@ import { AuthService } from "./auth.service";
 export class AuthInterceptorService implements HttpInterceptor {
     constructor(public auth: AuthService) { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler) {
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return this.auth.user.pipe(
             take(1),
             exhaustMap(user => {

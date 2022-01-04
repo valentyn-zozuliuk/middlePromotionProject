@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserCredential } from '@firebase/auth';
 import { takeUntil } from 'rxjs';
 import { UserAuthCredentials } from 'src/app/model/credentials.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
@@ -20,7 +19,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
 
     constructor(public formBuilder: FormBuilder, private auth: AuthService, public router: Router) {
         super();
-     }
+    }
 
     ngOnInit(): void {
         this.profileForm = this.formBuilder.group({
@@ -52,11 +51,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
         }
     }
 
-    get registerFormControl() {
-        return this.profileForm.controls;
-    }
-
-    checkPasswords(group: FormGroup): ValidationErrors | null {
+    private checkPasswords(group: FormGroup): ValidationErrors | null {
         let pass = group.controls['password'].value;
         let confirmPass = group.controls['passwordConfirm'].value;
 
@@ -75,7 +70,7 @@ export class SignupComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (response: any | UserCredential) => {
+                next: () => {
                     this.loading = false;
                     this.router.navigate(['/auth/login']);
                 },
@@ -86,13 +81,13 @@ export class SignupComponent extends ClearObservable implements OnInit {
             });
     }
 
-    public googleSignup() {
+    public googleSignup(): void {
         this.auth.googleAuth()
             .pipe(
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (resData: any | UserCredential) => {
+                next: () => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
@@ -102,13 +97,13 @@ export class SignupComponent extends ClearObservable implements OnInit {
             });
     }
 
-    public facebookSignup() {
+    public facebookSignup(): void {
         this.auth.facebookAuth()
             .pipe(
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (resData: any | UserCredential) => {
+                next: () => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {

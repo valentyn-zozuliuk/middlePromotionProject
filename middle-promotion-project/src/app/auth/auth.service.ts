@@ -1,7 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, from, map, mergeMap, Observable, of, tap, throwError, withLatestFrom } from 'rxjs';
+import { BehaviorSubject,
+         catchError,
+         combineLatest,
+         finalize,
+         forkJoin,
+         from,
+         map, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { UserAuthCredentials, UserCredentials } from '../model/credentials.model';
 import { UserAdditionalInfo, UserMainInfo, UserProfile } from '../model/user.model';
 import { initializeApp } from 'firebase/app';
@@ -16,7 +22,7 @@ import { getAuth,
          createUserWithEmailAndPassword,
          signOut
         } from "firebase/auth";
-import { ChangePasswordReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
+import { ChangePasswordReturnData, ReauthenticateReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
 
 interface AuthConfig {
     isSignupMode: boolean;
@@ -37,7 +43,7 @@ export class AuthService {
         initializeApp(environment.firebaseConfig);
     }
 
-    signup(userCredentials: UserAuthCredentials) {
+    public signup(userCredentials: UserAuthCredentials): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const auth = getAuth();
         const authConfig = {
             isSignupMode: true,
@@ -51,7 +57,7 @@ export class AuthService {
         );
     }
 
-    login(userCredentials: UserCredentials) {
+    public login(userCredentials: UserCredentials): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const auth = getAuth();
         const authConfig = {
             isSignupMode: false,
@@ -65,17 +71,19 @@ export class AuthService {
         );
     }
 
-    facebookAuth() {
+    public facebookAuth(): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const provider = new FacebookAuthProvider();
         return this.authenticateWithPopup(provider);
     }
 
-    googleAuth() {
+    public googleAuth(): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const provider = new GoogleAuthProvider();
         return this.authenticateWithPopup(provider);
     }
 
-    private authenticateWithPopup(provider: GoogleAuthProvider | FacebookAuthProvider) {
+    private authenticateWithPopup(
+        provider: GoogleAuthProvider | FacebookAuthProvider
+    ): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const auth = getAuth();
         const authConfig = {
             isSignupMode: false,
@@ -88,7 +96,7 @@ export class AuthService {
             authConfig);
     }
 
-    private handleAuthentication(additionalInfo: UserAdditionalInfo, mainInfo: UserMainInfo) {
+    private handleAuthentication(additionalInfo: UserAdditionalInfo, mainInfo: UserMainInfo): void {
         const expirationDate = new Date(new Date().getTime() + mainInfo.expiresIn * 1000);
         const image = additionalInfo.avatar?.src ? additionalInfo.avatar.src : mainInfo.photoURL;
         const name = additionalInfo.information.name ? additionalInfo.information.name : mainInfo.displayName;
@@ -101,7 +109,7 @@ export class AuthService {
         localStorage.setItem('userData', JSON.stringify(user));
     }
 
-    autoLogin() {
+    public autoLogin(): void {
         const userData = localStorage.getItem('userData');
 
         if (!userData) {
@@ -139,7 +147,7 @@ export class AuthService {
         }
     }
 
-    logout() {
+    public logout(): void {
         this.user.next(null);
         this.tempToken = "";
         this.router.navigate(['/auth/login']);
@@ -155,24 +163,24 @@ export class AuthService {
         signOut(auth);
     }
 
-    autoLogout(expirationDuration: number) {
+    private autoLogout(expirationDuration: number): void {
         this.tokenExpirationTimer = setTimeout(() => {
             this.logout();
         } , expirationDuration)
     }
 
-    resetPassword(email: string) {
+    public resetPassword(email: string): Observable<void> {
         const auth = getAuth();
         return from(sendPasswordResetEmail(auth, email));
     }
 
-    private saveUserDetails(uid: string, userDetails: UserAdditionalInfo) {
+    private saveUserDetails(uid: string, userDetails: UserAdditionalInfo): Observable<UserAdditionalInfo> {
         return this.http.put<UserAdditionalInfo>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`,
              userDetails);
     }
 
-    private fetchUserDetails(uid: string, isSignupMode: boolean) {
+    private fetchUserDetails(uid: string, isSignupMode: boolean): Observable<UserAdditionalInfo> {
         return combineLatest([this.http.get<UserAdditionalInfo>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`),
             this.updateUserType(isSignupMode, uid)])
@@ -189,7 +197,7 @@ export class AuthService {
     private authAlgorithm(
         inputObservable$: Observable<any | UserCredential>,
         authConfig: AuthConfig
-    ) {
+    ): Observable<[UserAdditionalInfo, UserMainInfo]> {
         return inputObservable$.pipe(
             map((resData: any | UserCredential) => {
                 this.tempToken = resData._tokenResponse.idToken;
@@ -245,37 +253,37 @@ export class AuthService {
         );
     }
 
-    reauthenticateUser(data: UpdatePasswordData, email: string) {
-        return this.http.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+    public reauthenticateUser(data: UpdatePasswordData, email: string): Observable<ReauthenticateReturnData> {
+        return this.http.post<ReauthenticateReturnData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
             environment.firebaseConfig.apiKey, {email, password: data.oldPassword, returnSecureToken: false});
     }
 
-    changePassword(idToken: string, password: string) {
+    public changePassword(idToken: string, password: string): Observable<ChangePasswordReturnData> {
         return this.http.post<ChangePasswordReturnData>
             ('https://identitytoolkit.googleapis.com/v1/accounts:update?key=' +
             environment.firebaseConfig.apiKey, {idToken, password});
     }
 
-    updateUserInfo(data: UpdateInformationData, uid: string) {
+    public updateUserInfo(data: UpdateInformationData, uid: string): Observable<UserAdditionalInfo> {
         return this.http.put<UserAdditionalInfo>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/information.json`,
              { age: data.age, name: data.firstName + ' ' + data.lastName});
     }
 
-    updateAvatar(avatar: string, uid: string) {
-
+    public updateAvatar(avatar: string, uid: string): Observable<UserAdditionalInfo> {
         return this.http.put<UserAdditionalInfo>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/avatar.json`,
             { src: avatar });
     }
 
-    updateUserType(isDefaultUser: boolean, uid: string | null) {
+    public updateUserType(isDefaultUser: boolean, uid: string | null): Observable<boolean> {
         return this.http.put<boolean>(
             `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/isDefaultUser.json`,
             isDefaultUser);
     }
 
-    updateUserProfile(name: string = '', age: number = 0, image = '') {
+    public updateUserProfile(name: string = '', age: number = 0, image = ''): void {
         const userData = localStorage.getItem('userData');
 
         if (!userData) {

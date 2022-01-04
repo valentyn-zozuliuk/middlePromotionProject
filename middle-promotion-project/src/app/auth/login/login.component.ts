@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserCredential } from '@firebase/auth';
 import { takeUntil } from 'rxjs';
 import { UserCredentials } from 'src/app/model/credentials.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
@@ -49,7 +48,7 @@ export class LoginComponent extends ClearObservable implements OnInit {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (response: any | UserCredential) => {
+                next: () => {
                     this.loading = false;
                 },
                 error: error => {
@@ -59,13 +58,13 @@ export class LoginComponent extends ClearObservable implements OnInit {
             });
     }
 
-    public googleLogin() {
+    public googleLogin(): void {
         this.auth.googleAuth()
             .pipe(
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (resData: any | UserCredential) => {
+                next: () => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {
@@ -75,13 +74,13 @@ export class LoginComponent extends ClearObservable implements OnInit {
             });
     }
 
-    public facebookLogin() {
+    public facebookLogin(): void {
         this.auth.facebookAuth()
             .pipe(
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (resData: any | UserCredential) => {
+                next: () => {
                     this.router.navigate(['/auth/login']);
                 },
                 error: error => {

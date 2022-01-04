@@ -10,11 +10,20 @@ export interface UpdatePasswordData {
     confirmNewPassword: string;
 }
 
-export interface ChangePasswordReturnData{
+export interface ChangePasswordReturnData {
     email: string;
     emailVerified: boolean;
     idToken: string;
     kind: string;
     localId: string;
     passwordHash: string;
+}
+
+export interface ReauthenticateReturnData {
+    email: string;
+    idToken: string;
+    refreshToken: string;
+    expiresIn: string;
+    localId: string;
+    registered: boolean;
 }

@@ -5,9 +5,7 @@ import { AuthService } from "./auth.service";
 
 @Injectable({providedIn: 'root'})
 export class AuthReverseGuard implements CanActivate {
-    constructor(private auth: AuthService, private router: Router) {
-
-    }
+    constructor(private auth: AuthService, private router: Router) { }
 
     canActivate(
         route: ActivatedRouteSnapshot,
@@ -17,7 +15,6 @@ export class AuthReverseGuard implements CanActivate {
                 take(1),
                 map((user) => {
                     const isNotAuth = !user;
-
                     return isNotAuth ? isNotAuth : this.router.createUrlTree(['/user-console']);
                 })
             );
