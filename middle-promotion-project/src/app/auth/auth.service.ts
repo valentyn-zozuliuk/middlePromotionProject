@@ -30,6 +30,18 @@ interface AuthConfig {
     defaultSignin: boolean;
 }
 
+interface AddtitionalCredetialsInfo extends UserCredential {
+    _tokenResponse: {
+        email: string,
+        localId: string,
+        idToken: string,
+        expiresIn: number,
+        displayName: string,
+        photoURL: string,
+        isNewUser: boolean
+    };
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -195,26 +207,29 @@ export class AuthService {
     }
 
     private authAlgorithm(
-        inputObservable$: Observable<any | UserCredential>,
+        inputObservable$: Observable<UserCredential>,
         authConfig: AuthConfig
     ): Observable<[UserAdditionalInfo, UserMainInfo]> {
         return inputObservable$.pipe(
-            map((resData: any | UserCredential) => {
-                this.tempToken = resData._tokenResponse.idToken;
+            map((resData: UserCredential) => {
+                const dataParsed: AddtitionalCredetialsInfo = JSON.parse(JSON.stringify(resData));
+
+                this.tempToken = dataParsed._tokenResponse.idToken;
                 this.errorOccured = false;
 
+
                 const user: UserMainInfo = {
-                    email: resData._tokenResponse.email,
-                    localId: resData._tokenResponse.localId,
-                    idToken: resData._tokenResponse.idToken,
-                    expiresIn: +resData._tokenResponse.expiresIn,
-                    displayName: resData._tokenResponse.displayName,
+                    email: dataParsed._tokenResponse.email,
+                    localId: dataParsed._tokenResponse.localId,
+                    idToken: dataParsed._tokenResponse.idToken,
+                    expiresIn: +dataParsed._tokenResponse.expiresIn,
+                    displayName: dataParsed._tokenResponse.displayName,
                     photoURL: resData.user.photoURL
                 };
 
                 return {
                     user: user,
-                    isNewUser: resData._tokenResponse.isNewUser
+                    isNewUser: dataParsed._tokenResponse.isNewUser
                 }
             }),
             mergeMap((resData: { user: UserMainInfo, isNewUser: boolean | undefined}) => {

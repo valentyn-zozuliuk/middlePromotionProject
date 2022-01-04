@@ -6,7 +6,7 @@ export class UserProfile {
         private _token: string,
         private _tokenExpirationDate: Date,
         public name: string,
-        public image: string | undefined,
+        public image: string | undefined | null,
         public age: number | undefined | null,
         public isDefaultUser: boolean) {
     }
@@ -33,5 +33,5 @@ export interface UserMainInfo {
     idToken: string;
     expiresIn: number,
     displayName: string;
-    photoURL?: string;
+    photoURL?: string | null;
 }
