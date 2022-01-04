@@ -8,7 +8,7 @@ import { AuthService } from "./auth.service";
 export class AuthInterceptorService implements HttpInterceptor {
     constructor(public auth: AuthService) { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(request: HttpRequest<Object | string | number>, next: HttpHandler): Observable<HttpEvent<Object | string | number>> {
         return this.auth.user.pipe(
             take(1),
             exhaustMap(user => {
