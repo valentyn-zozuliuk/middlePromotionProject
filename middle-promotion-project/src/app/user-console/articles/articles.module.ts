@@ -22,7 +22,8 @@ const routes: Routes = [
             { path: '', component: ArticleListComponent },
             { path: 'new', component: ArticleEditComponent },
             { path: ':id', component: ArticleDescComponent, resolve: { article: ArticlesResolver }},
-            { path: ':id/edit', component: ArticleEditComponent, resolve: { article: ArticlesResolver }, canActivate: [ArticleEditGuard]}
+            { path: ':id/edit', component: ArticleEditComponent,
+              resolve: { article: ArticlesResolver }, canActivate: [ArticleEditGuard]}
         ]
     }
 ];

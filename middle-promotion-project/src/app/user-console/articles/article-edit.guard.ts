@@ -8,11 +8,12 @@ import { ArticlesService } from "./articles.service";
 
 @Injectable({providedIn: 'root'})
 export class ArticleEditGuard implements CanActivate {
-    constructor(private articlesService: ArticlesService, private auth: AuthService, private router: Router) {
+    constructor(private articlesService: ArticlesService, private auth: AuthService, private router: Router) { }
 
-    }
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         this.articlesService.getArtcleById(route.params['id']);
         return combineLatest([this.auth.user, this.articlesService.singleArticle$])
                 .pipe(
@@ -20,7 +21,8 @@ export class ArticleEditGuard implements CanActivate {
                     map(([user, article]: [UserProfile | null, Article | undefined]) => {
 
                         if (user && article) {
-                            return user?.id === article?.createdBy.uid ? true : this.router.createUrlTree(['/auth/login']);
+                            return user?.id === article?.createdBy.uid ? true :
+                                this.router.createUrlTree(['/auth/login']);
                         }
 
                         return this.router.createUrlTree(['/auth/login']);

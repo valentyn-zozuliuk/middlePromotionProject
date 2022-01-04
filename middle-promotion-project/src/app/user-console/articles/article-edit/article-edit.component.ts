@@ -221,12 +221,18 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
 
             this.editMode ?
                 this.articlesService.updateArticle(article, this.article?.uid)
+                    .pipe(
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe({
                         next: () => this.router.navigate(['/user-console/articles']),
                         error: () => this.showLoading = false,
                         complete: () => this.showLoading = false
                     }):
                 this.articlesService.addArticle(article)
+                    .pipe(
+                        takeUntil(this.destroy$)
+                    )
                     .subscribe({
                         next: () => this.router.navigate(['/user-console/articles']),
                         error: () => this.showLoading = false,

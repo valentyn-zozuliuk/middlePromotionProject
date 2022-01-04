@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, debounce, map, Observable, switchMap, tap, throwError, timer } from 'rxjs';
+import { BehaviorSubject, catchError, debounce, map, Observable, of, switchMap, tap, throwError, timer } from 'rxjs';
 import { MessagesService } from 'src/app/global-services/messages.service';
-import { Article, ArticleOrders, ArticleTypes, ArticleTypesFilter } from 'src/app/model/article.model';
+import { Article, ArticleOrders, ArticleTypesFilter } from 'src/app/model/article.model';
 import { UserProfile } from 'src/app/model/user.model';
 
 @Injectable({
@@ -13,13 +13,13 @@ export class ArticlesService {
     private singleArticleSubject = new BehaviorSubject<Article | undefined>(undefined);
     private applyDebounce: boolean = false;
 
-    articles$: Observable<Article[] | null> = this.articlesSubject.asObservable()
+    public articles$: Observable<Article[] | null> = this.articlesSubject.asObservable()
         .pipe(
             map((articles: Article[] | null) => articles ? this.applyFiltersForArticles(articles) : articles),
             debounce(() => this.applyDebounce ? timer(300) : timer(0))
         );
 
-    singleArticle$: Observable<Article | undefined> = this.singleArticleSubject.asObservable();
+    public singleArticle$: Observable<Article | undefined> = this.singleArticleSubject.asObservable();
 
     private currentFilters: { type: ArticleTypesFilter, order: ArticleOrders, query: string } = {
         type: ArticleTypesFilter.ALL,
@@ -33,12 +33,12 @@ export class ArticlesService {
         this.getArticles();
     }
 
-    getArticles() {
+    private getArticles(): void {
         this.fetchArtciles()
             .subscribe();
     }
 
-    fetchArtciles() {
+    private fetchArtciles(): Observable<Article[]> {
         return this.http.get<{[key: string]: Article}>
             (`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`)
                 .pipe(
@@ -50,7 +50,7 @@ export class ArticlesService {
                 );
     }
 
-    deleteArticle(uid: string | undefined) {
+    public deleteArticle(uid: string | undefined): void {
         if (uid) {
             this.http.delete(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`).subscribe();
             this.fetchedArticles = this.fetchedArticles.filter(artcile => artcile.uid !== uid);
@@ -58,15 +58,18 @@ export class ArticlesService {
         }
     }
 
-    updateArticle(articleUpd: Article, uid: string | undefined) {
+    public updateArticle(articleUpd: Article, uid: string | undefined): Observable<Article[]> {
 
         if (uid) {
-            return this.http.put(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, articleUpd)
+            return this.http.put<Article>(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles/${uid}.json`, articleUpd)
                 .pipe(
                     tap(() => {
                         this.fetchedArticles = this.fetchedArticles.map(article => article.uid === uid ? {...articleUpd, uid: uid} : article);
                         this.articlesSubject.next(this.fetchedArticles);
                     }),
+                    switchMap(() =>
+                        of(this.fetchedArticles)
+                    ),
                     catchError(error => {
                         this.messages.showErrors('Error occured while editing the Article. Please try again later.');
                         return throwError(() => new Error(error));
@@ -77,7 +80,7 @@ export class ArticlesService {
         return this.addArticle(articleUpd);
     }
 
-    addArticle(articleAdd: Article) {
+    public addArticle(articleAdd: Article): Observable<Article[]> {
         return this.http.post(`https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json`, articleAdd)
             .pipe(
                 switchMap(() =>
@@ -90,7 +93,7 @@ export class ArticlesService {
             );
     }
 
-    mapArticlesToArray(response: {[key: string]: Article}) {
+    private mapArticlesToArray(response: {[key: string]: Article}): Article[] {
         const articles: Article[] = [];
         for (let uid in response) {
             response[uid].uid = uid;
@@ -100,7 +103,7 @@ export class ArticlesService {
         return articles;
     }
 
-    private applyFiltersForArticles(articles: Article[]) {
+    private applyFiltersForArticles(articles: Article[]): Article[] {
         return articles
             .filter((article: Article) => {
                 let filterPassed = true;
@@ -122,35 +125,35 @@ export class ArticlesService {
             });
     }
 
-    updateOrderFilter(order: ArticleOrders) {
+    public updateOrderFilter(order: ArticleOrders): void {
         this.applyDebounce = false;
         this.currentFilters.order = order;
         this.articlesSubject.next(this.fetchedArticles);
     }
 
-    updateTypeFilter(type: ArticleTypesFilter) {
+    public updateTypeFilter(type: ArticleTypesFilter): void {
         this.applyDebounce = false;
         this.currentFilters.type = type;
         this.articlesSubject.next(this.fetchedArticles);
     }
 
-    updateQueryFilter(query: string) {
+    public updateQueryFilter(query: string): void {
         this.applyDebounce = true;
         this.currentFilters.query = query;
         this.articlesSubject.next(this.fetchedArticles);
     }
 
-    resetFilters() {
+    public resetFilters(): void {
         this.currentFilters.order = ArticleOrders.ASC;
         this.currentFilters.type = ArticleTypesFilter.ALL;
     }
 
-    getArtcleById(uid: string) {
+    public getArtcleById(uid: string): void {
         this.applyDebounce = false;
         this.singleArticleSubject.next(this.fetchedArticles.find((article: Article) => article.uid === uid));
     }
 
-    updateAuthorsArticles(userProfile: UserProfile) {
+    public updateAuthorsArticles(userProfile: UserProfile): void {
         this.fetchedArticles.forEach((article) =>
             article.createdBy.uid === userProfile.id && this.updateAuthorsData(article, userProfile));
 
@@ -159,12 +162,12 @@ export class ArticlesService {
                 .subscribe();
     }
 
-    updateAuthorsData(article: Article, userProfile: UserProfile) {
+    private updateAuthorsData(article: Article, userProfile: UserProfile): void {
         article.createdBy.image = userProfile.image ? userProfile.image : '';
         article.createdBy.name = userProfile.name;
     }
 
-    prepareArticlesForUpdate() {
+    private prepareArticlesForUpdate(): {[key: string]: Article } {
         const articles: {[key: string]: Article } =
             this.fetchedArticles.reduce((prev: {[key: string]: Article } , curr: Article, index) => {
                 return {

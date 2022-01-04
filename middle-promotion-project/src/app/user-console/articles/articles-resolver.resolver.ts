@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    Router, Resolve,
+    Resolve,
     RouterStateSnapshot,
     ActivatedRouteSnapshot,
     ActivatedRoute
 } from '@angular/router';
-import { delay, Observable, of, pipe, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Article } from 'src/app/model/article.model';
 import { ArticlesService } from './articles.service';
 
