@@ -11,18 +11,18 @@ import { GlobalEventsService } from './global-services/global-events.service';
     }
 })
 export class AppComponent implements OnInit {
-    title = 'middle-promotion-project';
+    public title = 'middle-promotion-project';
 
     constructor(private auth: AuthService,
                 private globalEventsService: GlobalEventsService,
                 private elRef: ElementRef) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.auth.autoLogin();
     }
 
-    onClick(event: Event) {
+    public onClick(): void {
         this.globalEventsService.catchClick();
     }
 }
