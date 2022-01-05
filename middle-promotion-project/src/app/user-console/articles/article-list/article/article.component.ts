@@ -39,9 +39,11 @@ export class ArticleComponent extends ClearObservable implements OnInit {
     }
 
     public ifDaysAgoNeeded(time: number): boolean {
+        const twentyDaysInMiliseconds = 1728000000;
+
         if (time) {
             const currentDate = new Date().getTime();
-            return currentDate - time >= 1728000000;
+            return currentDate - time >= twentyDaysInMiliseconds;
         }
 
         return false;

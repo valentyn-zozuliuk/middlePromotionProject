@@ -10,8 +10,8 @@ import { ClearObservable } from 'src/app/shared/clear-observable/clear-observabl
     styleUrls: ['./article-desc.component.scss']
 })
 export class ArticleDescComponent extends ClearObservable implements OnInit {
-    article: Article | null = null;
-    articleTypes: {business: ArticleTypes, productivity: ArticleTypes, meida: ArticleTypes} = {
+    public article: Article | null = null;
+    public articleTypes: {business: ArticleTypes, productivity: ArticleTypes, meida: ArticleTypes} = {
         business: ArticleTypes.BUSINESS,
         productivity: ArticleTypes.PRODUCTIVITY,
         meida: ArticleTypes.MEDIA,
@@ -19,7 +19,7 @@ export class ArticleDescComponent extends ClearObservable implements OnInit {
 
     constructor(private route: ActivatedRoute, public router: Router) {
         super();
-     }
+    }
 
     ngOnInit(): void {
         this.route.data
@@ -35,10 +35,12 @@ export class ArticleDescComponent extends ClearObservable implements OnInit {
             });
     }
 
-    ifDaysAgoNeeded(time: number) {
+    public ifDaysAgoNeeded(time: number): boolean {
+        const twentyDaysInMiliseconds = 1728000000;
+
         if (time) {
             const currentDate = new Date().getTime();
-            return currentDate - time >= 1728000000;
+            return currentDate - time >= twentyDaysInMiliseconds;
         }
 
         return false;

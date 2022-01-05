@@ -16,22 +16,22 @@ import { ArticlesService } from '../articles.service';
     styleUrls: ['./article-edit.component.scss']
 })
 export class ArticleEditComponent extends ClearObservable implements OnInit {
-    editMode: boolean = false;
-    selectedTypeFilter!: string | undefined;
-    articleForm!: FormGroup;
-    showTypeFilterMenu: boolean = false;
-    userProfile: UserProfile | null = null;
-    article: Article | null = null;
-    errors$: Observable<string[]> | null = null;
-    showLoading: boolean = false;
+    public editMode: boolean = false;
+    public selectedTypeFilter!: string | undefined;
+    public articleForm!: FormGroup;
+    public showTypeFilterMenu: boolean = false;
+    private userProfile: UserProfile | null = null;
+    private article: Article | null = null;
+    public errors$: Observable<string[]> | null = null;
+    public showLoading: boolean = false;
 
-    imageHandler: { imageName: string, uploadedImage: string, errorImageUpload: string } = {
+    public imageHandler: { imageName: string, uploadedImage: string, errorImageUpload: string } = {
         imageName: "",
         uploadedImage: "",
         errorImageUpload: ""
     };
 
-    articleTypeFilters: ArticleTypeFilter[] = [
+    public articleTypeFilters: ArticleTypeFilter[] = [
         { name: 'Business', code: ArticleTypesFilter.BUSINESS, selected: false },
         { name: 'Productivity', code: ArticleTypesFilter.PRODUCTIVITY, selected: false },
         { name: 'Media', code: ArticleTypesFilter.MEDIA, selected: false },
@@ -103,26 +103,26 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
             .subscribe(() => this.showTypeFilterMenu = false);
     }
 
-    preselectImage() {
+    private preselectImage(): void {
         this.imageHandler.uploadedImage = this.article?.coverImage ?
                     this.article.coverImage : ''
     }
 
-    preselectType() {
+    private preselectType(): void {
         this.articleTypeFilters.forEach(filter => filter.code === this.article?.type && (filter.selected = true));
         this.getSelectedType();
     }
 
-    backToDashboard() {
+    public backToDashboard(): void {
         this.router.navigate(['/user-console/articles']);
     }
 
-    toggleType(e: Event) {
+    public toggleType(e: Event): void {
         e.stopPropagation();
         this.showTypeFilterMenu = !this.showTypeFilterMenu;
     }
 
-    selectType(type: ArticleTypeFilter, e: Event | null = null, index: number | null = null) {
+    public selectType(type: ArticleTypeFilter, e: Event | null = null, index: number | null = null): void {
         e && e.stopPropagation();
         index !== null && this.refreshTypeFilter(index);
         this.getSelectedType();
@@ -132,7 +132,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         });
     }
 
-    refreshTypeFilter(index: number) {
+    private refreshTypeFilter(index: number): void {
         this.articleTypeFilters.forEach((typeFilter: ArticleTypeFilter) => {
             typeFilter.selected = false;
         });
@@ -140,19 +140,19 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.articleTypeFilters[index].selected = true;
     }
 
-    getSelectedType() {
+    private getSelectedType(): void {
         this.selectedTypeFilter = this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
             return typeFilter.selected;
         })?.name;
     }
 
-    getSelectedTypeEnum() {
+    private getSelectedTypeEnum(): ArticleTypesFilter | undefined {
         return this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
             return typeFilter.selected;
         })?.code;
     }
 
-    fileBrowseHandler(e: Event) {
+    public fileBrowseHandler(e: Event): void {
         this.imageHandler.uploadedImage = "";
         this.imageHandler.imageName = "";
         this.imageHandler.errorImageUpload = "";
@@ -163,7 +163,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         }
     }
 
-    onFileDropped(files: FileList) {
+    public onFileDropped(files: FileList): void {
         this.imageHandler.uploadedImage = "";
         this.imageHandler.imageName = "";
         this.imageHandler.errorImageUpload = "";
@@ -171,7 +171,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.showPreview(files);
     }
 
-    showPreview(files: FileList | null) {
+    private showPreview(files: FileList | null): void {
         if (files) {
             const mimeType = files[0].type;
 
@@ -195,7 +195,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         }
     }
 
-    onSubmitForm() {
+    public onSubmitForm(): void {
         this.imageHandler.errorImageUpload = "";
 
         if (!this.imageHandler.uploadedImage) {
