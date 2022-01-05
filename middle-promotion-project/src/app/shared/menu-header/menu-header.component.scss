@@ -44,14 +44,19 @@ input:disabled:hover {
         align-items: center;
 
         .user-avatar {
+            position: relative;
             height: 48px;
             width: 48px;
             border-radius: 50%;
             overflow: hidden;
 
             .avatar-image {
-                width: 48px;
-                height: 48px;
+                position: absolute;
+                width: 74px;
+                height: auto;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
         }
     }
