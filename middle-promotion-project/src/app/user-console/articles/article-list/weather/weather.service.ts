@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, tap, throwError } from 'rxjs';
 import { MessagesService } from 'src/app/global-services/messages.service';
 import { City, Weather, WeatherResponce } from 'src/app/model/weather-info.model';
 
@@ -19,12 +19,11 @@ export const weatherRequestConfig = {
 export class WeatherService {
 
     private weatherSubject = new BehaviorSubject<Weather | null>(null);
-    weatherInfo$ = this.weatherSubject.asObservable();
+    public weatherInfo$ = this.weatherSubject.asObservable();
 
-    constructor(private http: HttpClient, private messages: MessagesService) {
-    }
+    constructor(private http: HttpClient, private messages: MessagesService) { }
 
-    getWeatherInfo(city: City, code: string) {
+    public getWeatherInfo(city: City, code: string): void {
         const weatherParams = new HttpParams().set('q', city + ',' + code).set('units', 'metric');
 
         const weatherInfo$ = this.http.get<WeatherResponce>(weatherRequestConfig.baseUrl, {
