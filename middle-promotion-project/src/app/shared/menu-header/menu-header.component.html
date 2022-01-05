@@ -5,7 +5,8 @@
 <div class="user-info" (click)="toggleMenu($event)">
     <div class="avatar-wrapper">
         <div class="user-avatar">
-            <img class="avatar-image" [src]="user?.image ? user?.image : 'assets/images/no-avatar-img.png'"
+            <img class="avatar-image" [ngClass]="{'image-not-default' : user?.image}"
+                 [src]="user?.image ? user?.image : 'assets/images/no-avatar-img.png'"
                  alt="image">
         </div>
     </div>

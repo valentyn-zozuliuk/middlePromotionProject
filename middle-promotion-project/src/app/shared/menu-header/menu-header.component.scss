@@ -51,12 +51,17 @@ input:disabled:hover {
             overflow: hidden;
 
             .avatar-image {
-                position: absolute;
-                width: 74px;
-                height: auto;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                height: 48px;
+                width: 48px;
+
+                &.image-not-default {
+                    position: absolute;
+                    width: 74px;
+                    height: auto;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
             }
         }
     }

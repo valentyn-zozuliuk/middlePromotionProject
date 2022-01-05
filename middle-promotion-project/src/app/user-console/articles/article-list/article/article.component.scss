@@ -86,6 +86,7 @@
         .bottom-desc {
             .avatar-wrapper {
                 .user-avatar {
+                    position: relative;
                     height: 32px;
                     width: 32px;
                     border-radius: 50%;
@@ -93,8 +94,17 @@
                     margin-right: 10px;
 
                     .avatar-image {
-                        width: 32px;
                         height: 32px;
+                        width: 32px;
+
+                        &.image-not-default {
+                            position: absolute;
+                            width: 49px;
+                            height: auto;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
                     }
                 }
 

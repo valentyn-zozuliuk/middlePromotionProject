@@ -40,7 +40,8 @@
         <div class="bottom-desc d-flex justify-content-between">
             <div class="avatar-wrapper d-flex justify-content-center align-items-center">
                 <div class="user-avatar">
-                    <img class="avatar-image" [src]="article.createdBy.image ?
+                    <img class="avatar-image" [ngClass]="{'image-not-default' : article.createdBy.image}"
+                        [src]="article.createdBy.image ?
                         article.createdBy.image : 'assets/images/no-avatar-img.png'"
                             alt="image">
                 </div>
