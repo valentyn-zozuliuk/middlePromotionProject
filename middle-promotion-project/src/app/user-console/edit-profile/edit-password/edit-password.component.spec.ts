@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { EditPasswordComponent } from './edit-password.component';
 
@@ -8,6 +9,7 @@ describe('EditPasswordComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: [ReactiveFormsModule],
             declarations: [EditPasswordComponent]
         })
             .compileComponents();

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ArticleDescComponent } from './article-desc.component';
 
@@ -8,7 +9,8 @@ describe('ArticleDescComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ArticleDescComponent]
+            declarations: [ArticleDescComponent],
+            imports: [RouterTestingModule]
         })
             .compileComponents();
     });

@@ -30,15 +30,17 @@ export class EditAvatarComponent extends ClearObservable implements OnInit, OnCh
     }
 
     ngOnInit(): void {
-        this.avatarUpdateEmitter
-        .pipe(
-            takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-            this.uploadedImage && this.imageName ?
-                this.avatarUpdate.emit(this.uploadedImage)
-            : this.errorImageUpload = 'Select new image for upload';
-        })
+        if (!!this.avatarUpdateEmitter) {
+            this.avatarUpdateEmitter
+                .pipe(
+                    takeUntil(this.destroy$)
+                )
+                .subscribe(() => {
+                    this.uploadedImage && this.imageName ?
+                        this.avatarUpdate.emit(this.uploadedImage)
+                    : this.errorImageUpload = 'Select new image for upload';
+                });
+        }
     }
 
     public fileBrowseHandler(e: Event): void {
