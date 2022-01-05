@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { combineLatest, map, Observable, take, withLatestFrom } from "rxjs";
+import { combineLatest, map, Observable, take } from "rxjs";
 import { AuthService } from "src/app/auth/auth.service";
 import { Article } from "src/app/model/article.model";
 import { UserProfile } from "src/app/model/user.model";

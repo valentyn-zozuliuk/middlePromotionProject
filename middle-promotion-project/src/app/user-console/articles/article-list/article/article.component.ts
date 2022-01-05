@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
@@ -16,8 +16,8 @@ export class ArticleComponent extends ClearObservable implements OnInit {
     @Input() article: Article | null = null;
     @Input() userInfo: UserProfile | null = null;
 
-    showEditMenu: boolean = false;
-    articleTypes: {business: ArticleTypes, productivity: ArticleTypes, meida: ArticleTypes} = {
+    public showEditMenu: boolean = false;
+    public articleTypes: {business: ArticleTypes, productivity: ArticleTypes, meida: ArticleTypes} = {
         business: ArticleTypes.BUSINESS,
         productivity: ArticleTypes.PRODUCTIVITY,
         meida: ArticleTypes.MEDIA,
@@ -38,7 +38,7 @@ export class ArticleComponent extends ClearObservable implements OnInit {
             .subscribe(() => this.showEditMenu = false);
     }
 
-    ifDaysAgoNeeded(time: number) {
+    public ifDaysAgoNeeded(time: number): boolean {
         if (time) {
             const currentDate = new Date().getTime();
             return currentDate - time >= 1728000000;
@@ -47,24 +47,24 @@ export class ArticleComponent extends ClearObservable implements OnInit {
         return false;
     }
 
-    toggleMenu(e: Event) {
+    public toggleMenu(e: Event): void {
         e.stopPropagation();
         this.showEditMenu = !this.showEditMenu;
     }
 
-    editArticle(e: Event) {
+    public editArticle(e: Event): void {
         e.stopPropagation();
         this.showEditMenu = false;
         this.router.navigate(['/user-console/articles/' + this.article?.uid + '/edit']);
     }
 
-    deleteArticle(e: Event) {
+    public deleteArticle(e: Event): void {
         e.stopPropagation();
         this.showEditMenu = false;
         this.articlesService.deleteArticle(this.article?.uid);
     }
 
-    showArticle() {
+    public showArticle(): void {
         this.router.navigate(['/user-console/articles/' + this.article?.uid]);
     }
 }

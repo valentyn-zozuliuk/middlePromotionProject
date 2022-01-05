@@ -15,5 +15,4 @@ export class TextTruncatePipe implements PipeTransform {
 
         return value;
     }
-
 }

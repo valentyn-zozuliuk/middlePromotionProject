@@ -12,5 +12,4 @@ export class WeatherPipe implements PipeTransform {
 
         return +Math.round(value);
     }
-
 }

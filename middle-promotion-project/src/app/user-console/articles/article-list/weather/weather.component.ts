@@ -20,10 +20,10 @@ interface WeatherCity {
 })
 export class WeatherComponent extends ClearObservable implements OnInit {
 
-    weatherInfo$: Observable<Weather | null> | null = null;
-    errors$: Observable<string[]> | null = null;
-    showWeatherMenu: boolean = false;
-    weatherCities: WeatherCity[] = [
+    public weatherInfo$: Observable<Weather | null> | null = null;
+    public errors$: Observable<string[]> | null = null;
+    public showWeatherMenu: boolean = false;
+    public weatherCities: WeatherCity[] = [
         { name: City.LVIV, code: 'UA', displayCode: 'Ua', selected: true },
         { name: City.KYIV, code: 'UA', displayCode: 'Ua', selected: false },
         { name: City.ODESA, code: 'UA', displayCode: 'Ua', selected: false },
@@ -48,19 +48,19 @@ export class WeatherComponent extends ClearObservable implements OnInit {
             .subscribe(() => this.showWeatherMenu = false);
     }
 
-    toggleMenu(e: Event) {
+    public toggleMenu(e: Event): void {
         e.stopPropagation();
         this.showWeatherMenu = !this.showWeatherMenu;
     }
 
-    selectItem(city: WeatherCity, e: Event | null = null, index: number | null = null) {
+    public selectItem(city: WeatherCity, e: Event | null = null, index: number | null = null): void {
         e && e.stopPropagation();
         index !== null && this.refreshSelectedCity(index);
         this.weatherService.getWeatherInfo(city.name, city.code);
         this.showWeatherMenu = false;
     }
 
-    getCountryText(country: Country) {
+    public getCountryText(country: Country): string {
         switch (country) {
             case Country.UA:
                 return 'Ua';
@@ -69,7 +69,7 @@ export class WeatherComponent extends ClearObservable implements OnInit {
         }
     }
 
-    refreshSelectedCity(index: number) {
+    private refreshSelectedCity(index: number): void {
         this.weatherCities.forEach((city: WeatherCity) => {
             city.selected = false;
         });

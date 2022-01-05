@@ -19,5 +19,4 @@ export class ArticleDaysAgoPipe implements PipeTransform {
                 return daysAgo + ' days ago';
         }
     }
-
 }

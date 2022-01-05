@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 import { Observable, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { GlobalEventsService } from 'src/app/global-services/global-events.service';
-import { ArticleOrders, ArticleOrderFilter, ArticleTypeFilter, ArticleTypes, Article, ArticleTypesFilter } from 'src/app/model/article.model';
+import {
+    ArticleOrders,
+    ArticleOrderFilter,
+    ArticleTypeFilter, Article, ArticleTypesFilter
+} from 'src/app/model/article.model';
 import { UserProfile } from 'src/app/model/user.model';
 import { ClearObservable } from 'src/app/shared/clear-observable/clear-observable';
 import { ArticlesService } from '../articles.service';
@@ -14,26 +18,26 @@ import { ArticlesService } from '../articles.service';
     styleUrls: ['./article-list.component.scss']
 })
 export class ArticleListComponent extends ClearObservable implements OnInit {
-    showTypeFilterMenu: boolean = false;
-    showOrderFilterMenu: boolean = false;
-    selectedTypeFilter: string | undefined = undefined;
-    selectedOrderFilter: string | undefined = undefined;
+    public showTypeFilterMenu: boolean = false;
+    public showOrderFilterMenu: boolean = false;
+    public selectedTypeFilter: string | undefined = undefined;
+    public selectedOrderFilter: string | undefined = undefined;
 
-    articleTypeFilters: ArticleTypeFilter[] = [
+    public articleTypeFilters: ArticleTypeFilter[] = [
         { name: 'All Categories', code: ArticleTypesFilter.ALL, selected: true },
         { name: 'Business', code: ArticleTypesFilter.BUSINESS, selected: false },
         { name: 'Productivity', code: ArticleTypesFilter.PRODUCTIVITY, selected: false },
         { name: 'Media', code: ArticleTypesFilter.MEDIA, selected: false },
     ];
 
-    articleOrderFilters: ArticleOrderFilter[] = [
+    public articleOrderFilters: ArticleOrderFilter[] = [
         { name: 'Ascending', code: ArticleOrders.ASC, selected: true },
         { name: 'Descending', code: ArticleOrders.DESC, selected: false }
     ];
 
-    articles$: Observable<Article[] | null> | null = null;
+    public articles$: Observable<Article[] | null> | null = null;
 
-    userInfo: UserProfile | null = null;
+    public userInfo: UserProfile | null = null;
 
     constructor(
         private router: Router,
@@ -69,21 +73,21 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
             });
     }
 
-    addNewArticle() {
+    public addNewArticle(): void {
         this.router.navigate(['/user-console/articles/new']);
     }
 
-    toggleTypeFilter(e: Event) {
+    public toggleTypeFilter(e: Event): void {
         e.stopPropagation();
         this.showTypeFilterMenu = !this.showTypeFilterMenu;
     }
 
-    toggleOrderFilter(e: Event) {
+    public toggleOrderFilter(e: Event): void {
         e.stopPropagation();
         this.showOrderFilterMenu = !this.showOrderFilterMenu;
     }
 
-    sortByType(type: ArticleTypeFilter, e: Event | null = null, index: number | null = null) {
+    public sortByType(type: ArticleTypeFilter, e: Event | null = null, index: number | null = null): void {
         e && e.stopPropagation();
         index !== null && this.refreshTypeFilter(index);
         this.getSelectedType();
@@ -91,7 +95,7 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         this.articlesService.updateTypeFilter(type.code);
     }
 
-    sortByOrder(order: ArticleOrderFilter, e: Event | null = null, index: number | null = null) {
+    public sortByOrder(order: ArticleOrderFilter, e: Event | null = null, index: number | null = null): void {
         e && e.stopPropagation();
         index !== null && this.refreshOrderFilter(index);
         this.getSelectedOrder();
@@ -99,7 +103,7 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         this.articlesService.updateOrderFilter(order.code);
     }
 
-    refreshTypeFilter(index: number) {
+    private refreshTypeFilter(index: number): void {
         this.articleTypeFilters.forEach((typeFilter: ArticleTypeFilter) => {
             typeFilter.selected = false;
         });
@@ -107,7 +111,7 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         this.articleTypeFilters[index].selected = true;
     }
 
-    refreshOrderFilter(index: number) {
+    private refreshOrderFilter(index: number): void {
         this.articleOrderFilters.forEach((sortFilter: ArticleOrderFilter) => {
             sortFilter.selected = false;
         });
@@ -115,13 +119,13 @@ export class ArticleListComponent extends ClearObservable implements OnInit {
         this.articleOrderFilters[index].selected = true;
     }
 
-    getSelectedType() {
+    private getSelectedType(): void {
         this.selectedTypeFilter = this.articleTypeFilters.find((typeFilter: ArticleTypeFilter) => {
             return typeFilter.selected;
         })?.name;
     }
 
-    getSelectedOrder() {
+    private getSelectedOrder(): void {
         this.selectedOrderFilter = this.articleOrderFilters.find((orderFilter: ArticleOrderFilter) => {
             return orderFilter.selected;
         })?.name;
