@@ -10,19 +10,10 @@ import { BehaviorSubject,
          map, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 import { UserAuthCredentials, UserCredentials } from '../model/credentials.model';
 import { UserAdditionalInfo, UserMainInfo, UserProfile } from '../model/user.model';
-import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
-import { getAuth,
-         signInWithPopup,
-         FacebookAuthProvider,
-         GoogleAuthProvider,
-         UserCredential,
-         sendPasswordResetEmail,
-         signInWithEmailAndPassword,
-         createUserWithEmailAndPassword,
-         signOut
-        } from "firebase/auth";
+import { FacebookAuthProvider, GoogleAuthProvider, UserCredential } from "firebase/auth";
 import { ChangePasswordReturnData, ReauthenticateReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
+import { FirebaseFunctions } from './firebase-functions.service';
 
 interface AuthConfig {
     isSignupMode: boolean;
@@ -51,12 +42,10 @@ export class AuthService {
     public errorOccured: boolean = false;
     private tokenExpirationTimer: ReturnType<typeof setTimeout> | null  = null;
 
-    constructor(private http: HttpClient, private router: Router) {
-        initializeApp(environment.firebaseConfig);
-    }
+    constructor(private http: HttpClient, private router: Router, private fbFunctions: FirebaseFunctions) {}
 
     public signup(userCredentials: UserAuthCredentials): Observable<[UserAdditionalInfo, UserMainInfo]> {
-        const auth = getAuth();
+        const auth = this.fbFunctions.getAuth();
         const authConfig = {
             isSignupMode: true,
             authCredentials: userCredentials,
@@ -64,13 +53,13 @@ export class AuthService {
         }
 
         return this.authAlgorithm(
-            from(createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
+            from(this.fbFunctions.createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
             authConfig
         );
     }
 
     public login(userCredentials: UserCredentials): Observable<[UserAdditionalInfo, UserMainInfo]> {
-        const auth = getAuth();
+        const auth = this.fbFunctions.getAuth();
         const authConfig = {
             isSignupMode: false,
             authCredentials: null,
@@ -78,25 +67,25 @@ export class AuthService {
         }
 
         return this.authAlgorithm(
-            from(signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
+            from(this.fbFunctions.signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)),
             authConfig
         );
     }
 
     public facebookAuth(): Observable<[UserAdditionalInfo, UserMainInfo]> {
-        const provider = new FacebookAuthProvider();
+        const provider = this.fbFunctions.getFacebookProvider();
         return this.authenticateWithPopup(provider);
     }
 
     public googleAuth(): Observable<[UserAdditionalInfo, UserMainInfo]> {
-        const provider = new GoogleAuthProvider();
+        const provider = this.fbFunctions.getGoogleProvider();
         return this.authenticateWithPopup(provider);
     }
 
     private authenticateWithPopup(
         provider: GoogleAuthProvider | FacebookAuthProvider
     ): Observable<[UserAdditionalInfo, UserMainInfo]> {
-        const auth = getAuth();
+        const auth = this.fbFunctions.getAuth();
         const authConfig = {
             isSignupMode: false,
             authCredentials: null,
@@ -104,7 +93,7 @@ export class AuthService {
         }
 
         return this.authAlgorithm(
-            from(signInWithPopup(auth, provider)),
+            from(this.fbFunctions.signInWithPopup(auth, provider)),
             authConfig);
     }
 
@@ -171,8 +160,8 @@ export class AuthService {
 
         this.tokenExpirationTimer = null;
 
-        const auth = getAuth();
-        signOut(auth);
+        const auth = this.fbFunctions.getAuth();
+        this.fbFunctions.signOut(auth);
     }
 
     private autoLogout(expirationDuration: number): void {
@@ -182,8 +171,8 @@ export class AuthService {
     }
 
     public resetPassword(email: string): Observable<void> {
-        const auth = getAuth();
-        return from(sendPasswordResetEmail(auth, email));
+        const auth = this.fbFunctions.getAuth();
+        return from(this.fbFunctions.sendPasswordResetEmail(auth, email));
     }
 
     private saveUserDetails(uid: string, userDetails: UserAdditionalInfo): Observable<UserAdditionalInfo> {
