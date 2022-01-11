@@ -3,6 +3,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { catchError, finalize, Observable, switchMap, takeUntil, throwError } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { UserDetailsService } from 'src/app/auth/user-details.service';
 import { MessagesService } from 'src/app/global-services/messages.service';
 import { UserCredentials } from 'src/app/model/credentials.model';
 import { UpdateInformationData, UpdatePasswordData } from 'src/app/model/user-edit.model';
@@ -27,7 +28,8 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
         private router: Router,
         private auth: AuthService,
         private messages: MessagesService,
-        private articlesService: ArticlesService
+        private articlesService: ArticlesService,
+        private userDetailsService: UserDetailsService
     ) {
         super();
      }
@@ -61,7 +63,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
             this.showLoading = true;
             this.messages.clearMessages();
 
-            this.auth.updateUserInfo(e, this.userInfo.id)
+            this.userDetailsService.updateUserInfo(e, this.userInfo.id)
                 .pipe(
                     takeUntil(this.destroy$),
                     catchError((error) => {
@@ -96,7 +98,7 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
             this.showLoading = true;
             this.messages.clearMessages();
 
-            this.auth.updateAvatar(e, this.userInfo.id)
+            this.userDetailsService.updateAvatar(e, this.userInfo.id)
                 .pipe(
                     takeUntil(this.destroy$),
                     catchError((error) => {

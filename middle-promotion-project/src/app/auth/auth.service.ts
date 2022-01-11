@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject,
          catchError,
-         combineLatest,
          finalize,
          forkJoin,
          from,
@@ -12,8 +11,9 @@ import { UserAuthCredentials, UserCredentials } from '../model/credentials.model
 import { UserAdditionalInfo, UserMainInfo, UserProfile } from '../model/user.model';
 import { environment } from 'src/environments/environment';
 import { FacebookAuthProvider, GoogleAuthProvider, UserCredential } from "firebase/auth";
-import { ChangePasswordReturnData, ReauthenticateReturnData, UpdateInformationData, UpdatePasswordData } from '../model/user-edit.model';
+import { ChangePasswordReturnData, ReauthenticateReturnData, UpdatePasswordData } from '../model/user-edit.model';
 import { FirebaseFunctions } from './firebase-functions.service';
+import { UserDetailsService } from './user-details.service';
 
 interface AuthConfig {
     isSignupMode: boolean;
@@ -42,7 +42,8 @@ export class AuthService {
     public errorOccured: boolean = false;
     private tokenExpirationTimer: ReturnType<typeof setTimeout> | null  = null;
 
-    constructor(private http: HttpClient, private router: Router, private fbFunctions: FirebaseFunctions) {}
+    constructor(private http: HttpClient, private router: Router, private fbFunctions: FirebaseFunctions,
+                private userDetailsService: UserDetailsService) {}
 
     public signup(userCredentials: UserAuthCredentials): Observable<[UserAdditionalInfo, UserMainInfo]> {
         const auth = this.fbFunctions.getAuth();
@@ -175,26 +176,6 @@ export class AuthService {
         return from(this.fbFunctions.sendPasswordResetEmail(auth, email));
     }
 
-    private saveUserDetails(uid: string, userDetails: UserAdditionalInfo): Observable<UserAdditionalInfo> {
-        return this.http.put<UserAdditionalInfo>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`,
-             userDetails);
-    }
-
-    private fetchUserDetails(uid: string, isSignupMode: boolean): Observable<UserAdditionalInfo> {
-        return combineLatest([this.http.get<UserAdditionalInfo>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`),
-            this.updateUserType(isSignupMode, uid)])
-                .pipe(
-                    map(([additionalInfo, updatedUserType]: [UserAdditionalInfo ,boolean]) => {
-                        return {
-                            ...additionalInfo,
-                            isDefaultUser: updatedUserType
-                        };
-                    })
-                );
-    }
-
     private authAlgorithm(
         inputObservable$: Observable<UserCredential>,
         authConfig: AuthConfig
@@ -235,8 +216,8 @@ export class AuthService {
                 }
 
                 return forkJoin([resData.isNewUser || authConfig.isSignupMode ?
-                        this.saveUserDetails(resData.user.localId, userDetails) :
-                        this.fetchUserDetails(resData.user.localId, authConfig.defaultSignin),
+                        this.userDetailsService.saveUserDetails(resData.user.localId, userDetails) :
+                        this.userDetailsService.fetchUserDetails(resData.user.localId, authConfig.defaultSignin),
                         of(resData.user)
                     ]);
             }),
@@ -267,24 +248,6 @@ export class AuthService {
         return this.http.post<ChangePasswordReturnData>
             ('https://identitytoolkit.googleapis.com/v1/accounts:update?key=' +
             environment.firebaseConfig.apiKey, {idToken, password});
-    }
-
-    public updateUserInfo(data: UpdateInformationData, uid: string): Observable<UserAdditionalInfo> {
-        return this.http.put<UserAdditionalInfo>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/information.json`,
-             { age: data.age, name: data.firstName + ' ' + data.lastName});
-    }
-
-    public updateAvatar(avatar: string, uid: string): Observable<UserAdditionalInfo> {
-        return this.http.put<UserAdditionalInfo>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/avatar.json`,
-            { src: avatar });
-    }
-
-    public updateUserType(isDefaultUser: boolean, uid: string | null): Observable<boolean> {
-        return this.http.put<boolean>(
-            `https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/isDefaultUser.json`,
-            isDefaultUser);
     }
 
     public updateUserProfile(name: string = '', age: number = 0, image = ''): void {
