@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { ChangePasswordReturnData, ReauthenticateReturnData } from '../model/user-edit.model';
@@ -9,12 +9,13 @@ import { AuthService } from './auth.service';
 import { FirebaseFunctions } from './firebase-functions.service';
 import { UserDetailsService } from './user-details.service';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
     let service: AuthService,
         httpTestingController: HttpTestingController,
         firebaseFunctions: jasmine.SpyObj<FirebaseFunctions>,
         userDetailsService: jasmine.SpyObj<UserDetailsService>,
         userAdditionalInfo: UserAdditionalInfo,
+        localStore: {[key: string]: string},
         userCredentials:  {
             _tokenResponse: {
                 email: string,
@@ -23,7 +24,7 @@ fdescribe('AuthService', () => {
                 expiresIn: number,
                 displayName: string,
                 photoURL: string,
-                isNewUser: boolean
+                isNewUser?: boolean
             },
             user: {
                 photoURL: string;
@@ -32,7 +33,8 @@ fdescribe('AuthService', () => {
 
     beforeEach(() => {
         const firebaseFunctionsSpy = jasmine
-            .createSpyObj('FirebaseFunctions', ['signInWithEmailAndPassword', 'getAuth', 'signOut']);
+            .createSpyObj('FirebaseFunctions', ['signInWithEmailAndPassword', 'createUserWithEmailAndPassword',
+                'getAuth', 'signOut', 'signInWithPopup', 'getFacebookProvider', 'getGoogleProvider']);
 
         const userDetailsServiceSpy = jasmine
             .createSpyObj('UserDetailsService', ['fetchUserDetails', 'saveUserDetails']);
@@ -60,7 +62,7 @@ fdescribe('AuthService', () => {
                 expiresIn: 2222222222,
                 displayName: 'Name Test',
                 photoURL: 'src',
-                isNewUser: true
+                isNewUser: false
             },
             user: {
                 photoURL: 'src'
@@ -80,14 +82,8 @@ fdescribe('AuthService', () => {
 
         //@ts-ignore
         spyOn(service.router, 'navigate').and.returnValue(Promise.resolve(true));
-    });
 
-    it('should be created', () => {
-        expect(service).toBeTruthy();
-    });
-
-    it('login should create user profile and user observable', () => {
-        let localStore: {[key: string]: string} = {};
+        localStore = {};
 
         spyOn(window.localStorage, 'getItem').and.callFake((key) =>
             key in localStore ? localStore[key] : null
@@ -98,17 +94,77 @@ fdescribe('AuthService', () => {
         spyOn(window.localStorage, 'removeItem').and.callFake(
             (key) => delete localStore[key]
         );
+    });
 
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
+
+    it('login should create user profile, user observable and fetch user latest details', (done: DoneFn) => {
         //@ts-ignore
         firebaseFunctions.signInWithEmailAndPassword.and.returnValue(Promise.resolve(userCredentials));
-        userDetailsService.saveUserDetails.and.returnValue(of(userAdditionalInfo));
+        userDetailsService.fetchUserDetails.and.returnValue(of(userAdditionalInfo));
 
         service.login({ email: userCredentials._tokenResponse.email, password: '12333', returnSecureToken: false})
             .subscribe(() => {
                 expect(localStorage.getItem('userData')).toBeTruthy();
-
+                expect(userDetailsService.fetchUserDetails).toHaveBeenCalledTimes(1);
                 service.user.subscribe(userPr => {
                     expect(userPr).toBeTruthy();
+                    done();
+                });
+            });
+    });
+
+    it('signup should create user profile, user observable and save user details', (done: DoneFn) => {
+        //@ts-ignore
+        firebaseFunctions.createUserWithEmailAndPassword.and.returnValue(Promise.resolve(userCredentials));
+        userDetailsService.saveUserDetails.and.returnValue(of(userAdditionalInfo));
+
+        service.signup({ email: userCredentials._tokenResponse.email, password: '12333', returnSecureToken: false,
+                        name: userAdditionalInfo.information.name, age: 24})
+            .subscribe(() => {
+                expect(localStorage.getItem('userData')).toBeTruthy();
+                expect(userDetailsService.saveUserDetails).toHaveBeenCalledTimes(1);
+                service.user.subscribe(userPr => {
+                    expect(userPr).toBeTruthy();
+                    done();
+                });
+            });
+    });
+
+    it('facebook auth should create user profile, user observable and save user details if new user is true', (done: DoneFn) => {
+        userCredentials._tokenResponse.isNewUser = true;
+
+        //@ts-ignore
+        firebaseFunctions.signInWithPopup.and.returnValue(Promise.resolve(userCredentials));
+        userDetailsService.saveUserDetails.and.returnValue(of(userAdditionalInfo));
+
+        service.facebookAuth()
+            .subscribe(() => {
+                expect(localStorage.getItem('userData')).toBeTruthy();
+                expect(userDetailsService.saveUserDetails).toHaveBeenCalledTimes(1);
+                service.user.subscribe(userPr => {
+                    expect(userPr).toBeTruthy();
+                    done();
+                });
+            });
+    });
+
+    it('google auth should create user profile, user observable and fetch user details if new user is false', (done: DoneFn) => {
+        userCredentials._tokenResponse.isNewUser = false;
+
+        //@ts-ignore
+        firebaseFunctions.signInWithPopup.and.returnValue(Promise.resolve(userCredentials));
+        userDetailsService.fetchUserDetails.and.returnValue(of(userAdditionalInfo));
+
+        service.googleAuth()
+            .subscribe(() => {
+                expect(localStorage.getItem('userData')).toBeTruthy();
+                expect(userDetailsService.fetchUserDetails).toHaveBeenCalledTimes(1);
+                service.user.subscribe(userPr => {
+                    expect(userPr).toBeTruthy();
+                    done();
                 });
             });
     });
@@ -186,15 +242,6 @@ fdescribe('AuthService', () => {
         const expectedAvatar = 'Expected avatar';
         const expectedAge = 12;
 
-        let localStore: {[key: string]: string} = {};
-
-        spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-            key in localStore ? localStore[key] : null
-        );
-        spyOn(window.localStorage, 'setItem').and.callFake(
-            (key, value) => (localStore[key] = value + '')
-        );
-
         const user = new UserProfile('test@test.com', 'localId', 'idToken', new Date(),
             'name', 'image', 24, true);
 
@@ -226,30 +273,12 @@ fdescribe('AuthService', () => {
         const expectedAvatar = 'Expected avatar';
         const expectedAge = 12;
 
-        let localStore: {[key: string]: string} = {};
-
-        spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-            key in localStore ? localStore[key] : null
-        );
-        spyOn(window.localStorage, 'setItem').and.callFake(
-            (key, value) => (localStore[key] = value + '')
-        );
-
         service.updateUserProfile(expectedName, expectedAge, expectedAvatar);
 
         expect(localStorage.getItem('userData')).toBeFalsy();
     });
 
     it('autologin should fetch and store current user', () => {
-        let localStore: {[key: string]: string} = {};
-
-        spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-            key in localStore ? localStore[key] : null
-        );
-        spyOn(window.localStorage, 'setItem').and.callFake(
-            (key, value) => (localStore[key] = value + '')
-        );
-
         const user = new UserProfile('test@test.com', 'localId', 'idToken', new Date(new Date().getTime() + 245000000),
             'name', 'image', 24, true);
 
@@ -263,33 +292,12 @@ fdescribe('AuthService', () => {
     });
 
     it('autologin should not work if there is no current user', () => {
-        let localStore: {[key: string]: string} = {};
-
-        spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-            key in localStore ? localStore[key] : null
-        );
-        spyOn(window.localStorage, 'setItem').and.callFake(
-            (key, value) => (localStore[key] = value + '')
-        );
-
         service.autoLogin();
 
         expect(localStorage.getItem('userData')).toBeFalsy();
     });
 
     it('logout deletes user profile and clears timer', () => {
-        let localStore: {[key: string]: string} = {};
-
-        spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-            key in localStore ? localStore[key] : null
-        );
-        spyOn(window.localStorage, 'setItem').and.callFake(
-            (key, value) => (localStore[key] = value + '')
-        );
-        spyOn(window.localStorage, 'removeItem').and.callFake(
-            (key) => delete localStore[key]
-        );
-
         //@ts-ignore
         service.tokenExpirationTimer = setTimeout(() => 'test');
 
