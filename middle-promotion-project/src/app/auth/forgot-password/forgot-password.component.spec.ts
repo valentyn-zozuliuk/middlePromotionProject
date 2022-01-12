@@ -18,9 +18,7 @@ describe('ForgotPasswordComponent', () => {
         })
         await TestBed.configureTestingModule({
             declarations: [ForgotPasswordComponent],
-            imports: [ReactiveFormsModule, HttpClientModule, RouterTestingModule.withRoutes([
-                { path: 'auth/login', redirectTo: '/auth/login'}
-            ])],
+            imports: [ReactiveFormsModule, HttpClientModule, RouterTestingModule],
             providers: [{
                 provide: AuthService,
                 useValue: authServiceSpy
@@ -33,6 +31,10 @@ describe('ForgotPasswordComponent', () => {
         fixture = TestBed.createComponent(ForgotPasswordComponent);
         component = fixture.componentInstance;
         authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+
+        //@ts-ignore
+        spyOn(component.router, 'navigate').and.returnValue(Promise.resolve(true));
+
         fixture.detectChanges();
     });
 

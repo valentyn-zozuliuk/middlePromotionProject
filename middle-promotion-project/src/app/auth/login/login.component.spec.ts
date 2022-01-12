@@ -20,10 +20,7 @@ describe('LoginComponent', () => {
 
         await TestBed.configureTestingModule({
             declarations: [LoginComponent],
-            imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([
-                { path: 'auth/login', redirectTo: '/auth/login'}
-            ])
-            , HttpClientModule],
+            imports: [ReactiveFormsModule, RouterTestingModule, HttpClientModule],
             providers: [
                 {
                     provide: AuthService,
@@ -38,6 +35,9 @@ describe('LoginComponent', () => {
         fixture = TestBed.createComponent(LoginComponent);
         component = fixture.componentInstance;
         authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+
+        //@ts-ignore
+        spyOn(component.router, 'navigate').and.returnValue(Promise.resolve(true));
 
         fixture.detectChanges();
     });

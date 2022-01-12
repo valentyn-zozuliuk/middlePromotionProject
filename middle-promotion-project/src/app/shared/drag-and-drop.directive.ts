@@ -23,8 +23,6 @@ export class DragAndDropDirective {
         evt.stopPropagation();
 
         const files = evt.dataTransfer?.files
-        if (files && files.length > 0) {
-            this.fileDropped.emit(files);
-        }
+        this.fileDropped.emit(files);
     }
 }
