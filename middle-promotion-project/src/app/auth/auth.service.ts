@@ -194,7 +194,7 @@ export class AuthService {
                     idToken: dataParsed._tokenResponse.idToken,
                     expiresIn: +dataParsed._tokenResponse.expiresIn,
                     displayName: dataParsed._tokenResponse.displayName,
-                    photoURL: resData.user.photoURL
+                    photoURL: ""
                 };
 
                 return {
