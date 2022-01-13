@@ -161,7 +161,9 @@ export class EditProfileComponent extends ClearObservable implements OnInit {
                         this.showLoading = false;
                     })
                 )
-                .subscribe();
+                .subscribe({
+                    error: error => console.log(error)
+                });
         }
     }
 }
