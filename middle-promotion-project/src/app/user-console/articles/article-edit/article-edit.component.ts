@@ -122,7 +122,7 @@ export class ArticleEditComponent extends ClearObservable implements OnInit {
         this.showTypeFilterMenu = !this.showTypeFilterMenu;
     }
 
-    public selectType(type: ArticleTypeFilter, e: Event | null = null, index: number | null = null): void {
+    public selectType(e: Event | null = null, index: number | null = null): void {
         e && e.stopPropagation();
         index !== null && this.refreshTypeFilter(index);
         this.getSelectedType();

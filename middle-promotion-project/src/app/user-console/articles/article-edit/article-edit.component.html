@@ -39,7 +39,7 @@
                     <div class="menu" *ngIf="showTypeFilterMenu">
                         <div class="menu-item" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
                             [ngClass]="{'selected-item': typeFilter.selected}"
-                            (click)="selectType(typeFilter, $event, i)">
+                            (click)="selectType($event, i)">
                             {{ typeFilter.name }}
                             <mat-icon *ngIf="typeFilter.selected" class="check-icon">check</mat-icon>
                         </div>
