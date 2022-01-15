@@ -37,5 +37,31 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+      {
+          "name": "articles",
+          "urls": [
+              "https://middle-promotion-project-default-rtdb.europe-west1.firebasedatabase.app/articles.json"
+          ],
+          "cacheConfig": {
+              "maxSize": 5,
+              "maxAge": "56h",
+              "timeout": "10s",
+              "strategy": "freshness"
+          }
+      },
+      {
+        "name": "weather",
+        "urls": [
+            "https://community-open-weather-map.p.rapidapi.com/weather"
+        ],
+        "cacheConfig": {
+            "maxSize": 5,
+            "maxAge": "56h",
+            "timeout": "10s",
+            "strategy": "freshness"
+        }
+    }
   ]
 }
