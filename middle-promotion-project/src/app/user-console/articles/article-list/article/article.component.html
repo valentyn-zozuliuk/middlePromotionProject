@@ -1,13 +1,13 @@
-<mat-card class="article" *ngIf="article">
-    <mat-icon class="more-icon" *ngIf="userInfo?.id === article.createdBy.uid"
+<mat-card class="article article-in-list" *ngIf="article">
+    <mat-icon class="more-icon article-more-icon" *ngIf="userInfo?.id === article.createdBy.uid"
         (click)="toggleMenu($event)">more_horiz</mat-icon>
     <div class="icon-background" *ngIf="showEditMenu"></div>
     <div class="menu" *ngIf="showEditMenu">
-        <div class="menu-item" (click)="editArticle($event)">
+        <div class="menu-item edit-item" (click)="editArticle($event)">
             Edit
         </div>
 
-        <div class="menu-item" (click)="deleteArticle($event)">
+        <div class="menu-item delete-item" (click)="deleteArticle($event)">
             Delete
         </div>
     </div>

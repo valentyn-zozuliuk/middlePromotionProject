@@ -37,7 +37,7 @@
                     </button>
 
                     <div class="menu" *ngIf="showTypeFilterMenu">
-                        <div class="menu-item" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
+                        <div class="menu-item type-menu-edit" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
                             [ngClass]="{'selected-item': typeFilter.selected}"
                             (click)="selectType($event, i)">
                             {{ typeFilter.name }}
