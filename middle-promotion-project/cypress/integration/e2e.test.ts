@@ -52,6 +52,7 @@ describe('Middle promotion e2e', () => {
 
     it('Should edit article', () => {
         cy.get('.article-more-icon').click();
+
         cy.get('.edit-item').click();
 
         cy.get('#description').type(' two')
