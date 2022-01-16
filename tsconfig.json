@@ -18,7 +18,6 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "types": ["cypress", "cypress-file-upload"],
     "lib": [
       "es2020",
       "dom"
