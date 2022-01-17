@@ -71,6 +71,7 @@ describe('Middle promotion e2e', () => {
 
         cy.get('.article-in-list').should('have.length', 0);
 
+
         cy.get('.search-articles-input').clear()
             .should('have.value', '');
     });
