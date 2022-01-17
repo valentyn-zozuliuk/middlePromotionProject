@@ -1,0 +1,81 @@
+@import '../../../../../scss/variables';
+
+.widget-card {
+    background-color: $color-white;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.03);
+    font-size: 13px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .widget-header {
+        p {
+            color: $additional-text;
+        }
+
+        .more-icon {
+            color: $default-text-field;
+            position: relative;
+            cursor: pointer;
+            bottom: 5px;
+            z-index: 2;
+        }
+
+        .icon-background {
+            position: absolute;
+            right: 20px;
+            top: 11px;
+            height: 24px;
+            width: 24px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .menu {
+            top: 40px;
+            right: 15px;
+        }
+    }
+
+    .widget-date {
+        .month-day {
+            color: $weather-widget-date;
+            font-size: 21px;
+            margin-bottom: 5px;
+        }
+
+        .week-day {
+            color: $additional-text;
+        }
+    }
+
+    .widget-temp-location {
+        .left-part {
+            .temperature {
+                position: relative;
+                color: $weather-widget-degree;
+                font-size: 60px;
+                line-height: 60px;
+                font-weight: 600;
+                margin-bottom: 5px;
+
+                span {
+                    font-size: 18px;
+                    position: absolute;
+                    top: 7px;
+                    line-height: 18px;
+                }
+            }
+
+            .location {
+                color: $weather-widget-loaction;
+            }
+        }
+
+        .weather-icon {
+            position: relative;
+            bottom: 5px;
+            margin-right: 40px;
+        }
+    }
+}

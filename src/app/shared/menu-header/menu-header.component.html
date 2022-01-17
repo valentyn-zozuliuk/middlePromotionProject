@@ -1,0 +1,24 @@
+<input type="text" class="search-articles-input" [disabled]="!isDashboard" placeholder="Find articles..."
+                   [(ngModel)]="articleQuery" (input)="changeArticleQuery()">
+<mat-icon class="search-icon">search</mat-icon>
+
+<div class="user-info" (click)="toggleMenu($event)">
+    <div class="avatar-wrapper">
+        <div class="user-avatar">
+            <img class="avatar-image" [ngClass]="{'image-not-default' : user?.image}"
+                 [src]="user?.image ? user?.image : 'assets/images/no-avatar-img.png'"
+                 alt="image">
+        </div>
+    </div>
+    <div class="user-name">
+        {{ user?.name ? user?.name : 'Name missing'}}
+    </div>
+    <mat-icon *ngIf="!showMenu" class="user-profile-icon">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="showMenu" class="user-profile-icon">keyboard_arrow_up</mat-icon>
+
+</div>
+<div class="menu" *ngIf="showMenu">
+    <div class="menu-item" (click)="navigateToPage('/user-console/edit-profile', $event)">
+        Edit profile
+    </div>
+</div>

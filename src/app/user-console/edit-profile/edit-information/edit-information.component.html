@@ -1,0 +1,28 @@
+<h6>Change your information</h6>
+
+<form [formGroup]="editInformationForm" (ngSubmit)="onSubmitForm()">
+    <div class="row">
+        <div class="col">
+            <label for="firstName">First Name</label>
+            <input id="firstName" name="firstName" type="text" formControlName="firstName"
+                   placeholder="Enter your first name">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" name="lastName" type="text" formControlName="lastName"
+                   placeholder="Enter your last name">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" formControlName="age"
+                   placeholder="Enter your age">
+        </div>
+    </div>
+
+    <button type="submit" class="hidden-submit-button" #submitBtn></button>
+</form>

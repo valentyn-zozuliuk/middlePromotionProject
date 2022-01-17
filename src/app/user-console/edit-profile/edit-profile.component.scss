@@ -1,0 +1,22 @@
+@import '../../../scss/variables';
+
+.edit-profile-fields {
+    padding: 35px;
+    margin: 20px auto 0 auto;
+    width: 70%;
+    max-width: 1140px;
+    min-height: 590px;
+    font-size: 13px;
+    box-shadow: 0 24px 64px rgb(0 0 0 / 3%);
+
+    .operate-buttons {
+        button:last-child {
+            border: 1px solid $primary-color;
+        }
+
+        button {
+            width: 110px;
+            margin-right: 17px;
+        }
+    }
+}

@@ -1,0 +1,85 @@
+
+<mat-card class="article-fields">
+    <h5 *ngIf="!editMode">Add new article</h5>
+    <h5 *ngIf="editMode">Edit Article</h5>
+
+    <hr>
+
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmitForm()">
+        <div class="row">
+            <div class="col">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" formControlName="title"
+                       placeholder="Enter your title">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="description">Text</label>
+                <textarea id="description" name="description" formControlName="description"
+                       placeholder="Enter your text copy">
+                </textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Type</label>
+                <div class="dropdown-wrapper">
+                    <button type="button" class="article-type-dropdown dropdown"
+                    [ngClass]="{'active-dropdown': showTypeFilterMenu,
+                                'danger-border': !selectedTypeFilter}" (click)="toggleType($event)">
+                        <span class="placeholder-like" *ngIf="!selectedTypeFilter">Please select type</span>
+                        <span *ngIf="selectedTypeFilter">{{ selectedTypeFilter }}</span>
+                        <mat-icon *ngIf="!showTypeFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="showTypeFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
+                    </button>
+
+                    <div class="menu" *ngIf="showTypeFilterMenu">
+                        <div class="menu-item type-menu-edit" *ngFor="let typeFilter of articleTypeFilters; let i = index;"
+                            [ngClass]="{'selected-item': typeFilter.selected}"
+                            (click)="selectType($event, i)">
+                            {{ typeFilter.name }}
+                            <mat-icon *ngIf="typeFilter.selected" class="check-icon">check</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6>Add cover photo</h6>
+        <p>Drag and drop file below</p>
+
+        <div class="image-uploader" dragAndDrop (fileDropped)="onFileDropped($event)"
+            [ngClass]="{'danger-border': imageHandler.errorImageUpload || !imageHandler.uploadedImage}">
+            <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)">
+            <img src="assets/images/upload.png" alt="upload" class="src">
+            <p class="image-type">.JPG .PNG</p>
+            <p class="upload-desc">You can also upload files by</p>
+            <a class="link">clicking here</a>
+            <p class="uploaded-name" *ngIf="imageHandler.imageName"> {{ imageHandler.imageName }} </p>
+            <p class="text-danger" *ngIf="imageHandler.errorImageUpload"> {{ imageHandler.errorImageUpload }}</p>
+        </div>
+
+        <div class="image-preview" *ngIf="imageHandler.uploadedImage">
+            <div class="image-wrapper">
+                <img [src]="imageHandler.uploadedImage" alt="UploadedImage">
+            </div>
+        </div>
+
+        <ng-container *ngIf="(errors$ | async) as errors">
+            <p *ngFor="let error of errors" class="text-danger text-center">
+                {{error}}
+            </p>
+        </ng-container>
+
+        <div class="operate-buttons" *ngIf="!showLoading">
+            <button type="button" class="button button-outline button-small"
+                    (click)="backToDashboard()">Cancel</button>
+            <button type="submit" class="button primary-button button-small">Publish</button>
+        </div>
+
+        <app-loading-spinner *ngIf="showLoading"></app-loading-spinner>
+    </form>
+</mat-card>

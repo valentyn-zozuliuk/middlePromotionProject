@@ -1,0 +1,103 @@
+@import '../../../scss/variables';
+
+.login-page {
+    display: flex;
+
+    .side-image {
+        img {
+            height: 100vh;
+            width: auto;
+            vertical-align: top;
+        }
+    }
+
+    .content-wrapper {
+        height: 100vh;
+        overflow: scroll;
+        flex-grow: 1;
+        min-width: 500px;
+        padding-top: 15vh;
+
+        .container {
+            width: 465px;
+            margin: 0 auto;
+
+            .waving-hand-img {
+                width: 47px;
+                height: auto;
+                margin-bottom: 30px;
+            }
+
+            input {
+                width: 100%;
+                margin-bottom: 27px;
+            }
+
+            button.primary-button {
+                width: 100%;
+                margin-top: 20px;
+                margin-bottom: 30px;
+            }
+
+            .other-accounts-note {
+                position: relative;
+                margin-bottom: 20px;
+                font-size: 12px;
+
+                p {
+                    text-align: center;
+                    color: $default-text-field;
+
+                    span {
+                        background-color: $color-white;
+                        padding: 10px;
+                    }
+                }
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    left: 0;
+                    top:50%;
+                    z-index: -1;
+                    border-top: 1px solid $other-accounts-border;
+                }
+            }
+
+            .other-accounts-choose {
+                text-align: center;
+
+                .other-selection-wrapper {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    text-align: center;
+                    cursor: pointer;
+                    box-shadow: 0 1px 4px 0 #0000001A;
+
+                    &:first-child {
+                        margin-right: 15px;
+                    }
+
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+
+                padding-bottom: 70px;
+            }
+
+            .bottom-section {
+                margin: auto;
+                width: 465px;
+                background-color: $color-white;
+                position: absolute;
+                bottom: 0;
+                text-align: center;
+                padding-bottom: 20px;
+                padding-top: 20px;
+            }
+        }
+    }
+}

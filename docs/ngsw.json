@@ -1,0 +1,153 @@
+{
+  "configVersion": 1,
+  "timestamp": 1642447854479,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/140.cf753141379d70df.js",
+        "/226.35f2dd01a0a51276.js",
+        "/561.c642086391c9e192.js",
+        "/852.dbbfce8a0847330a.js",
+        "/909.b2a57822a0b7d284.js",
+        "/common.495e4605d053d495.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.309e1cc873713f99.js",
+        "/manifest.webmanifest",
+        "/polyfills.4fa2d9572477aca3.js",
+        "/runtime.6e8e49bfa4a70718.js",
+        "/scripts.37c6a60f6acc053f.js",
+        "/styles.e98cc76e370c3fee.css"
+      ],
+      "patterns": [
+        "https:\\/\\/fonts\\.googleapis\\.com\\/css2\\?family=Roboto:wght@300;400;500&amp;display=swap",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/css2\\?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/icon\\?family=Material\\+Icons",
+        "https:\\/\\/fonts\\.gstatic\\.com\\/s\\/materialicons\\/v121\\/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ\\.woff2"
+      ]
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/images/Facebook.png",
+        "/assets/images/Google.png",
+        "/assets/images/forgot_password.png",
+        "/assets/images/laptop.png",
+        "/assets/images/login_background.png",
+        "/assets/images/login_image.png",
+        "/assets/images/logo.png",
+        "/assets/images/logo_black.png",
+        "/assets/images/no-avatar-img.png",
+        "/assets/images/signup_image.png",
+        "/assets/images/upload.png",
+        "/assets/images/waving_hand.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "articles",
+      "patterns": [
+        "https:\\/\\/middle-promotion-project-default-rtdb\\.europe-west1\\.firebasedatabase\\.app\\/articles\\.json"
+      ],
+      "strategy": "freshness",
+      "maxSize": 5,
+      "maxAge": 201600000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
+    {
+      "name": "weather",
+      "patterns": [
+        "https:\\/\\/community-open-weather-map\\.p\\.rapidapi\\.com\\/weather"
+      ],
+      "strategy": "freshness",
+      "maxSize": 5,
+      "maxAge": 201600000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/140.cf753141379d70df.js": "c639f6b2eab3f46dca35b50060f1c5018f7ab3eb",
+    "/226.35f2dd01a0a51276.js": "e6198d1f3015a51180da9f83f4883d2c68010f08",
+    "/561.c642086391c9e192.js": "f432a0aaf1dcaea04a9333be61bbbe69cd66abda",
+    "/852.dbbfce8a0847330a.js": "2e9f72ce18ba42b23b69a5ee1e62890c00a79a9f",
+    "/909.b2a57822a0b7d284.js": "d20abcd99b9dae2c0a5d40ca571f3435590e31c8",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/assets/images/Facebook.png": "e0e0b687b84e1132b7fc62644bbab148c83dbc1e",
+    "/assets/images/Google.png": "dc1833d0189e3e4d9bb0b3b835b4327c8d302a30",
+    "/assets/images/forgot_password.png": "e9ccdcc094bff1f5b402409eaacbe1ae6bbaf36c",
+    "/assets/images/laptop.png": "c6849dc16a187fab00e43736f38d5d73e83c9fa8",
+    "/assets/images/login_background.png": "162003818b28e4ef64cab9370aa4860a056caced",
+    "/assets/images/login_image.png": "5b61363c17f8751f1e3fd41f600b540b66f0ace8",
+    "/assets/images/logo.png": "41db14a7442286c0aab14d8d53e2a31794a62aca",
+    "/assets/images/logo_black.png": "4ee137d64269c27bef779b30e8f5ac3d290e2c9a",
+    "/assets/images/no-avatar-img.png": "c3826df9470a4fd523947f6c97963169ac22d17a",
+    "/assets/images/signup_image.png": "1e63ece538f071d06291f6b7f6a8ecc7ff7fea77",
+    "/assets/images/upload.png": "fa817b4eea7f748e9486db7ccfe140df236f1089",
+    "/assets/images/waving_hand.png": "640f5644f10bb6a82bb01d1f9b56fe2242dc3874",
+    "/common.495e4605d053d495.js": "03d728018453c126ba1408f6493aba716dd3c95d",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "fd4c136c42aed59b526ff85cfdb8acd3c0d96c18",
+    "/main.309e1cc873713f99.js": "73121d13aaada56fcd2143c6f436e85d6159a402",
+    "/manifest.webmanifest": "e7c286446252eca72a34c3b52213a4dd227cc34a",
+    "/polyfills.4fa2d9572477aca3.js": "b60311a6b6ccc5d6ac9cd7c54c22c7abfc54c505",
+    "/runtime.6e8e49bfa4a70718.js": "0e478052b73e2dab44c0416a2a42ae6acddaeb6a",
+    "/scripts.37c6a60f6acc053f.js": "b3c28b39d4b5b91cee69c4cec46e31e64272d023",
+    "/styles.e98cc76e370c3fee.css": "4203d7b41cb0a2ff66cecf7de8f00ee58044fa3c"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

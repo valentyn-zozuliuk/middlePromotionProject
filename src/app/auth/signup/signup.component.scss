@@ -1,0 +1,152 @@
+@import "../../../scss/variables";
+
+.signup-page {
+    display: flex;
+
+    .side-image {
+        img {
+            height: 100vh;
+            width: auto;
+            vertical-align: top;
+        }
+    }
+
+    .content-wrapper {
+        height: 100vh;
+        overflow: scroll;
+        flex-grow: 1;
+        min-width: 500px;
+        padding-top: 5vh;
+
+        .container {
+            width: 465px;
+            margin: 0 auto;
+
+            input {
+                width: 100%;
+                margin-bottom: 27px;
+            }
+
+            button.primary-button {
+                width: 100%;
+                margin-top: 20px;
+                margin-bottom: 30px;
+            }
+
+            .other-accounts-note {
+                position: relative;
+                margin-bottom: 20px;
+                font-size: 12px;
+
+                p {
+                    text-align: center;
+                    color: $default-text-field;
+
+                    span {
+                        background-color: $color-white;
+                        padding: 10px;
+                    }
+                }
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    left: 0;
+                    top: 50%;
+                    z-index: -1;
+                    border-top: 1px solid $other-accounts-border;
+                }
+            }
+
+            .other-accounts-choose {
+                text-align: center;
+
+                .other-selection-wrapper {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    text-align: center;
+                    cursor: pointer;
+                    box-shadow: 0 1px 4px 0 #0000001a;
+
+                    &:first-child {
+                        margin-right: 15px;
+                    }
+
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+
+                padding-bottom: 70px;
+            }
+
+            .bottom-section {
+                margin: auto;
+                width: 465px;
+                background-color: $color-white;
+                position: absolute;
+                bottom: 0;
+                text-align: center;
+                padding-bottom: 20px;
+                padding-top: 20px;
+            }
+        }
+    }
+}
+
+input.hidden-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+    background-color: $input-background;
+}
+
+.agreement-text {
+    position: relative;
+    padding-left: 30px;
+
+    &:hover input ~ .checkmark {
+        background-color: $disabled-color;
+    }
+
+    input:checked ~ .checkmark {
+        background-color: $primary-color;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .checkmark:after {
+        left: 8px;
+        top: 4px;
+        width: 5px;
+        height: 10px;
+        border: solid $color-white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+    }
+
+    input:checked ~ .checkmark:after {
+        display: block;
+    }
+}

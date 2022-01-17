@@ -1,0 +1,18 @@
+<h6>Change your avatar</h6>
+<p>Drag and drop file below</p>
+<div class="image-uploader" dragAndDrop (fileDropped)="onFileDropped($event)"
+     [ngClass]="{'danger-border': errorImageUpload}">
+    <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)">
+    <img src="assets/images/upload.png" alt="upload" class="src">
+    <p class="image-type">.JPG .PNG</p>
+    <p class="upload-desc">You can also upload files by</p>
+    <a class="link">clicking here</a>
+    <p class="uploaded-name" *ngIf="imageName"> {{ imageName }} </p>
+    <p class="text-danger" *ngIf="errorImageUpload"> {{ errorImageUpload }}</p>
+</div>
+
+<div class="image-preview" *ngIf="uploadedImage">
+    <div class="image-wrapper">
+        <img [src]="uploadedImage" alt="UploadedImage">
+    </div>
+</div>

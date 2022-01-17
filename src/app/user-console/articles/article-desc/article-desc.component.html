@@ -1,0 +1,40 @@
+<mat-card class="article" *ngIf="article">
+    <div [ngClass]="{
+        'business-background': article.type === articleTypes.business,
+        'media-background': article.type === articleTypes.meida,
+        'productivity-background': article.type === articleTypes.productivity,
+        'article-image': !article.coverImage,
+        'article-image-full': article.coverImage
+    }">
+        <img *ngIf="!article.coverImage" src="assets/images/laptop.png" alt="Laptop" class="src">
+        <img *ngIf="article.coverImage" [src]="article.coverImage" alt="Cover imaage" class="src">
+    </div>
+    <div class="artcle-desc">
+        <div class="top-desc d-flex justify-content-between">
+            <p>{{ article.type }}</p>
+            <p>{{ ifDaysAgoNeeded(article.updatedDate) ?
+                (article.updatedDate | date : 'd MMMM YYYY') : (article.updatedDate | articleDaysAgo)}}</p>
+        </div>
+
+        <div class="mid-desc">
+            <h5>{{ article.title }}</h5>
+            <p>
+                {{ article.description }}
+            </p>
+        </div>
+
+        <div class="bottom-desc d-flex justify-content-between">
+            <div class="avatar-wrapper d-flex justify-content-center align-items-center">
+                <div class="user-avatar">
+                    <img class="avatar-image" [src]="article.createdBy.image ?
+                        article.createdBy.image : 'assets/images/no-avatar-img.png'"
+                            alt="image">
+                </div>
+
+                <div class="user-name">
+                    {{ article.createdBy.name }}
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-card>

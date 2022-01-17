@@ -1,0 +1,261 @@
+/* You can add global styles to this file, and also import other style files */
+@import './scss/variables';
+
+*,
+*::after,
+*::before
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    box-sizing: border-box;
+    color: $secondary-color;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.header-main {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.subheader {
+    margin-bottom: 47px;
+    font-weight: normal;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.link {
+    color: $status-color;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button {
+    font-size: 16px;
+    cursor: pointer;
+    padding: $default-field-padding;
+    border-radius: 3px;
+    border: none;
+}
+
+.button-small {
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 3px;
+    border: none;
+}
+
+.primary-button {
+    background: $primary-color;
+    color: white;
+}
+
+.button-outline {
+    background: transparent;
+    color: $default-text-field;
+    border: 1px solid $default-text-field;
+}
+
+.fixed-width-button {
+    display: inline-block;
+    width: 130px;
+}
+
+.agreement-text {
+    color: $agreement-text-color;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.block-element {
+    display: block;
+}
+
+.spacer-0 {
+    margin-bottom: 0;
+}
+
+.dropdown-wrapper {
+    position: relative;
+}
+
+
+.dropdown {
+    padding: 14px 32px 12px 25px;
+    background-color: $input-background;
+    font-size: 14px;
+    border: 1px solid $input-background;
+    border-radius: 3px;
+    outline: none;
+    text-align: left;
+
+    &:hover {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+
+        & > span {
+            color: $primary-color;
+        }
+
+        .placeholder-like {
+            color: $primary-color;
+        }
+
+        .button-icon {
+            color: $primary-color;
+        }
+    }
+
+    &.active-dropdown {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+
+        .button-icon {
+            color: #007EFF;
+        }
+    }
+
+    .button-icon {
+        position: absolute;
+        right: 10px;
+        top: 51%;
+        transform: translateY(-50%);
+        color: $default-text-field;
+    }
+
+    .placeholder-like {
+        color: $default-text-field;
+    }
+}
+
+.menu {
+    position: absolute;
+    right: 0;
+    width: 160px;
+    background-color: $color-white;
+    z-index: 999;
+
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+                0 6px 16px rgba(0, 0, 0, 0.08),
+                0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+
+    .menu-item {
+        cursor: pointer;
+        padding: 10px 20px;
+
+        &:hover {
+            color: $status-color;
+            background: rgba(46,91,255, 0.04);
+        }
+    }
+
+    .selected-item,  .selected-item:hover {
+        background-color: $status-color;
+        color: $color-white;
+
+        .check-icon {
+            height: 20px;
+            width: 15px;
+            font-size: 20px;
+            float: right;
+        }
+    }
+}
+
+input.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+    border: 1px solid red;
+}
+
+form.ng-submitted input.ng-invalid,
+form.ng-submitted textarea.ng-invalid,
+form.ng-submitted input.ng-invalid ~ .checkmark {
+    border: 1px solid red;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 10px;
+    color: $default-text-field;
+}
+
+.under-input-error {
+    position: absolute;
+    bottom: -7px;
+    font-size: 10px;
+}
+
+input, textarea {
+    background-color: $input-background;
+    padding: $default-field-padding;
+    font-size: 16px;
+    border: 1px solid $input-background;
+    outline: none;
+    border-radius: 3px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: $default-text-field;
+}
+
+textarea {
+    width: 100%;
+}
+
+input:hover,
+textarea:hover {
+    border: 1px solid $primary-color;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: $primary-color;
+}
+
+.mat-tab-label-content {
+    color: $inactive-state;
+}
+
+.mat-tab-labels .mat-tab-label {
+    opacity: 1;
+    min-width: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+}
+
+.mat-tab-label-active {
+    .mat-tab-label-content {
+        color: $primary-color;
+    }
+}
+
+.mat-tab-body-wrapper {
+    margin-top: 30px;
+}
+
+.pos-relative {
+    position: relative;
+}

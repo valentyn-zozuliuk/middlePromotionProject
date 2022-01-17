@@ -1,0 +1,40 @@
+<mat-card class="widget-card">
+    <ng-container *ngIf="(weatherInfo$ | async) as weatherInfo">
+        <div class="widget-header d-flex justify-content-between">
+            <p>WEATHER WIDGET</p>
+            <mat-icon class="more-icon" (click)="toggleMenu($event)">more_horiz</mat-icon>
+            <div class="icon-background" *ngIf="showWeatherMenu"></div>
+            <div class="menu" *ngIf="showWeatherMenu">
+                <div class="menu-item" [ngClass]="{'selected-item': city.selected}"
+                     *ngFor="let city of weatherCities; let i = index"
+                     (click)="selectItem(city, $event, i)">
+                    {{ city.name + ', ' + city.displayCode}}
+                    <mat-icon *ngIf="city.selected" class="check-icon">check</mat-icon>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-date">
+            <p class="month-day">{{ weatherInfo.date | date : 'MMMM d'}}</p>
+            <p class="week-day">{{ weatherInfo.weekDay | weekday }}</p>
+        </div>
+
+        <div class="widget-temp-location d-flex justify-content-between">
+            <div class="left-part">
+                <p class="temperature">
+                    {{ weatherInfo.temperature | weather }}
+                    <span>°C</span>
+                </p>
+                <p class="location">{{ weatherInfo.city }}, {{ getCountryText(weatherInfo.country) }}</p>
+            </div>
+            <div class="weather-icon d-flex align-items-center">
+                <img [src]="'http://openweathermap.org/img/wn/' + weatherInfo.icon + '@2x.png'" alt="">
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="(errors$ | async) as errors">
+        <p *ngFor="let error of errors" class="text-danger text-center">
+            {{error}}
+        </p>
+    </ng-container>
+</mat-card>

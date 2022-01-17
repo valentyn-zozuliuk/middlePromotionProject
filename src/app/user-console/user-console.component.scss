@@ -1,0 +1,16 @@
+@import '../../scss/variables';
+.user-console-page {
+    display: flex;
+    font-size: 14px;
+
+    .content-wrapper {
+        height: 100vh;
+        overflow: scroll;
+        flex-grow: 1;
+        background-color: $input-background;
+
+        .main-content {
+            padding: 25px 35px;
+        }
+    }
+}

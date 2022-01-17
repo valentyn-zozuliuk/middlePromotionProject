@@ -1,0 +1,56 @@
+<div class="article-list">
+    <div class="row top-row artciles-max-width">
+        <div class="col-md-6 firs-part-top-section">
+            <h5 class="page-header spacer-0">Articles Dashboard</h5>
+            <button class="show-button button-small" (click)="toggleTypeFilter($event)">
+                <span class="inactive-state">Show:</span>
+                <span class="active-state">{{ selectedTypeFilter }}</span>
+                <mat-icon *ngIf="!showTypeFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="showTypeFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
+
+                <div class="menu" *ngIf="showTypeFilterMenu">
+                    <div class="menu-item type-filter-menu"
+                         *ngFor="let typeFilter of articleTypeFilters; let i = index;"
+                         [ngClass]="{'selected-item': typeFilter.selected}"
+                         (click)="sortByType(typeFilter, $event, i)">
+                        {{ typeFilter.name }}
+                        <mat-icon *ngIf="typeFilter.selected" class="check-icon">check</mat-icon>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button class="sort-by-button button-small" (click)="toggleOrderFilter($event)">
+                <span class="inactive-state">Sort by:</span>
+                <span class="active-state">{{ selectedOrderFilter }}</span>
+                <mat-icon *ngIf="!showOrderFilterMenu" class="button-icon">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="showOrderFilterMenu" class="button-icon">keyboard_arrow_up</mat-icon>
+
+                <div class="menu" *ngIf="showOrderFilterMenu">
+                    <div class="menu-item" *ngFor="let orderFilter of articleOrderFilters; let i = index;"
+                         [ngClass]="{'selected-item': orderFilter.selected}"
+                         (click)="sortByOrder(orderFilter, $event, i)">
+                        {{ orderFilter.name }}
+                        <mat-icon *ngIf="orderFilter.selected" class="check-icon">check</mat-icon>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="row artciles-max-width" *ngIf="(articles$ | async) as articles">
+        <div class="col-xl-6" *ngFor="let article of articles">
+            <app-article [article]="article" [userInfo]="userInfo"></app-article>
+        </div>
+    </div>
+</div>
+<div class="side-content">
+    <div class="row top-row">
+        <div class="col">
+            <button class="add-article-button button-small primary-button" (click)="addNewArticle()">
+                <mat-icon class="button-icon">add</mat-icon>
+                Add article
+            </button>
+        </div>
+    </div>
+    <app-weather></app-weather>
+</div>

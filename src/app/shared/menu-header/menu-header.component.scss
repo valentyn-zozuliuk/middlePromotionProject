@@ -1,0 +1,93 @@
+@import '../../../scss/variables';
+
+:host {
+    display: flex;
+    position: relative;
+    height: 101px;
+    background-color: $color-white;
+    border-bottom: 1px solid $disabled-color;
+    padding: 25px;
+}
+
+input {
+    height: 51px;
+    border-radius: 200px;
+    padding-left: 65px;
+    width: 365px;
+}
+
+input:disabled:hover {
+    border: 1px solid transparent;
+}
+
+.search-icon {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    color: $default-text-field;
+}
+
+.user-info {
+    position: relative;
+    margin-left: auto;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .avatar-wrapper {
+        height: 52px;
+        width: 52px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .user-avatar {
+            position: relative;
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            .avatar-image {
+                height: 48px;
+                width: 48px;
+
+                &.image-not-default {
+                    position: absolute;
+                    width: 74px;
+                    height: auto;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+    }
+
+    .user-name {
+        margin-right: 20px;
+        margin-left: 10px;
+        color: $avatar-text;
+    }
+
+    .user-profile-icon {
+        color: $default-text-field;
+    }
+
+    &:hover {
+        .avatar-wrapper{
+            border: 1px solid rgba(46, 91, 255, 0.6);
+        }
+
+        .user-name {
+            color: $status-color;
+        }
+    }
+}
+
+.menu {
+    bottom: -19px;
+    right: 28px;
+}

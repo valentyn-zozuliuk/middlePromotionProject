@@ -1,0 +1,149 @@
+@import '../../../../scss/variables';
+
+:host {
+    .article-fields {
+        padding: 35px;
+        margin: 20px auto 0 auto;
+        width: 70%;
+        max-width: 1140px;
+        font-size: 13px;
+        box-shadow: 0 24px 64px rgb(0 0 0 / 3%);
+
+        .article-type-dropdown {
+            display: block;
+            width: 100%;
+            margin-bottom: 27px;
+            padding-left: 32px;
+        }
+
+        form.ng-submitted .danger-border {
+            border: 1px solid red;
+        }
+
+        .menu {
+            width: 100%;
+            top: 55px;
+        }
+
+        h5 {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        h6 {
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+        hr {
+            color: $disabled-color;
+            opacity: 1;
+            margin: 30px 0 30px 0;
+        }
+
+        label {
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 27px;
+            font-size: 14px;
+            padding: $default-field-padding-console;
+        }
+
+        textarea {
+            padding: $default-field-padding-console;
+            font-size: 14px;
+            margin-bottom: 27px;
+            height: 240px;
+            resize: none;
+        }
+
+        .image-uploader {
+            position: relative;
+            min-height: 200px;
+            border: 1px dashed $default-text-field;
+            margin-bottom: 20px;
+            padding: 25px;
+            font-size: 14px;
+            text-align: center;
+
+            &:hover {
+                border: 1px solid $primary-color;
+            }
+
+            input {
+                position: absolute;
+                cursor: pointer;
+                opacity: 0;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            img {
+                height: 35px;
+                width: auto;
+                margin-bottom: 5px;
+                margin-top: 15px;
+            }
+
+            .image-type {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .upload-desc {
+                font-size: 14px;
+                color: $inactive-state;
+                margin-bottom: 5px;
+            }
+
+            .link {
+                text-decoration: underline;
+            }
+
+            .uploaded-name, .text-danger {
+                margin-top: 10px;
+            }
+        }
+
+        .image-preview {
+            text-align: center;
+
+            .image-wrapper {
+                height: 200px;
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+
+                img {
+                    position: absolute;
+                    top:50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: auto;
+                    height: 200px;
+                }
+            }
+
+            margin-bottom: 20px;
+        }
+
+        .operate-buttons {
+            button:last-child {
+                border: 1px solid $primary-color;
+            }
+
+            button {
+                width: 110px;
+                margin-right: 17px;
+            }
+        }
+    }
+}

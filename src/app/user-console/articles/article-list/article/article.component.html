@@ -1,0 +1,59 @@
+<mat-card class="article article-in-list" *ngIf="article">
+    <mat-icon class="more-icon article-more-icon" *ngIf="userInfo?.id === article.createdBy.uid"
+        (click)="toggleMenu($event)">more_horiz</mat-icon>
+    <div class="icon-background" *ngIf="showEditMenu"></div>
+    <div class="menu" *ngIf="showEditMenu">
+        <div class="menu-item edit-item" (click)="editArticle($event)">
+            Edit
+        </div>
+
+        <div class="menu-item delete-item" (click)="deleteArticle($event)">
+            Delete
+        </div>
+    </div>
+
+    <div [ngClass]="{
+        'business-background': article.type === articleTypes.business,
+        'media-background': article.type === articleTypes.meida,
+        'productivity-background': article.type === articleTypes.productivity,
+        'article-image': !article.coverImage,
+        'article-image-full': article.coverImage
+    }">
+        <img *ngIf="!article.coverImage" src="assets/images/laptop.png" alt="Laptop" class="src">
+        <img *ngIf="article.coverImage" [src]="article.coverImage" alt="Cover imaage" class="src">
+    </div>
+
+    <div class="artcle-desc">
+        <div class="top-desc d-flex justify-content-between">
+            <p>{{ article.type }}</p>
+            <p>{{ ifDaysAgoNeeded(article.updatedDate) ?
+                (article.updatedDate | date : 'd MMMM YYYY') : (article.updatedDate | articleDaysAgo)}}</p>
+        </div>
+
+        <div class="mid-desc">
+            <h5>{{ article.title }}</h5>
+            <p>
+                {{ article.description | textTruncate : 220 }}
+            </p>
+        </div>
+
+        <div class="bottom-desc d-flex justify-content-between">
+            <div class="avatar-wrapper d-flex justify-content-center align-items-center">
+                <div class="user-avatar">
+                    <img class="avatar-image" [ngClass]="{'image-not-default' : article.createdBy.image}"
+                        [src]="article.createdBy.image ?
+                        article.createdBy.image : 'assets/images/no-avatar-img.png'"
+                            alt="image">
+                </div>
+
+                <div class="user-name">
+                    {{ article.createdBy.name }}
+                </div>
+            </div>
+
+            <a class="link" (click)="showArticle()">
+                <span>Read More</span> <mat-icon class="read-more-icon">arrow_forward</mat-icon>
+            </a>
+        </div>
+    </div>
+</mat-card>

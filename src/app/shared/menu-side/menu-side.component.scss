@@ -1,0 +1,83 @@
+@import '../../../scss/variables';
+
+:host {
+    display: block;
+    width: 270px;
+    height: 100vh;
+    border-right: 1px solid $disabled-color;
+}
+.image-wrapper {
+    padding-left: 20px;
+    border-bottom: 1px solid $disabled-color;
+    .logo-image {
+        position: relative;
+        right: 20px;
+        height: 100px;
+        width: auto;
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+}
+
+.menu-content {
+    padding-top: 20px;
+
+    .menu-list {
+        color: $inactive-state;
+        padding: 0;
+        font-size: 14px;
+        margin-bottom: 30px;
+
+        p {
+            margin-bottom: 0;
+        }
+
+        .menu-header {
+            padding-left: 40px;
+            padding-right: 40px;
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            position: relative;
+            padding-left: 75px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            cursor: pointer;
+
+            &-icon {
+                position: absolute;
+                left: 40px;
+                top: 4px;
+                font-size: 20px;
+            }
+        }
+
+        .menu-item.link {
+            border-left: 2px solid $primary-color;
+        }
+
+        .menu-divider {
+            margin: 20px 23px 20px 23px;
+            color: $disabled-color;
+            opacity: 1;
+        }
+    }
+
+    .menu-logout {
+        display: block;
+        padding: 8px;
+        width: calc(100% - 40px);
+        border: none;
+        border-radius: 3px;
+        margin-left: 20px;
+        margin-right: 20px;
+
+        .logout-icon {
+            font-size: 18px;
+            color: $default-text-field;
+            vertical-align: middle;
+            height: 21px;
+        }
+    }
+}
