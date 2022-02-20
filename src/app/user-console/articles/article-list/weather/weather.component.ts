@@ -26,7 +26,7 @@ export class WeatherComponent extends ClearObservable implements OnInit {
     public weatherCities: WeatherCity[] = [
         { name: City.LVIV, code: 'UA', displayCode: 'Ua', selected: true },
         { name: City.KYIV, code: 'UA', displayCode: 'Ua', selected: false },
-        { name: City.ODESA, code: 'UA', displayCode: 'Ua', selected: false },
+        { name: City.IF, code: 'UA', displayCode: 'Ua', selected: false },
     ];
 
     constructor(
