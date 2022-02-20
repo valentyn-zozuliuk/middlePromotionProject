@@ -17,7 +17,7 @@ Lazy loading, Service workers, CI/CD with Travis CI, Backend API (Firebase), RxJ
 - In the project folder, run command "npm install" to install all dependencies
 - Run "ng serve" to start the project locally on http://localhost:4200
 
-## Usefull npm scripts
+## Useful npm scripts:
 - "start" : starts the project locally on http://localhost:4200
 - "cypress:open" : opens e2e testing interface
 - "cypress:run": runs e2e tests
