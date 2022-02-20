@@ -17,7 +17,7 @@ export interface Weather {
 export enum City {
     LVIV = 'Lviv',
     KYIV = 'Kyiv',
-    ODESA = 'Odesa',
+    IF = 'Ivano-Frankivsk',
 }
 
 export enum Country {

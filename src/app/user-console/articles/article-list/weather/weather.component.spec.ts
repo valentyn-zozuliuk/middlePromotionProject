@@ -56,7 +56,7 @@ describe('WeatherComponent', () => {
 
     it('should select city and get weather info for that city', () => {
         const weatherCity = {
-            name: City.ODESA,
+            name: City.IF,
             code: 'UA',
             displayCode: 'Ua',
             selected: false
@@ -65,7 +65,7 @@ describe('WeatherComponent', () => {
         component.selectItem(weatherCity, new Event('click'), 2);
 
         expect(component.weatherCities[2].selected).toBeTruthy();
-        expect(weatherService.getWeatherInfo).toHaveBeenCalledWith(City.ODESA, 'UA');
+        expect(weatherService.getWeatherInfo).toHaveBeenCalledWith(City.IF, 'UA');
     });
 
     it('should select modify country text', () => {
